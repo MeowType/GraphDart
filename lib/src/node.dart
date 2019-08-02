@@ -3,6 +3,7 @@ part of MeowType.Graph;
 _Node _newNode() => _Node();
 
 class _Node {
+
   final Set<_Node> from = Set();
 
   final Map<_Node, Map<dynamic, Maybe<dynamic>>> to = {};

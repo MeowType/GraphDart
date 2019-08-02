@@ -10,12 +10,23 @@ abstract class GraphItems {
 
 mixin GraphItemsMixin implements GraphItems {
   final Map<dynamic, _Node> _map = {};
+  final Map<_Node, dynamic> _node_to_val = {};
+
+  _Node _map_add_or_get(key, _Node Function() def) {
+    if (_map.containsKey(key)) return _map[key];
+    final val = def();
+    _map[key] = val;
+    _node_to_val[val] = key;
+    return val;
+  }
 
   bool add(val) {
     if (_map.containsKey(val)) {
       return false;
     }
-    _map[val] = _Node();
+    final node = _Node();
+    _map[val] = node;
+    _node_to_val[node] = val;
     return true;
   }
 
@@ -32,6 +43,7 @@ mixin GraphItemsMixin implements GraphItems {
       for (var to in node.to.keys) {
         to.from.remove(node);
       }
+      _node_to_val.remove(node);
       _map.remove(val);
       return true;
     }

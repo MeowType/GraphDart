@@ -13,8 +13,8 @@ abstract class UndirectedValueGraph extends UndirectedGraph {
 mixin UndirectedValueGraphMixin on UndirectedGraphMixin
     implements UndirectedValueGraph, GraphGet {
   void set(a, b, key, val) {
-    final _a = _add_or_get(_map, a, _newNode);
-    final _b = _add_or_get(_map, b, _newNode);
+    final _a = _map_add_or_get(a, _newNode);
+    final _b = _map_add_or_get(b, _newNode);
     _a.setFrom(b);
     _b.setFrom(a);
     _a.setToV(b, key, val);
@@ -22,8 +22,8 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
   }
 
   void setBy<T>(a, b, val) {
-    final _a = _add_or_get(_map, a, _newNode);
-    final _b = _add_or_get(_map, b, _newNode);
+    final _a = _map_add_or_get(a, _newNode);
+    final _b = _map_add_or_get(b, _newNode);
     _a.setFrom(b);
     _b.setFrom(a);
     _a.setToT<T>(b, val);
@@ -31,20 +31,20 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
   }
 
   bool hasEdge(a, b, key) {
-    final _a = _add_or_get(_map, a, _newNode);
-    final _b = _add_or_get(_map, b, _newNode);
+    final _a = _map_add_or_get(a, _newNode);
+    final _b = _map_add_or_get(b, _newNode);
     return _a.hasToV(_b, key) && _b.hasToV(_a, key);
   }
 
   bool hasEdgeBy<T>(a, b) {
-    final _a = _add_or_get(_map, a, _newNode);
-    final _b = _add_or_get(_map, b, _newNode);
+    final _a = _map_add_or_get(a, _newNode);
+    final _b = _map_add_or_get(b, _newNode);
     return _a.hasToT<T>(_b) && _b.hasToT<T>(_a);
   }
 
   bool unSet(a, b, key) {
-    final _a = _add_or_get(_map, a, _newNode);
-    final _b = _add_or_get(_map, b, _newNode);
+    final _a = _map_add_or_get(a, _newNode);
+    final _b = _map_add_or_get(b, _newNode);
 
     final ar = _a.unsetToV(_b, key);
     final br = _b.unsetToV(_a, key);
@@ -52,11 +52,20 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
   }
 
   bool unSetBy<T>(a, b) {
-    final _a = _add_or_get(_map, a, _newNode);
-    final _b = _add_or_get(_map, b, _newNode);
+    final _a = _map_add_or_get(a, _newNode);
+    final _b = _map_add_or_get(b, _newNode);
 
     final ar = _a.unsetToV(_b, T);
     final br = _b.unsetToV(_a, T);
     return ar || br;
+  }
+
+  Iterable values(val, key) {
+    final _v = _map_add_or_get(val, _newNode);
+
+    final a = _v.to.keys.map((n) => _v.get(n, key));
+    final b = _v.from.map((n) => n.get(_v, key));
+    final v = _concat(a, b).where((m) => m.has).map((s) => s.val);
+    return v;
   }
 }
