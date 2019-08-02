@@ -5,6 +5,7 @@ abstract class UndirectedGraph extends GraphItems {
   void link(a, b);
   bool hasLink(a, b);
   bool unLink(a, b);
+  Iterable links(val);
 }
 
 mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {

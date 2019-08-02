@@ -7,6 +7,7 @@ abstract class DirectedValueGraph extends DirectedGraph {
   bool hasEdgeTo(from, to, key);
   bool hasEdgeToBy<T>(from, to);
   bool unSetTo(from, to, key);
+  Iterable valueTos(val, key);
 }
 
 mixin DirectedValueGraphMixin on DirectedGraphMixin

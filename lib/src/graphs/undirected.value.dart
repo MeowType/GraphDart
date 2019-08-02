@@ -8,6 +8,7 @@ abstract class UndirectedValueGraph extends UndirectedGraph {
   bool hasEdgeBy<T>(a, b);
   bool unSet(a, b, key);
   bool unSetBy<T>(a, b);
+  Iterable values(val, key);
 }
 
 mixin UndirectedValueGraphMixin on UndirectedGraphMixin

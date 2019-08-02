@@ -5,6 +5,7 @@ abstract class DirectedGraph extends GraphItems {
   void linkTo(from, to);
   bool hasLinkTo(from, to);
   bool unLinkTo(from, to);
+  Iterable linkTos(val);
 }
 
 mixin DirectedGraphMixin on GraphItemsMixin implements DirectedGraph {

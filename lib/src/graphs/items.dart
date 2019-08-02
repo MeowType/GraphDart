@@ -1,6 +1,6 @@
 part of MeowType.Graph;
 
-abstract class GraphItems {
+abstract class GraphItems implements Iterable {
   bool add(val);
   bool has(val);
   bool remove(val);
@@ -8,11 +8,11 @@ abstract class GraphItems {
   int get length;
 }
 
-mixin GraphItemsMixin implements GraphItems {
+mixin GraphItemsMixin implements GraphItems, Iterable {
   final Map<dynamic, _Node> _map = {};
   final Map<_Node, dynamic> _node_to_val = {};
 
-  _Node _map_add_or_get(key, _Node Function() def) {
+  _Node _map_add_or_get(key, _Node def()) {
     if (_map.containsKey(key)) return _map[key];
     final val = def();
     _map[key] = val;
@@ -53,4 +53,12 @@ mixin GraphItemsMixin implements GraphItems {
   Iterable get items => _map.keys;
 
   int get length => _map.length;
+
+  Iterator get iterator => items.iterator;
+
+  Iterable<R> flatMap<R>(Iterable<R> f(item)) sync* {
+    for (var item in items) {
+      yield* f(item);
+    }
+  }
 }
