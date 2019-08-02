@@ -1,35 +1,34 @@
-import 'maybe.dart';
-import 'utils.dart';
+part of MeowType.Graph;
 
-Node newNode() => Node();
+_Node _newNode() => _Node();
 
-class Node {
-  final Set<Node> from = Set();
+class _Node {
+  final Set<_Node> from = Set();
 
-  final Map<Node, Map<dynamic, Maybe<dynamic>>> to = {};
+  final Map<_Node, Map<dynamic, Maybe<dynamic>>> to = {};
 
   static Map<dynamic, Maybe<dynamic>> newInnerMap() =>
       Map<dynamic, Maybe<dynamic>>();
 
-  void setFrom(Node node) {
+  void setFrom(_Node node) {
     from.add(node);
   }
 
-  void setTo(Node node) {
-    add_or_get(to, node, () => Map());
+  void setTo(_Node node) {
+    _add_or_get(to, node, () => Map());
   }
 
-  void setToV(Node node, key, val) {
-    final map = add_or_get(to, node, newInnerMap);
+  void setToV(_Node node, key, val) {
+    final map = _add_or_get(to, node, newInnerMap);
     map[key] = Some(val);
   }
 
-  void setToT<T>(Node node, val) {
-    final map = add_or_get(to, node, newInnerMap);
+  void setToT<T>(_Node node, val) {
+    final map = _add_or_get(to, node, newInnerMap);
     map[T] = Some(val);
   }
 
-  Maybe get(Node node, key) {
+  Maybe get(_Node node, key) {
     if (to.containsKey(node)) {
       final map = to[node];
       if (map.containsKey(key)) {
@@ -39,7 +38,7 @@ class Node {
     return None();
   }
 
-  Maybe getT<T>(Node node) {
+  Maybe getT<T>(_Node node) {
     if (to.containsKey(node)) {
       final map = to[node];
       if (map.containsKey(T)) {
@@ -49,15 +48,15 @@ class Node {
     return None();
   }
 
-  bool hasFrom(Node node) {
+  bool hasFrom(_Node node) {
     return from.contains(node);
   }
 
-  bool hasTo(Node node) {
+  bool hasTo(_Node node) {
     return to.containsKey(node);
   }
 
-  bool hasToV(Node node, key) {
+  bool hasToV(_Node node, key) {
     if (to.containsKey(node)) {
       final map = to[node];
       return map.containsKey(key);
@@ -65,7 +64,7 @@ class Node {
     return false;
   }
 
-  bool hasToT<T>(Node node) {
+  bool hasToT<T>(_Node node) {
     if (to.containsKey(node)) {
       final map = to[node];
       return map.containsKey(T);
@@ -73,15 +72,15 @@ class Node {
     return false;
   }
 
-  bool unsetFrom(Node node) {
+  bool unsetFrom(_Node node) {
     return from.remove(node);
   }
 
-  bool unsetTo(Node node) {
+  bool unsetTo(_Node node) {
     return to.remove(node) != null;
   }
 
-  bool unsetToV(Node node, key) {
+  bool unsetToV(_Node node, key) {
     if (to.containsKey(node)) {
       final map = to[node];
       return map.remove(key) != null;
@@ -89,7 +88,7 @@ class Node {
     return false;
   }
 
-  bool unsetToT<T>(Node node) {
+  bool unsetToT<T>(_Node node) {
     if (to.containsKey(node)) {
       final map = to[node];
       return map.remove(T) != null;

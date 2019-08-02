@@ -1,3 +1,5 @@
+library MeowType.Maybe;
+
 Maybe<T> Some<T>(T val) {
   return Maybe.Some(val);
 }
