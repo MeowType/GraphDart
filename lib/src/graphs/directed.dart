@@ -35,4 +35,10 @@ mixin DirectedGraphMixin on GraphItemsMixin implements DirectedGraph {
     final to = _v.to.keys.map((n) => _node_to_val[n]);
     return to;
   }
+
+  Iterable linkFroms(val) {
+    final _v = _map_add_or_get(val, _newNode);
+    final from = _v.from.map((n) => _node_to_val[n]);
+    return from;
+  }
 }

@@ -59,4 +59,14 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
         .map((s) => s.val);
     return v;
   }
+
+  Iterable valueFroms(val, key) {
+    final _v = _map_add_or_get(val, _newNode);
+
+    final v = _v.from
+        .map((n) => n.get(_v, key))
+        .where((m) => m.has)
+        .map((s) => s.val);
+    return v;
+  }
 }
