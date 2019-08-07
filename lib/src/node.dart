@@ -16,7 +16,7 @@ class _Node {
   }
 
   void setTo(_Node node) {
-    _add_or_get(to, node, () => Map());
+    _add_or_get(to, node, () => Map<dynamic, Maybe<dynamic>>());
   }
 
   void setToV(_Node node, key, val) {

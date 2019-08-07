@@ -6,6 +6,8 @@ abstract class GraphItems implements Iterable {
   bool remove(val);
   Iterable get items;
   int get length;
+  Iterator get iterator;
+  Iterable<R> flatMap<R>(Iterable<R> f(item));
 }
 
 mixin GraphItemsMixin implements GraphItems, Iterable {

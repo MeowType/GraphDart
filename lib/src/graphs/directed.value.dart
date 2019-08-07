@@ -1,14 +1,17 @@
 part of MeowType.Graph;
 
-abstract class DirectedValueGraph extends DirectedGraph {
+abstract class DirectedValueGraph extends DirectedGraph implements GraphGet {
   factory DirectedValueGraph() => FullGraph();
   void setTo(from, to, key, val);
   void setToBy<T>(from, to, val);
   bool hasEdgeTo(from, to, key);
   bool hasEdgeToBy<T>(from, to);
   bool unSetTo(from, to, key);
+  bool unSetToBy<T>(from, to);
   Iterable valueTos(val, key);
   Iterable valueFroms(val, key);
+  Iterable valueTosBy<T>(val);
+  Iterable valueFromsBy<T>(val);
 }
 
 mixin DirectedValueGraphMixin on DirectedGraphMixin
@@ -68,6 +71,24 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
         .map((n) => n.get(_v, key))
         .where((m) => m.has)
         .map((s) => s.val);
+    return v;
+  }
+
+  Iterable valueTosBy<T>(val) {
+    final _v = _map_add_or_get(val, _newNode);
+
+    final v = _v.to.keys
+        .map((n) => _v.get(n, T))
+        .where((m) => m.has)
+        .map((s) => s.val);
+    return v;
+  }
+
+  Iterable valueFromsBy<T>(val) {
+    final _v = _map_add_or_get(val, _newNode);
+
+    final v =
+        _v.from.map((n) => n.get(_v, T)).where((m) => m.has).map((s) => s.val);
     return v;
   }
 }

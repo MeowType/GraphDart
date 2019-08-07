@@ -12,10 +12,10 @@ mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
   void link(a, b) {
     final _a = _map_add_or_get(a, _newNode);
     final _b = _map_add_or_get(b, _newNode);
-    _a.setFrom(b);
-    _b.setFrom(a);
-    _a.setTo(b);
-    _b.setTo(a);
+    _a.setFrom(_b);
+    _b.setFrom(_a);
+    _a.setTo(_b);
+    _b.setTo(_a);
   }
 
   bool hasLink(a, b) {

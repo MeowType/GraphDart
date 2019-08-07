@@ -1,6 +1,6 @@
 part of MeowType.Graph;
 
-abstract class UndirectedValueGraph extends UndirectedGraph {
+abstract class UndirectedValueGraph extends UndirectedGraph implements GraphGet {
   factory UndirectedValueGraph() => FullGraph();
   void set(a, b, key, val);
   void setBy<T>(a, b, val);
@@ -9,6 +9,7 @@ abstract class UndirectedValueGraph extends UndirectedGraph {
   bool unSet(a, b, key);
   bool unSetBy<T>(a, b);
   Iterable values(val, key);
+  Iterable valuesBy<T>(val);
 }
 
 mixin UndirectedValueGraphMixin on UndirectedGraphMixin
@@ -16,19 +17,19 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
   void set(a, b, key, val) {
     final _a = _map_add_or_get(a, _newNode);
     final _b = _map_add_or_get(b, _newNode);
-    _a.setFrom(b);
-    _b.setFrom(a);
-    _a.setToV(b, key, val);
-    _b.setToV(a, key, val);
+    _a.setFrom(_b);
+    _b.setFrom(_a);
+    _a.setToV(_b, key, val);
+    _b.setToV(_a, key, val);
   }
 
   void setBy<T>(a, b, val) {
     final _a = _map_add_or_get(a, _newNode);
     final _b = _map_add_or_get(b, _newNode);
-    _a.setFrom(b);
-    _b.setFrom(a);
-    _a.setToT<T>(b, val);
-    _b.setToT<T>(a, val);
+    _a.setFrom(_b);
+    _b.setFrom(_a);
+    _a.setToT<T>(_b, val);
+    _b.setToT<T>(_a, val);
   }
 
   bool hasEdge(a, b, key) {
@@ -67,6 +68,15 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
     final a = _v.to.keys.map((n) => _v.get(n, key));
     final b = _v.from.map((n) => n.get(_v, key));
     final v = _concat(a, b).where((m) => m.has).map((s) => s.val);
-    return v;
+    return v.toSet();
+  }
+
+  Iterable valuesBy<T>(val) {
+    final _v = _map_add_or_get(val, _newNode);
+
+    final a = _v.to.keys.map((n) => _v.get(n, T));
+    final b = _v.from.map((n) => n.get(_v, T));
+    final v = _concat(a, b).where((m) => m.has).map((s) => s.val);
+    return v.toSet();
   }
 }
