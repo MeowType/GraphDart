@@ -1,4 +1,4 @@
-name: graph_lib
+name: graph_collection
 version: '0.0.0-dev.0'
 description: 'Provides numerous graph theory based Graph Collections'
 authors:

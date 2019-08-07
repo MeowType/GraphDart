@@ -1,6 +1,6 @@
 import "package:test/test.dart";
 
-import 'package:graph_lib/maybe.dart';
+import 'package:graph_collection/maybe.dart';
 
 void main() {
   test('create Some', () {

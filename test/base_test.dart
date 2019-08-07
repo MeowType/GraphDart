@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:graph_lib/graph.dart';
+import 'package:graph_collection/graph.dart';
 
 void main() {
   test('create', () {
