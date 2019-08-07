@@ -24,20 +24,20 @@ class Maybe<T> {
     _has = false;
   }
 
-  get val => _val;
+  T get val => _val;
 
-  get has => _has;
+  bool get has => _has;
 
-  Maybe<R> when<R>({R Function() some, R Function() none}) {
+  Maybe<R> when<R>({R some(T), R none()}) {
     if (_has) {
-      if (some != null) return Some(some());
+      if (some != null) return Some(some(_val));
     } else {
       if (none != null) return Some(none());
     }
     return None();
   }
 
-  Maybe<R> some<R>(R Function(T val) some) {
+  Maybe<R> some<R>(R some(T val)) {
     if (_has) {
       if (some != null) return Some(some(_val));
     }
@@ -54,6 +54,13 @@ class Maybe<T> {
   Maybe<V> defaultVal<V>(V v) {
     if (!_has) {
       return Some(v);
+    }
+    return None();
+  }
+
+  Maybe<V> defaultValFn<V>(V fn()) {
+    if (!_has) {
+      return Some(fn());
     }
     return None();
   }

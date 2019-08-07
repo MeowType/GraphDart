@@ -1,1 +1,13 @@
 name: graph_lib
+version: '0.0.0-dev.0'
+description: 'Provides numerous graph theory based Graph Collections'
+authors:
+- 'MeowType <aditrc@outlook.com>'
+- '2A5F <U2A5F@outlook.com>'
+homepage: 'https://github.com/MeowType/GraphDart'
+repository: 'https://github.com/MeowType/GraphDart'
+issue_tracker: 'https://github.com/MeowType/GraphDart/issues'
+environment:
+  sdk: '>=2.0.0 <3.0.0'
+dev_dependencies:
+  test: ^1.6.5
