@@ -187,4 +187,18 @@ void main() {
     expect(g.has(1), isTrue);
     expect(g.has(2), isTrue);
   });
+
+  test('types', () {
+    dynamic g = Graph();
+    LinkGraph lg = g;
+    UndirectedGraph ug = g;
+    UndirectedValueGraph uvg = g;
+    DirectedGraph dg = g;
+    DirectedValueGraph dvg = g;
+    lg;
+    ug;
+    uvg;
+    dg;
+    dvg;
+  });
 }
