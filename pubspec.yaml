@@ -9,5 +9,7 @@ repository: 'https://github.com/MeowType/GraphDart'
 issue_tracker: 'https://github.com/MeowType/GraphDart/issues'
 environment:
   sdk: '>=2.0.0 <3.0.0'
+dependencies:
+  some: ^1.0.1
 dev_dependencies:
   test: ^1.6.5

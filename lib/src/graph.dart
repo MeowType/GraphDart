@@ -1,6 +1,6 @@
 library MeowType.Graph;
 
-import 'maybe.dart';
+import 'package:some/index.dart';
 import 'dart:collection';
 
 part 'node.dart';
