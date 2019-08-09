@@ -36,7 +36,7 @@ class _Node {
         return map[key];
       }
     }
-    return None();
+    return const None();
   }
 
   Maybe getT<T>(_Node node) {
@@ -46,7 +46,7 @@ class _Node {
         return map[T];
       }
     }
-    return None();
+    return const None();
   }
 
   bool hasFrom(_Node node) {
