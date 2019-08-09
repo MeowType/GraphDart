@@ -1,4 +1,4 @@
-library MeowType.Graph;
+library meowtype.graph;
 
 import 'package:some/index.dart';
 import 'dart:collection';

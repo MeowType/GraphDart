@@ -1,4 +1,4 @@
-part of MeowType.Graph;
+part of meowtype.graph;
 
 _Node _newNode() => _Node();
 

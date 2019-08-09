@@ -1,4 +1,4 @@
-part of MeowType.Graph;
+part of meowtype.graph;
 
 abstract class DirectedValueGraph extends DirectedGraph implements GraphGet {
   factory DirectedValueGraph() => FullGraph();

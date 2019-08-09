@@ -1,4 +1,4 @@
-part of MeowType.Graph;
+part of meowtype.graph;
 
 abstract class GraphGet implements GraphItems {
   Maybe get(from, to, key);
