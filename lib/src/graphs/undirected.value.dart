@@ -1,17 +1,35 @@
 part of meowtype.graph;
 
+/// Undirected graph, Can create an edge and value between 2 nodes
 abstract class UndirectedValueGraph extends UndirectedGraph implements GraphGet {
-  factory UndirectedValueGraph() => FullGraph();
+  factory UndirectedValueGraph() = FullGraph;
+  /// create an link between 2 nodes with value
   void set(a, b, key, val);
+  /// create an link between 2 nodes with value but by Generic
+  /// 
+  /// Equivalent to [set]([a], [b], **[T]**, [val])
   void setBy<T>(a, b, val);
+  /// Determine if there is a value link between 2 nodes
   bool hasEdge(a, b, key);
+  /// Determine if there is a value link between 2 nodes but by Generic
+  /// 
+  /// Equivalent to [hasEdge]([a], [b], **[T]**)
   bool hasEdgeBy<T>(a, b);
+  /// Remove the valued link between 2 nodes, but will not remove [a] and [b] and the link between them
   bool unSet(a, b, key);
+  /// Remove the valued link between 2 nodes but by Generic, but will not remove [a] and [b] and the link between them
+  /// 
+  /// Equivalent to [unSet]([a], [b], **[T]**)
   bool unSetBy<T>(a, b);
+  /// Get all the values on all links of this node
   Iterable values(val, key);
+  /// Get all the values on all links of this node but by Generic
+  /// 
+  /// Equivalent to [values]([val], **[T]**)
   Iterable valuesBy<T>(val);
 }
 
+/// Mixing of implementations of [UndirectedValueGraph]
 mixin UndirectedValueGraphMixin on UndirectedGraphMixin
     implements UndirectedValueGraph, GraphGet {
   void set(a, b, key, val) {
@@ -35,13 +53,13 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
   bool hasEdge(a, b, key) {
     final _a = _map_add_or_get(a, _newNode);
     final _b = _map_add_or_get(b, _newNode);
-    return _a.hasToV(_b, key) && _b.hasToV(_a, key);
+    return _a.hasToV(_b, key) || _b.hasToV(_a, key);
   }
 
   bool hasEdgeBy<T>(a, b) {
     final _a = _map_add_or_get(a, _newNode);
     final _b = _map_add_or_get(b, _newNode);
-    return _a.hasToT<T>(_b) && _b.hasToT<T>(_a);
+    return _a.hasToT<T>(_b) || _b.hasToT<T>(_a);
   }
 
   bool unSet(a, b, key) {

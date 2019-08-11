@@ -13,11 +13,13 @@ part './graphs/undirected.value.dart';
 part './graphs/get.dart';
 part './graphs/full.dart';
 
+/// Contains [DirectedGraph] and [UndirectedGraph], And can't set the value of the edge
 abstract class LinkGraph implements UndirectedGraph, DirectedGraph {
-  factory LinkGraph() => FullGraph();
+  factory LinkGraph() = FullGraph;
 }
 
+/// Contains all types of Graph, The difference with [LinkGraph] is that you can set the value of the edge.
 abstract class Graph extends LinkGraph
     implements UndirectedValueGraph, DirectedValueGraph {
-  factory Graph() => FullGraph();
+  factory Graph() = FullGraph;
 }

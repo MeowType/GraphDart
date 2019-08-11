@@ -59,7 +59,7 @@ void main() {
 
     expect(g.hasLinkTo(1, 2), isTrue);
     expect(g.hasLinkTo(2, 1), isFalse);
-    expect(g.hasLink(1, 2), isFalse);
+    expect(g.hasLink(1, 2), isTrue);
 
     expect(g.links(1), contains(2));
     expect(g.links(2), contains(1));
@@ -141,8 +141,8 @@ void main() {
     expect(g.has(1), isTrue);
     expect(g.has(2), isTrue);
 
-    expect(g.hasLink(1, 2), isFalse);
-    expect(g.hasLink(2, 1), isFalse);
+    expect(g.hasLink(1, 2), isTrue);
+    expect(g.hasLink(2, 1), isTrue);
 
     expect(g.hasLinkTo(1, 2), isTrue);
     expect(g.hasLinkTo(2, 1), isFalse);

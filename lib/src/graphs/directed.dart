@@ -1,14 +1,21 @@
 part of meowtype.graph;
 
+/// Directed graph, can set the direction of the edge
 abstract class DirectedGraph extends GraphItems {
-  factory DirectedGraph() => FullGraph();
+  factory DirectedGraph() = FullGraph;
+  /// Link a directed link, if [from] and [to] don't exist, they will be added
   void linkTo(from, to);
+  /// Determine if there is such a directed link
   bool hasLinkTo(from, to);
+  /// Remove a directed link, but will not remove [from] and [to]
   bool unLinkTo(from, to);
+  /// Get all links link from [val]
   Iterable linkTos(val);
+  /// Get all links link to [val]
   Iterable linkFroms(val);
 }
 
+/// Mixing of implementations of [DirectedGraph]
 mixin DirectedGraphMixin on GraphItemsMixin implements DirectedGraph {
   void linkTo(from, to) {
     final _f = _map_add_or_get(from, _newNode);

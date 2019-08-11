@@ -1,19 +1,41 @@
 part of meowtype.graph;
 
+/// Directed graph, but can set the direction of the edge and the value of the edge
 abstract class DirectedValueGraph extends DirectedGraph implements GraphGet {
-  factory DirectedValueGraph() => FullGraph();
+  factory DirectedValueGraph() = FullGraph;
+  /// Link a directed link with value, if [from] and [to] don't exist, they will be added
   void setTo(from, to, key, val);
+  /// Link a directed link with value but by Generic, if [from] and [to] don't exist, they will be added
+  /// 
+  /// Equivalent to [setTo]([from], [to], **[T]**, [val])
   void setToBy<T>(from, to, val);
+  /// Determine if there is such a valued directed link
   bool hasEdgeTo(from, to, key);
+  /// Determine if there is such a valued directed link but by Generic  
+  /// 
+  /// Equivalent to [hasEdgeTo]([from], [to], **[T]**)
   bool hasEdgeToBy<T>(from, to);
+  /// Remove a valued directed link, but will not remove [from] and [to]
   bool unSetTo(from, to, key);
+  /// Remove a valued directed link but by Generic, but will not remove [from] and [to]
+  /// 
+  /// Equivalent to [unSetTo]([from], [to], **[T]**)
   bool unSetToBy<T>(from, to);
+  /// Get all values link from [val]
   Iterable valueTos(val, key);
+  /// Get all values link to [val]
   Iterable valueFroms(val, key);
+  /// Get all values link from [val] but by Generic
+  /// 
+  /// Equivalent to [valueTos]([val], **[T]**)
   Iterable valueTosBy<T>(val);
+  /// Get all values link to [val] but by Generic
+  /// 
+  /// Equivalent to [valueFroms]([val], **[T]**)
   Iterable valueFromsBy<T>(val);
 }
 
+/// Mixing of implementations of [DirectedValueGraph]
 mixin DirectedValueGraphMixin on DirectedGraphMixin
     implements DirectedValueGraph, GraphGet {
   void setTo(from, to, key, val) {
