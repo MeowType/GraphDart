@@ -1,5 +1,5 @@
 name: graph_collection
-version: '1.0.0-dev.1'
+version: '1.0.0-dev.2'
 description: 'Provides numerous graph theory based Graph Collections: Graph[LinkGraph[UndirectedGraph, DirectedGraph], UndirectedValueGraph, DirectedValueGraph]'
 authors:
 - 'MeowType <aditrc@outlook.com>'
