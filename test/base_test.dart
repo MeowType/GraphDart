@@ -201,4 +201,54 @@ void main() {
     dg;
     dvg;
   });
+
+  test('loop', () {
+    final g = Graph();
+
+    g.setTo(1, 1, 2, 3);
+    g.setToBy<int>(1, 1, 2);
+
+    expect(g, hasLength(1));
+    expect(g.has(1), isTrue);
+
+    expect(g.hasLink(1, 1), isTrue);
+    expect(g.hasLinkTo(1, 1), isTrue);
+
+    expect(g.links(1), contains(1));
+
+    expect(g.links(1), hasLength(1));
+
+    expect(g.hasEdgeTo(1, 1, 2), isTrue);
+    expect(g.hasEdgeToBy<int>(1, 1), isTrue);
+
+    expect(g.values(1, 2), contains(3));
+    expect(g.valuesBy<int>(1), contains(2));
+
+    expect(g.values(1, 2), hasLength(1));
+    expect(g.valuesBy<int>(1), hasLength(1));
+
+    expect(g.valueTos(1, 2), contains(3));
+    expect(g.valueTosBy<int>(1), contains(2));
+
+    expect(g.valueTos(1, 2), hasLength(1));
+    expect(g.valueTosBy<int>(1), hasLength(1));
+
+    expect(g.get(1, 1, 2).has, isTrue);
+    expect(g.getBy<int>(1, 1).has, isTrue);
+
+    expect(g.get(1, 1, 2).val, equals(3));
+    expect(g.getBy<int>(1, 1).val, equals(2));
+
+    expect(g.unSetTo(1, 1, 2), isTrue);
+    expect(g.unSetTo(1, 1, 2), isFalse);
+
+    expect(g.unSetToBy<int>(1, 1), isTrue);
+    expect(g.unSetToBy<int>(1, 1), isFalse);
+
+    expect(g.hasEdgeTo(1, 1, 2), isFalse);
+    expect(g.hasEdgeToBy<int>(1, 1), isFalse);
+
+    expect(g, hasLength(1));
+    expect(g.has(1), isTrue);
+  });
 }
