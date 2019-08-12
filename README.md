@@ -1,6 +1,6 @@
 Provides numerous graph theory based Graph Collections
 
-[![pub](https://img.shields.io/pub/v/graph_collection.svg)](https://pub.dev/packages/graph_collection)
+[![pub](https://img.shields.io/pub/v/graph_collection.svg)](https://pub.dev/packages/graph_collection) [![MIT](https://img.shields.io/github/license/MeowType/GraphDart)](https://github.com/MeowType/GraphDart/blob/master/LICENSE)
 
 # Graph theory
 Graph theory is the study of graphs, which are mathematical structures used to model pairwise relations between objects. A graph in this context is made up of vertices (also called nodes or points) which are connected by edges (also called links or lines).  
