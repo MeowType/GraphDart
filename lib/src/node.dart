@@ -1,11 +1,13 @@
 part of meowtype.graph;
 
 class _Edge {
-  Set tags = Set();
-  Map<dynamic, Maybe<dynamic>> map = Map<dynamic, Maybe<dynamic>>();
+  final Set tags = Set();
+  final Map<dynamic, Maybe<dynamic>> map = Map<dynamic, Maybe<dynamic>>();
+  final Map<dynamic, Set> valtags = Map<dynamic, Set>();
 }
 
 _Node _newNode() => _Node();
+Set _newSet() => Set();
 
 class _Node {
   final Set<_Node> from = Set();
@@ -14,8 +16,8 @@ class _Node {
 
   static _Edge newInnerMap() => _Edge();
 
-  void setFrom(_Node node) {
-    from.add(node);
+  bool setFrom(_Node node) {
+    return from.add(node);
   }
 
   void setTo(_Node node) {
@@ -23,30 +25,26 @@ class _Node {
   }
 
   void setToV(_Node node, key, val) {
-    final map = _add_or_get(to, node, newInnerMap);
-    map.map[key] = Some(val);
+    final edge = _add_or_get(to, node, newInnerMap);
+    edge.map[key] = Some(val);
   }
 
-  void setToT<T>(_Node node, val) {
-    final map = _add_or_get(to, node, newInnerMap);
-    map.map[T] = Some(val);
+  bool setTag(_Node node, tag) {
+    final edge = _add_or_get(to, node, newInnerMap);
+    return edge.tags.add(tag);
+  }
+
+  bool setValTag(_Node node, key, tag) {
+    final edge = _add_or_get(to, node, newInnerMap);
+    final tagset = _add_or_get(edge.valtags, key, _newSet);
+    return tagset.add(tag);
   }
 
   Maybe get(_Node node, key) {
     if (to.containsKey(node)) {
-      final map = to[node];
-      if (map.map.containsKey(key)) {
-        return map.map[key];
-      }
-    }
-    return const None();
-  }
-
-  Maybe getT<T>(_Node node) {
-    if (to.containsKey(node)) {
-      final map = to[node];
-      if (map.map.containsKey(T)) {
-        return map.map[T];
+      final edge = to[node];
+      if (edge.map.containsKey(key)) {
+        return edge.map[key];
       }
     }
     return const None();
@@ -62,16 +60,21 @@ class _Node {
 
   bool hasToV(_Node node, key) {
     if (to.containsKey(node)) {
-      final map = to[node];
-      return map.map.containsKey(key);
+      final edge = to[node];
+      return edge.map.containsKey(key);
     }
     return false;
   }
 
-  bool hasToT<T>(_Node node) {
-    if (to.containsKey(node)) {
-      final map = to[node];
-      return map.map.containsKey(T);
+  bool hasTag(_Node node, tag) {
+    final edge = _add_or_get(to, node, newInnerMap);
+    return edge.tags.contains(tag);
+  }
+
+  bool hasValTag(_Node node, key, tag) {
+    final edge = _add_or_get(to, node, newInnerMap);
+    if (edge.valtags.containsKey(key)) {
+      return edge.valtags[key].contains(tag);
     }
     return false;
   }
@@ -86,16 +89,21 @@ class _Node {
 
   bool unsetToV(_Node node, key) {
     if (to.containsKey(node)) {
-      final map = to[node];
-      return map.map.remove(key) != null;
+      final edge = to[node];
+      return edge.map.remove(key) != null;
     }
     return false;
   }
 
-  bool unsetToT<T>(_Node node) {
-    if (to.containsKey(node)) {
-      final map = to[node];
-      return map.map.remove(T) != null;
+  bool unsetTag(_Node node, tag) {
+    final edge = _add_or_get(to, node, newInnerMap);
+    return edge.tags.remove(tag);
+  }
+
+  bool unsetValTag(_Node node, key, tag) {
+    final edge = _add_or_get(to, node, newInnerMap);
+    if (edge.valtags.containsKey(key)) {
+      return edge.valtags[key].remove(tag);
     }
     return false;
   }
