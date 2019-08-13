@@ -14,30 +14,30 @@ class _Node {
 
   final Map<_Node, _Edge> to = {};
 
-  static _Edge newInnerMap() => _Edge();
+  static _Edge newInnerEdge() => _Edge();
 
   bool setFrom(_Node node) {
     return from.add(node);
   }
 
   void setTo(_Node node) {
-    _add_or_get(to, node, newInnerMap);
+    _add_or_get(to, node, newInnerEdge);
   }
 
   void setToV(_Node node, key, val) {
-    final edge = _add_or_get(to, node, newInnerMap);
+    final edge = _add_or_get(to, node, newInnerEdge);
     edge.map[key] = Some(val);
   }
 
-  bool setTag(_Node node, tag) {
-    final edge = _add_or_get(to, node, newInnerMap);
-    return edge.tags.add(tag);
+  void setTag(_Node node, List tags) {
+    final edge = _add_or_get(to, node, newInnerEdge);
+    edge.tags.addAll(tags);
   }
 
-  bool setValTag(_Node node, key, tag) {
-    final edge = _add_or_get(to, node, newInnerMap);
+  void setValTag(_Node node, key, List tags) {
+    final edge = _add_or_get(to, node, newInnerEdge);
     final tagset = _add_or_get(edge.valtags, key, _newSet);
-    return tagset.add(tag);
+    tagset.addAll(tags);
   }
 
   Maybe get(_Node node, key) {
@@ -66,15 +66,32 @@ class _Node {
     return false;
   }
 
-  bool hasTag(_Node node, tag) {
-    final edge = _add_or_get(to, node, newInnerMap);
-    return edge.tags.contains(tag);
+  bool hasTag(_Node node, List tags) {
+    if (tags.length < 1) return false;
+    final edge = _add_or_get(to, node, newInnerEdge);
+    return edge.tags.containsAll(tags);
   }
 
-  bool hasValTag(_Node node, key, tag) {
-    final edge = _add_or_get(to, node, newInnerMap);
+  bool hasValTag(_Node node, key, List tags) {
+    if (tags.length < 1) return false;
+    final edge = _add_or_get(to, node, newInnerEdge);
     if (edge.valtags.containsKey(key)) {
-      return edge.valtags[key].contains(tag);
+      return edge.valtags[key].containsAll(tags);
+    }
+    return false;
+  }
+
+  bool hasTagAny(_Node node, List tags) {
+    if (tags.length < 1) return false;
+    final edge = _add_or_get(to, node, newInnerEdge);
+    return tags.any((tag) => edge.tags.contains(tag));
+  }
+
+  bool hasValTagAny(_Node node, key, List tags) {
+    if (tags.length < 1) return false;
+    final edge = _add_or_get(to, node, newInnerEdge);
+    if (edge.valtags.containsKey(key)) {
+      return tags.any((tag) => edge.valtags[key].contains(tag));
     }
     return false;
   }
@@ -95,15 +112,40 @@ class _Node {
     return false;
   }
 
-  bool unsetTag(_Node node, tag) {
-    final edge = _add_or_get(to, node, newInnerMap);
-    return edge.tags.remove(tag);
+  bool unsetTag(_Node node, List tags) {
+    final edge = _try_get(to, node);
+    if (edge is Some) {
+      edge.val.tags.removeAll(tags);
+      return true;
+    }
+    return false;
   }
 
-  bool unsetValTag(_Node node, key, tag) {
-    final edge = _add_or_get(to, node, newInnerMap);
-    if (edge.valtags.containsKey(key)) {
-      return edge.valtags[key].remove(tag);
+  bool unsetValTag(_Node node, key, List tags) {
+    final edge = _try_get(to, node);
+    if (edge is Some) {
+      if (edge.val.valtags.containsKey(key)) {
+        edge.val.valtags[key].removeAll(tags);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool clearTags(_Node node) {
+    final edge = _try_get(to, node);
+    if (edge is Some) {
+      edge.val.tags.clear();
+      return true;
+    }
+    return false;
+  }
+
+  bool clearValTags(_Node node) {
+    final edge = _try_get(to, node);
+    if (edge is Some) {
+      edge.val.valtags.clear();
+      return true;
     }
     return false;
   }
