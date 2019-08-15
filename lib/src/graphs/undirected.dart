@@ -20,10 +20,12 @@ abstract class UndirectedGraph extends GraphItems {
 /// Mixing of implementations of [UndirectedGraph]
 mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
   void link(a, b, {List tags = const []}) {
-    final t = _Tuple2(a, b).map((v) => _map_add_or_get(v, _newNode));
-    _mutualT(t, (f, t) => f.setFrom(t));
-    _mutualT(t, (f, t) => f.setTo(t));
-    _mutualT(t, (f, t) => f.setTag(t, tags));
+    _Tuple2(a, b)
+        .map((v) => _map_add_or_get(v, _newNode))
+        .effect
+        .mutual((f, t) => f.setFrom(t))
+        .mutual((f, t) => f.setTo(t))
+        .mutual((f, t) => f.setTag(t, tags));
   }
 
   bool hasLink(a, b, {List anyTags = const [], List allTags = const []}) {
@@ -45,6 +47,7 @@ mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
             .fork()
             .mapFn<bool Function(_Node, _Node), _Tuple2<bool>>(
                 (t) => (fn) => t.mutual(fn))
+            // unsetTo will delete the edge and tab
             .allDo((f, t) => f.unsetTo(t), (f, t) => f.unsetFrom(t))
             .map((t) => t.toDo(_or))
             .toDo(_or))

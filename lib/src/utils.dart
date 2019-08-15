@@ -15,7 +15,7 @@ class _Tuple2<T> {
   _Tuple2<R> mutual<R>(R toDo(T f, T t)) => _Tuple2(toDo(a, b), toDo(b, a));
 
   /// return `Tuple2(Tuple2(a, b), Tuple2(a, b))`
-  _Tuple2<_Tuple2<T>> fork() => _Tuple2(_Tuple2(a, b), _Tuple2(a, b));
+  _Tuple2<_Tuple2<T>> fork() => _Tuple2(this, this);
 
   /// return `Tuple2(Tuple2(a, a), Tuple2(b, b))`
   _Tuple2<_Tuple2<T>> pack() => _Tuple2(_Tuple2(a, a), _Tuple2(b, b));
@@ -27,8 +27,12 @@ class _Tuple2<T> {
   _FnTuple2<F, R> mapFn<F extends Function, R>(R Function(F) toDo(T v)) =>
       _FnTuple2(toDo(a), toDo(b));
 
+  /// when fn -> true return Some(this) else None
   Maybe<_Tuple2<T>> where(bool fn(_Tuple2<T> t)) =>
-      fn(this) ? Some(_Tuple2(a, b)) : const None();
+      fn(this) ? Some(this) : const None();
+
+  /// make effect
+  _EffectTuple2<T> get effect => _EffectTuple2(this);
 }
 
 class _FnTuple2<F extends Function, R> {
@@ -37,6 +41,41 @@ class _FnTuple2<F extends Function, R> {
   _FnTuple2(this.a, this.b);
 
   _Tuple2<R> allDo(F doa, F dob) => _Tuple2(a(doa), b(dob));
+}
+
+class _EffectTuple2<T> {
+  final _Tuple2<T> t;
+  _EffectTuple2(this.t);
+
+  /// `fn(a, b)`
+  _EffectTuple2<T> toDo(fn(T a, T b)) {
+    fn(t.a, t.b);
+    return this;
+  }
+
+  /// `toDo(a)` then `toDo(b)`
+  _EffectTuple2<T> map(toDo(T v)) {
+    toDo(t.a);
+    toDo(t.b);
+    return this;
+  }
+
+  /// `toDo(a, b)` then `toDo(b, a)`
+  _EffectTuple2<T> mutual(toDo(T f, T t)) {
+    toDo(t.a, t.b);
+    toDo(t.b, t.a);
+    return this;
+  }
+
+  /// `doa(a)` tjen `dob(b)`
+  _EffectTuple2<T> allDo(doa(T a), dob(T b)) {
+    doa(t.a);
+    dob(t.b);
+    return this;
+  }
+
+  /// end effect
+  _Tuple2<T> get end => t;
 }
 
 /// `x = toDo(a, b)` and `y = toDo(b, a)` then return `Tuple2(x, y)`
