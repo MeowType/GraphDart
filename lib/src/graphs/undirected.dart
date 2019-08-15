@@ -37,7 +37,7 @@ mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
   }
 
   bool unLink(a, b, {List anyTags = const [], List allTags = const []}) {
-    return _Tuple2(a, b)
+    final r = _Tuple2(a, b)
         .map((v) => _map_add_or_get(v, _newNode))
         .where((t) => t
             .mutual((f, t) => _check_hasTo_and_all_any_tags(f, t,
@@ -51,8 +51,8 @@ mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
             .allDo((f, t) => f.unsetTo(t), (f, t) => f.unsetFrom(t))
             .map((t) => t.toDo(_or))
             .toDo(_or))
-        .defaultVal(false)
-        .val;
+    .defaultVal(false);
+    return r.val;
   }
 
   Iterable links(val, {List anyTags = const [], List allTags = const []}) {

@@ -36,8 +36,8 @@ class _Tuple2<T> {
 }
 
 class _FnTuple2<F extends Function, R> {
-  final F a;
-  final F b;
+  final R Function(F) a;
+  final R Function(F) b;
   _FnTuple2(this.a, this.b);
 
   _Tuple2<R> allDo(F doa, F dob) => _Tuple2(a(doa), b(dob));
