@@ -29,7 +29,7 @@ class _Tuple2<T> {
 
   /// when fn -> true return Some(this) else None
   Maybe<_Tuple2<T>> where(bool fn(_Tuple2<T> t)) =>
-      fn(this) ? Some(this) : const None();
+      fn(this) ? Some(this) : None();
 
   /// make effect
   _EffectTuple2<T> get effect => _EffectTuple2(this);
@@ -107,7 +107,7 @@ V _add_or_get<K, V>(Map<K, V> m, K key, V Function() def) {
 
 Maybe<V> _try_get<K, V>(Map<K, V> m, K key) {
   if (m.containsKey(key)) return Some(m[key]);
-  return const None();
+  return None();
 }
 
 Iterable<V> _concat<V>(Iterable<V> a, Iterable<V> b) sync* {

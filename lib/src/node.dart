@@ -47,7 +47,7 @@ class _Node {
         return edge.map[key];
       }
     }
-    return const None();
+    return None();
   }
 
   bool hasFrom(_Node node) {
