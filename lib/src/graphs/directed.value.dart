@@ -56,7 +56,7 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
     _f.setValTag(_t, key, tags);
   }
 
-  void setToBy<T>(from, to, val, {List tags}) =>
+  void setToBy<T>(from, to, val, {List tags = const []}) =>
       setTo(from, to, T, val, tags: tags);
 
   bool hasEdgeTo(from, to, key,
@@ -67,7 +67,8 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
         anyTags: anyTags, allTags: allTags);
   }
 
-  bool hasEdgeToBy<T>(from, to, {List anyTags, List allTags}) =>
+  bool hasEdgeToBy<T>(from, to,
+          {List anyTags = const [], List allTags = const []}) =>
       hasEdgeTo(from, to, T, anyTags: anyTags, allTags: allTags);
 
   bool unSetTo(from, to, key,
@@ -82,7 +83,8 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
     return false;
   }
 
-  bool unSetToBy<T>(from, to, {List anyTags, List allTags}) =>
+  bool unSetToBy<T>(from, to,
+          {List anyTags = const [], List allTags = const []}) =>
       unSetTo(from, to, T, anyTags: anyTags, allTags: allTags);
 
   Iterable valueTos(val, key,
@@ -115,9 +117,11 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
     return _v.from.map((n) => n.get(_v, key)).where(where).map((s) => s.val);
   }
 
-  Iterable valueTosBy<T>(val, {List anyTags, List allTags}) =>
+  Iterable valueTosBy<T>(val,
+          {List anyTags = const [], List allTags = const []}) =>
       valueTos(val, T, anyTags: anyTags, allTags: allTags);
 
-  Iterable valueFromsBy<T>(val, {List anyTags, List allTags}) =>
+  Iterable valueFromsBy<T>(val,
+          {List anyTags = const [], List allTags = const []}) =>
       valueFroms(val, T, anyTags: anyTags, allTags: allTags);
 }

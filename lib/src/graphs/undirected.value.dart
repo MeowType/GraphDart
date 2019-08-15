@@ -50,7 +50,8 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
         .mutual((f, t) => f.setValTag(t, key, tags));
   }
 
-  void setBy<T>(a, b, val, {List tags}) => set(a, b, T, val, tags: tags);
+  void setBy<T>(a, b, val, {List tags = const []}) =>
+      set(a, b, T, val, tags: tags);
 
   bool hasEdge(a, b, key, {List anyTags = const [], List allTags = const []}) {
     return _Tuple2(a, b)
@@ -60,7 +61,7 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
         .toDo(_or);
   }
 
-  bool hasEdgeBy<T>(a, b, {List anyTags, List allTags}) =>
+  bool hasEdgeBy<T>(a, b, {List anyTags = const [], List allTags = const []}) =>
       hasEdge(a, b, T, anyTags: anyTags, allTags: allTags);
 
   bool unSet(a, b, key, {List anyTags = const [], List allTags = const []}) {
@@ -76,7 +77,7 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
         .val;
   }
 
-  bool unSetBy<T>(a, b, {List anyTags, List allTags}) =>
+  bool unSetBy<T>(a, b, {List anyTags = const [], List allTags = const []}) =>
       unSet(a, b, T, anyTags: anyTags, allTags: allTags);
 
   Iterable values(val, key,
@@ -96,6 +97,7 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin
     return _concat(a, b).where(where).map((s) => s.val).toSet();
   }
 
-  Iterable valuesBy<T>(val, {List anyTags, List allTags}) =>
+  Iterable valuesBy<T>(val,
+          {List anyTags = const [], List allTags = const []}) =>
       values(val, T, anyTags: anyTags, allTags: allTags);
 }
