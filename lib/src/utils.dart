@@ -41,3 +41,29 @@ bool _check_hasTo_and_all_any_tags(
   }
   return false;
 }
+
+
+bool _check_all_any_val_tags(
+  _Node from,
+  _Node to, key, {
+  List anyTags = const [],
+  List allTags = const [],
+}) {
+  var result = false;
+  if (allTags.length != 0 && from.hasValTag(to, key, allTags)) result = true;
+  if (anyTags.length != 0 && from.hasValTagAny(to, key, anyTags)) result = true;
+  return result;
+}
+
+bool _check_hasToVal_and_all_any_val_tags(
+  _Node from,
+  _Node to, key, {
+  List anyTags = const [],
+  List allTags = const [],
+}) {
+  if (from.hasToV(to, key)) {
+    if (allTags.length == 0 && anyTags.length == 0) return true;
+    return _check_all_any_val_tags(from, to, key, allTags: allTags, anyTags: anyTags);
+  }
+  return false;
+}

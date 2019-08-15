@@ -42,6 +42,7 @@ mixin DirectedGraphMixin on GraphItemsMixin implements DirectedGraph {
     final _t = _map_add_or_get(to, _newNode);
     if (_check_hasTo_and_all_any_tags(_f, _t,
         anyTags: anyTags, allTags: allTags)) {
+      // unsetTo will delete the edge and tab
       final a = _f.unsetTo(_t);
       final b = _t.unsetFrom(_f);
       return a || b;
@@ -51,23 +52,21 @@ mixin DirectedGraphMixin on GraphItemsMixin implements DirectedGraph {
 
   Iterable linkTos(val, {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
-    if (anyTags.length == 0 && allTags.length == 0)
-      return _v.to.keys.map((n) => _node_to_val[n]);
-    else
-      return _v.to.keys
-          .where((n) =>
-              _check_all_any_tags(_v, n, anyTags: anyTags, allTags: allTags))
-          .map((n) => _node_to_val[n]);
+    return anyTags.length == 0 && allTags.length == 0
+        ? _v.to.keys.map((n) => _node_to_val[n])
+        : _v.to.keys
+            .where((n) =>
+                _check_all_any_tags(_v, n, anyTags: anyTags, allTags: allTags))
+            .map((n) => _node_to_val[n]);
   }
 
   Iterable linkFroms(val, {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
-    if (anyTags.length == 0 && allTags.length == 0)
-      return _v.to.keys.map((n) => _node_to_val[n]);
-    else
-      return _v.from
-          .where((n) =>
-              _check_all_any_tags(n, _v, anyTags: anyTags, allTags: allTags))
-          .map((n) => _node_to_val[n]);
+    return anyTags.length == 0 && allTags.length == 0
+        ? _v.from.map((n) => _node_to_val[n])
+        : _v.from
+            .where((n) =>
+                _check_all_any_tags(n, _v, anyTags: anyTags, allTags: allTags))
+            .map((n) => _node_to_val[n]);
   }
 }

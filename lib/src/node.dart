@@ -107,6 +107,7 @@ class _Node {
   bool unsetToV(_Node node, key) {
     if (to.containsKey(node)) {
       final edge = to[node];
+      edge.valtags.remove(key);
       return edge.map.remove(key) != null;
     }
     return false;
