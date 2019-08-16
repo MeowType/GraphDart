@@ -6,35 +6,51 @@ abstract class UndirectedValueGraph extends UndirectedGraph
   factory UndirectedValueGraph() = FullGraph;
 
   /// create an link between 2 nodes with value
+  /// 
+  /// Optional [tags] for setting tags
   void set(a, b, key, val, {List tags});
 
   /// create an link between 2 nodes with value but by Generic
   ///
   /// Equivalent to [set]([a], [b], **[T]**, [val])
+  /// 
+  /// Optional [tags] for setting tags
   void setBy<T>(a, b, val, {List tags});
 
   /// Determine if there is a value link between 2 nodes
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool hasEdge(a, b, key, {List anyTags, List allTags});
 
   /// Determine if there is a value link between 2 nodes but by Generic
   ///
   /// Equivalent to [hasEdge]([a], [b], **[T]**)
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool hasEdgeBy<T>(a, b, {List anyTags, List allTags});
 
   /// Remove the valued link between 2 nodes, but will not remove [a] and [b] and the link between them
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool unSet(a, b, key, {List anyTags, List allTags});
 
   /// Remove the valued link between 2 nodes but by Generic, but will not remove [a] and [b] and the link between them
   ///
   /// Equivalent to [unSet]([a], [b], **[T]**)
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool unSetBy<T>(a, b, {List anyTags, List allTags});
 
   /// Get all the values on all links of this node
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable values(val, key, {List anyTags, List allTags});
 
   /// Get all the values on all links of this node but by Generic
   ///
   /// Equivalent to [values]([val], **[T]**)
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable valuesBy<T>(val, {List anyTags, List allTags});
 }
 

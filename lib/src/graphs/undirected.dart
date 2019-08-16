@@ -5,15 +5,23 @@ abstract class UndirectedGraph extends GraphItems {
   factory UndirectedGraph() = FullGraph;
 
   /// create an link between 2 nodes
+  /// 
+  /// Optional [tags] for setting tags
   void link(a, b, {List tags});
 
   /// Determine if there is an link between 2 nodes, **No matter what direction**
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool hasLink(a, b, {List anyTags, List allTags});
 
   /// Remove the link between 2 nodes
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool unLink(a, b, {List anyTags, List allTags});
 
   /// Get all the links of this node
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable links(val, {List anyTags, List allTags});
 }
 

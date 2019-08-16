@@ -5,43 +5,63 @@ abstract class DirectedValueGraph extends DirectedGraph implements GraphGet {
   factory DirectedValueGraph() = FullGraph;
 
   /// Link a directed link with value, if [from] and [to] don't exist, they will be added
+  ///  
+  /// Optional [tags] for setting tags
   void setTo(from, to, key, val, {List tags});
 
   /// Link a directed link with value but by Generic, if [from] and [to] don't exist, they will be added
   ///
   /// Equivalent to [setTo]([from], [to], **[T]**, [val])
+  /// 
+  /// Optional [tags] for setting tags
   void setToBy<T>(from, to, val, {List tags});
 
   /// Determine if there is such a valued directed link
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool hasEdgeTo(from, to, key, {List anyTags, List allTags});
 
   /// Determine if there is such a valued directed link but by Generic
   ///
   /// Equivalent to [hasEdgeTo]([from], [to], **[T]**)
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool hasEdgeToBy<T>(from, to, {List anyTags, List allTags});
 
   /// Remove a valued directed link, but will not remove [from] and [to]
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool unSetTo(from, to, key, {List anyTags, List allTags});
 
   /// Remove a valued directed link but by Generic, but will not remove [from] and [to]
   ///
   /// Equivalent to [unSetTo]([from], [to], **[T]**)
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool unSetToBy<T>(from, to, {List anyTags, List allTags});
 
   /// Get all values link from [val]
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable valueTos(val, key, {List anyTags, List allTags});
 
   /// Get all values link to [val]
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable valueFroms(val, key, {List anyTags, List allTags});
 
   /// Get all values link from [val] but by Generic
   ///
   /// Equivalent to [valueTos]([val], **[T]**)
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable valueTosBy<T>(val, {List anyTags, List allTags});
 
   /// Get all values link to [val] but by Generic
   ///
   /// Equivalent to [valueFroms]([val], **[T]**)
+  /// 
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable valueFromsBy<T>(val, {List anyTags, List allTags});
 }
 
