@@ -79,24 +79,24 @@ class _EffectTuple2<T> {
 }
 
 /// `x = toDo(a, b)` and `y = toDo(b, a)` then return `Tuple2(x, y)`
-_Tuple2<R> _mutual<T, R>(T a, T b, R toDo(T f, T t)) {
-  final r1 = toDo(a, b);
-  final r2 = toDo(b, a);
-  return _Tuple2(r1, r2);
-}
+// _Tuple2<R> _mutual<T, R>(T a, T b, R toDo(T f, T t)) {
+//   final r1 = toDo(a, b);
+//   final r2 = toDo(b, a);
+//   return _Tuple2(r1, r2);
+// }
 
-/// `x = toDo(a, b)` and `y = toDo(b, a)` then return `Tuple2(x, y)`
-_Tuple2<R> _mutualT<T, R>(_Tuple2<T> t, R toDo(T f, T t)) {
-  final r1 = toDo(t.a, t.b);
-  final r2 = toDo(t.b, t.a);
-  return _Tuple2(r1, r2);
-}
+// /// `x = toDo(a, b)` and `y = toDo(b, a)` then return `Tuple2(x, y)`
+// _Tuple2<R> _mutualT<T, R>(_Tuple2<T> t, R toDo(T f, T t)) {
+//   final r1 = toDo(t.a, t.b);
+//   final r2 = toDo(t.b, t.a);
+//   return _Tuple2(r1, r2);
+// }
 
 /// `a -> b -> a || b`
 bool _or(bool a, bool b) => a || b;
 
 /// `a -> b -> a && b`
-bool _and(bool a, bool b) => a && b;
+// bool _and(bool a, bool b) => a && b;
 
 V _add_or_get<K, V>(Map<K, V> m, K key, V Function() def) {
   if (m.containsKey(key)) return m[key];
@@ -123,8 +123,8 @@ bool _check_all_any_tags(
   List allTags = const [],
 }) {
   var result = false;
-  if (allTags.length != 0 && from.hasTag(to, allTags)) result = true;
-  if (anyTags.length != 0 && from.hasTagAny(to, anyTags)) result = true;
+  if (allTags.isNotEmpty && from.hasTag(to, allTags)) result = true;
+  if (anyTags.isNotEmpty && from.hasTagAny(to, anyTags)) result = true;
   return result;
 }
 
@@ -136,7 +136,7 @@ bool _check_hasTo_and_all_any_tags(
   List allTags = const [],
 }) {
   if (from.hasTo(to)) {
-    if (allTags.length == 0 && anyTags.length == 0) return true;
+    if (allTags.isEmpty && anyTags.isEmpty) return true;
     return _check_all_any_tags(from, to, allTags: allTags, anyTags: anyTags);
   }
   return false;
@@ -151,8 +151,8 @@ bool _check_all_any_val_tags(
   List allTags = const [],
 }) {
   var result = false;
-  if (allTags.length != 0 && from.hasValTag(to, key, allTags)) result = true;
-  if (anyTags.length != 0 && from.hasValTagAny(to, key, anyTags)) result = true;
+  if (allTags.isNotEmpty && from.hasValTag(to, key, allTags)) result = true;
+  if (anyTags.isNotEmpty && from.hasValTagAny(to, key, anyTags)) result = true;
   return result;
 }
 
@@ -165,7 +165,7 @@ bool _check_hasToVal_and_all_any_val_tags(
   List allTags = const [],
 }) {
   if (from.hasToV(to, key)) {
-    if (allTags.length == 0 && anyTags.length == 0) return true;
+    if (allTags.isEmpty && anyTags.isEmpty) return true;
     return _check_all_any_val_tags(from, to, key,
         allTags: allTags, anyTags: anyTags);
   }

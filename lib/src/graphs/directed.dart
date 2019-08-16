@@ -62,7 +62,7 @@ mixin DirectedGraphMixin on GraphItemsMixin implements DirectedGraph {
 
   Iterable linkTos(val, {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
-    return anyTags.length == 0 && allTags.length == 0
+    return anyTags.isEmpty && allTags.isEmpty
         ? _v.to.keys.map((n) => _node_to_val[n])
         : _v.to.keys
             .where((n) =>
@@ -72,7 +72,7 @@ mixin DirectedGraphMixin on GraphItemsMixin implements DirectedGraph {
 
   Iterable linkFroms(val, {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
-    return anyTags.length == 0 && allTags.length == 0
+    return anyTags.isEmpty && allTags.isEmpty
         ? _v.from.map((n) => _node_to_val[n])
         : _v.from
             .where((n) =>

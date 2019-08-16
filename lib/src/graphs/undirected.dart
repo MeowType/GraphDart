@@ -65,7 +65,7 @@ mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
 
   Iterable links(val, {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
-    if (anyTags.length == 0 && allTags.length == 0) {
+    if (anyTags.isEmpty && allTags.isEmpty) {
       final from = _v.from.map((n) => _node_to_val[n]);
       final to = _v.to.keys.map((n) => _node_to_val[n]);
       return _concat(from, to).toSet();

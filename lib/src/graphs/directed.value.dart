@@ -112,7 +112,7 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
     final _v = _map_add_or_get(val, _newNode);
 
     final bool Function(Maybe) where =
-        anyTags.length == 0 && allTags.length == 0
+        anyTags.isEmpty && allTags.isEmpty
             ? (m) => m is Some
             : (m) => m is Some
                 ? _check_all_any_val_tags(_v, m.val, key,
@@ -127,7 +127,7 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin
     final _v = _map_add_or_get(val, _newNode);
 
     final bool Function(Maybe) where =
-        anyTags.length == 0 && allTags.length == 0
+        anyTags.isEmpty && allTags.isEmpty
             ? (m) => m is Some
             : (m) => m is Some
                 ? _check_all_any_val_tags(_v, m.val, key,
