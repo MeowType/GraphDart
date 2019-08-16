@@ -122,10 +122,8 @@ bool _check_all_any_tags(
   List anyTags = const [],
   List allTags = const [],
 }) {
-  var result = false;
-  if (allTags.isNotEmpty && from.hasTag(to, allTags)) result = true;
-  if (anyTags.isNotEmpty && from.hasTagAny(to, anyTags)) result = true;
-  return result;
+  return (allTags.isEmpty ? true : from.hasTag(to, allTags)) &&
+      (anyTags.isEmpty ? true : from.hasTagAny(to, anyTags));
 }
 
 /// return **`true`** when allTags and anyTags are empty
@@ -150,10 +148,8 @@ bool _check_all_any_val_tags(
   List anyTags = const [],
   List allTags = const [],
 }) {
-  var result = false;
-  if (allTags.isNotEmpty && from.hasValTag(to, key, allTags)) result = true;
-  if (anyTags.isNotEmpty && from.hasValTagAny(to, key, anyTags)) result = true;
-  return result;
+  return (allTags.isEmpty ? true : from.hasValTag(to, key, allTags)) &&
+      (anyTags.isEmpty ? true : from.hasValTagAny(to, key, anyTags));
 }
 
 /// return **`true`** when allTags and anyTags are empty

@@ -67,13 +67,13 @@ class _Node {
   }
 
   bool hasTag(_Node node, List tags) {
-    if (tags.length < 1) return false;
+    if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     return edge.tags.containsAll(tags);
   }
 
   bool hasValTag(_Node node, key, List tags) {
-    if (tags.length < 1) return false;
+    if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     if (edge.valtags.containsKey(key)) {
       return edge.valtags[key].containsAll(tags);
@@ -82,13 +82,13 @@ class _Node {
   }
 
   bool hasTagAny(_Node node, List tags) {
-    if (tags.length < 1) return false;
+    if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     return tags.any((tag) => edge.tags.contains(tag));
   }
 
   bool hasValTagAny(_Node node, key, List tags) {
-    if (tags.length < 1) return false;
+    if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     if (edge.valtags.containsKey(key)) {
       return tags.any((tag) => edge.valtags[key].contains(tag));
