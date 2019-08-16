@@ -195,11 +195,13 @@ void main() {
     UndirectedValueGraph uvg = g;
     DirectedGraph dg = g;
     DirectedValueGraph dvg = g;
+    GraphGet ge = g;
     lg;
     ug;
     uvg;
     dg;
     dvg;
+    ge;
   });
 
   test('loop', () {
