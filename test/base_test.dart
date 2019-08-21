@@ -1,6 +1,12 @@
-// import 'package:test/test.dart';
+import 'package:test/test.dart';
 
-// import 'package:graph_collection/graph.dart';
+import 'package:graph_collection/graph.dart';
+
+void main() {
+  final g = Graph();
+
+  final r = g.add.node(1).end;
+}
 
 // void main() {
 //   test('create', () {

@@ -1,10 +1,18 @@
 library meowtype.graph;
 
+import 'dart:async';
+
 import 'package:some/index.dart';
 import 'dart:collection';
 
 part 'node.dart';
 part 'utils.dart';
+part './graphs/query/base.dart';
+part './graphs/query/node.dart';
+part './graphs/query/link.dart';
+part './graphs/query/end.dart';
+part './graphs/query/utils.dart';
+part './graphs/query/base/add.dart';
 part './graphs/items.dart';
 part './graphs/directed.dart';
 part './graphs/directed.value.dart';
@@ -20,7 +28,6 @@ abstract class LinkGraph implements UndirectedGraph, DirectedGraph {
 }
 
 /// Contains all types of Graph, The difference with [LinkGraph] is that you can set the value of the edge.
-abstract class Graph extends LinkGraph
-    implements UndirectedValueGraph, DirectedValueGraph {
+abstract class Graph extends LinkGraph implements UndirectedValueGraph, DirectedValueGraph {
   factory Graph() = FullGraph;
 }
