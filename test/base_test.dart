@@ -3,9 +3,11 @@ import 'package:test/test.dart';
 import 'package:graph_collection/graph.dart';
 
 void main() {
-  final g = Graph();
+  test('base', () {
+    final g = Graph();
 
-  final r = g.add.node(1).end;
+    final r = g.add.node(1).end;
+  });
 }
 
 // void main() {

@@ -103,12 +103,12 @@ class _Ref<T> {
 
 V _add_or_get<K, V>(Map<K, V> m, K key, V Function() def, [_Ref<bool> add_success]) {
   if (m.containsKey(key)) {
-    add_success.val = false;
+    if (add_success != null) add_success.val = false;
     return m[key];
   }
   final val = def();
   m[key] = val;
-  add_success.val = true;
+  if (add_success != null) add_success.val = true;
   return val;
 }
 
