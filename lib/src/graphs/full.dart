@@ -7,6 +7,5 @@ class FullGraph
         UndirectedGraph,
         UndirectedValueGraph,
         DirectedGraph,
-        DirectedValueGraph,
-        IterableMixin
+        DirectedValueGraph
     implements Graph {}

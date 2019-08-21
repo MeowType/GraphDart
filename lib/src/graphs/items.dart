@@ -3,7 +3,7 @@ part of meowtype.graph;
 const NoneSpace = #meowtype.graph.nonespace;
 
 /// Basic graph node collection
-abstract class GraphBase implements Iterable, IGraph {
+abstract class GraphBase implements IGraph {
   final Map<dynamic, Map<dynamic, Map<_Node, dynamic>>> _node_to_val = {};
   final Map<dynamic, Map<dynamic, Map<dynamic, _Node>>> _map = {};
 
