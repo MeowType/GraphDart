@@ -1,79 +1,63 @@
 part of meowtype.graph;
 
+const NoneSpace = #meowtype.graph.nonespace;
+
 /// Basic graph node collection
-abstract class GraphItems implements Iterable {
-  /// Add a Node to Graph
-  /// 
-  /// Return false when there is such a node
-  bool add(val);
-  /// Determine if there is such a node in graph
-  bool has(val);
-  /// If there is such a node, remove it
-  /// 
-  /// Return false when there is no such node
-  bool remove(val);
-  /// Get all nodes
-  Iterable get items;
-  /// Get the number of nodes
-  int get length;
-  /// Get all nodes
-  Iterator get iterator;
-  /// The [flatMap()] method first maps each element using a mapping function, then flattens the result into a new array
-  Iterable<R> flatMap<R>(Iterable<R> f(item));
+abstract class GraphBase implements Iterable, IGraph {
+  final Map<dynamic, Map<dynamic, Map<_Node, dynamic>>> _node_to_val = {};
+  final Map<dynamic, Map<dynamic, Map<dynamic, _Node>>> _map = {};
+
+  GraphQueryAdd get add => GraphQueryAdd(this);
 }
 
-/// Mixing of implementations of [GraphItems]
-mixin GraphItemsMixin implements GraphItems, Iterable {
-  final Map<dynamic, _Node> _map = {};
-  final Map<_Node, dynamic> _node_to_val = {};
+//==================================================
 
-  _Node _map_add_or_get(key, _Node def()) {
-    if (_map.containsKey(key)) return _map[key];
-    final val = def();
-    _map[key] = val;
-    _node_to_val[val] = key;
-    return val;
-  }
+abstract class GraphQuery {
+  final IGraph _graph;
+  GraphQuery(this._graph);
 
-  bool add(val) {
-    if (_map.containsKey(val)) {
-      return false;
-    }
-    final node = _Node();
-    _map[val] = node;
-    _node_to_val[node] = val;
-    return true;
-  }
+  GraphQuery_Node node(node, [space = NoneSpace]) =>
+      this.nodeBy<dynamic>(node, space);
 
-  bool has(val) {
-    return _map.containsKey(val);
-  }
+  GraphQuery_Node nodeBy<T>(T node, [space = NoneSpace]);
+}
 
-  bool remove(val) {
-    if (_map.containsKey(val)) {
-      final node = _map[val];
-      for (var from in node.from) {
-        from.to.remove(node);
-      }
-      for (var to in node.to.keys) {
-        to.from.remove(node);
-      }
-      _node_to_val.remove(node);
-      _map.remove(val);
-      return true;
-    }
-    return false;
-  }
+class GraphQueryAdd extends GraphQuery {
+  GraphQueryAdd(IGraph graph) : super(graph);
 
-  Iterable get items => _map.keys;
+  GraphQueryAdd_Node node(node, [space = NoneSpace]) =>
+      this.nodeBy<dynamic>(node, space);
 
-  int get length => _map.length;
+  GraphQueryAdd_Node nodeBy<T>(T node, [space = NoneSpace]) =>
+      GraphQueryAdd_Node<T>(this, node, space);
+}
 
-  Iterator get iterator => items.iterator;
+//==================================================
 
-  Iterable<R> flatMap<R>(Iterable<R> f(item)) sync* {
-    for (var item in items) {
-      yield* f(item);
-    }
-  }
+abstract class GraphQuery_Node<T> {
+  final GraphQuery _query;
+  final T _node;
+  final dynamic _space;
+  GraphQuery_Node(this._query, this._node, [this._space = NoneSpace]);
+}
+
+class GraphQueryAdd_Node<T> extends GraphQuery_Node<T> {
+  GraphQueryAdd_Node(GraphQuery query, T node, [space = NoneSpace])
+      : super(query, node, space);
+}
+
+//==================================================
+
+enum IsDirected { Yes, No }
+
+abstract class GraphQuery_Link<T> {
+  final IsDirected _isDirected;
+  final Maybe<T> _value;
+  final dynamic _space;
+  GraphQuery_Link(this._isDirected, [this._space = NoneSpace, this._value]);
+}
+
+class GraphQueryAdd_Link<T> extends GraphQuery_Link<T> {
+  GraphQueryAdd_Link(IsDirected isDirected, [space = NoneSpace, Maybe<T> value])
+      : super(isDirected, space, value);
 }

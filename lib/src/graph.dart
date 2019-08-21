@@ -10,8 +10,9 @@ part './graphs/directed.dart';
 part './graphs/directed.value.dart';
 part './graphs/undirected.dart';
 part './graphs/undirected.value.dart';
-part './graphs/get.dart';
 part './graphs/full.dart';
+
+abstract class IGraph {}
 
 /// Contains [DirectedGraph] and [UndirectedGraph], And can't set the value of the edge
 abstract class LinkGraph implements UndirectedGraph, DirectedGraph {
