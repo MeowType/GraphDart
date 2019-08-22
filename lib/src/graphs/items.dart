@@ -36,8 +36,8 @@ abstract class GraphBase implements IGraph {
         yield FindBoxBy<T>(item, space.val);
       }
     } else {
-      for (var space in _map.keys) {
-        final smap = _map[space];
+      for (var s in _map.keys) {
+        final smap = _map[s];
         final tmap = _try_get(smap, T);
         if (tmap is None) return;
         for (var item in tmap.val.keys) {
