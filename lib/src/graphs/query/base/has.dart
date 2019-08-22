@@ -1,60 +1,78 @@
 part of meowtype.graph;
 
-class GraphQuery_Base_Has extends GraphQuery<GraphBase, GraphQuery_Base_Has>
-    with GraphQueryGETNodeMixin<GraphQuery_Base_Has_Node, GraphQuery_Base_Has>
+class GraphQuery_Base_Has extends GraphQuery
+    with GraphQueryGETNodeMixin<GraphQuery_Base_Has_Node>
     implements
-        IGraphQueryGETNode<GraphQuery_Base_Has>,
-        IGraphQueryGETSpace<GraphQuery_Base_Has>,
-        IGraphQueryGETSpaceAllType<GraphQuery_Base_Has>,
-        IGraphQueryGETWhereT<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has> {
-  GraphQuery_Base_Has(IGraph graph) : super(graph);
+        IGraphQueryGETNode,
+        IGraphQueryGETSpace,
+        IGraphQueryGETSpaceAllType,
+        IGraphQueryGETWhereT<_GraphQuery_Base_Has_Space_Where_FN>,
+        IGraphQueryGETWhereAllType<_GraphQuery_Base_Has_Space_Where_FN> {
+  GraphBase _parent;
+
+  GraphQuery_Base_Has(this._parent) : super();
 
   GraphQuery_Base_Has_Node<T> nodeBy<T>(T node, [space = NoneSpace]) => GraphQuery_Base_Has_Node<T>(this, node, space);
   GraphQuery_Base_Has_Space<T> space<T>([space = NoneSpace]) => GraphQuery_Base_Has_Space<T>(this, space);
   GraphQuery_Base_Has_Space_AllType spaceAllType([space = NoneSpace]) => GraphQuery_Base_Has_Space_AllType(this, space);
   GraphQuery_Base_Has_Where<T> where<T>(_GraphQuery_Base_Has_Space_Where_FN fn) => GraphQuery_Base_Has_Where<T>(this, fn);
+  GraphQuery_Base_Has_Where_AllType whereAllType(_GraphQuery_Base_Has_Space_Where_FN fn) => GraphQuery_Base_Has_Where_AllType(this, fn);
 }
 
-class GraphQuery_Base_Has_Node<T> extends GraphQuery_Node<T, GraphQuery_Base_Has> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has_Node(GraphQuery_Base_Has parent, T node, [space = NoneSpace]) : super(parent, node, space);
+class GraphQuery_Base_Has_Node<T> extends GraphQuery_Node<T> implements GraphQuery_End<bool> {
+  GraphQuery_Base_Has _parent;
 
-  bool get end => _parent._graph._has(_node, _space);
+  GraphQuery_Base_Has_Node(this._parent, T node, [space = NoneSpace]) : super(node, space);
+
+  bool get end => _parent._parent._has(_node, _space);
 }
 
-class GraphQuery_Base_Has_Space<T> extends GraphQuery_Space<T, GraphQuery_Base_Has> implements IGraphQueryGETWhere<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has_Space> {
-  GraphQuery_Base_Has_Space(GraphQuery_Base_Has parent, [space = NoneSpace]) : super(parent, space);
+class GraphQuery_Base_Has_Space<T> extends GraphQuery_Space<T> implements IGraphQueryGETWhere<_GraphQuery_Base_Has_Space_Where_FN> {
+  GraphQuery_Base_Has _parent;
+
+  GraphQuery_Base_Has_Space(this._parent, [space = NoneSpace]) : super(space);
 
   GraphQuery_Base_Has_Space_Where<T> where(_GraphQuery_Base_Has_Space_Where_FN fn) => GraphQuery_Base_Has_Space_Where(this, fn);
 }
 
-class GraphQuery_Base_Has_Space_AllType extends GraphQuery_Space_AllType<GraphQuery_Base_Has> implements IGraphQueryGETWhere<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has_Space_AllType> {
-  GraphQuery_Base_Has_Space_AllType(GraphQuery_Base_Has parent, [space = NoneSpace]) : super(parent, space);
+class GraphQuery_Base_Has_Space_AllType extends GraphQuery_Space_AllType implements IGraphQueryGETWhere<_GraphQuery_Base_Has_Space_Where_FN> {
+  GraphQuery_Base_Has _parent;
+
+  GraphQuery_Base_Has_Space_AllType(this._parent, [space = NoneSpace]) : super(space);
 
   GraphQuery_Base_Has_Space_Where_AllType where(_GraphQuery_Base_Has_Space_Where_FN fn) => GraphQuery_Base_Has_Space_Where_AllType(this, fn);
 }
 
 typedef _GraphQuery_Base_Has_Space_Where_FN = bool Function(dynamic node);
 
-class GraphQuery_Base_Has_Space_Where<T> extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has_Space> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has_Space_Where(GraphQuery_Base_Has_Space parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(parent, fn);
+class GraphQuery_Base_Has_Space_Where<T> extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN> implements GraphQuery_End<bool> {
+  GraphQuery_Base_Has_Space _parent;
 
-  bool get end => _parent._parent._graph._find_allBy<T>(Some(_parent._space)).any((box) => _fn(box.node));
+  GraphQuery_Base_Has_Space_Where(this._parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(fn);
+
+  bool get end => _parent._parent._parent._find_allBy<T>(Some(_parent._space)).any((box) => _fn(box.node));
 }
 
-class GraphQuery_Base_Has_Space_Where_AllType extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has_Space_AllType> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has_Space_Where_AllType(GraphQuery_Base_Has_Space_AllType parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(parent, fn);
+class GraphQuery_Base_Has_Space_Where_AllType extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN> implements GraphQuery_End<bool> {
+  GraphQuery_Base_Has_Space_AllType _parent;
 
-  bool get end => _parent._parent._graph._find_all(Some(_parent._space)).any((box) => _fn(box.node));
+  GraphQuery_Base_Has_Space_Where_AllType(this._parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(fn);
+
+  bool get end => _parent._parent._parent._find_all(Some(_parent._space)).any((box) => _fn(box.node));
 }
 
-class GraphQuery_Base_Has_Where<T> extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has_Where(GraphQuery_Base_Has parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(parent, fn);
+class GraphQuery_Base_Has_Where<T> extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN> implements GraphQuery_End<bool> {
+  GraphQuery_Base_Has _parent;
 
-  bool get end => _parent._parent._graph._find_allBy<T>(None()).any((box) => _fn(box.node));
+  GraphQuery_Base_Has_Where(this._parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(fn);
+
+  bool get end => _parent._parent._find_allBy<T>(None()).any((box) => _fn(box.node));
 }
 
-class GraphQuery_Base_Has_Where_AllType extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has_Where_AllType(GraphQuery_Base_Has parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(parent, fn);
+class GraphQuery_Base_Has_Where_AllType extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN> implements GraphQuery_End<bool> {
+  GraphQuery_Base_Has _parent;
 
-  bool get end => _parent._parent._graph._find_all(None()).any((box) => _fn(box.node));
+  GraphQuery_Base_Has_Where_AllType(this._parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(fn);
+
+  bool get end => _parent._parent._find_all(None()).any((box) => _fn(box.node));
 }
