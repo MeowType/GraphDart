@@ -16,14 +16,22 @@ abstract class GraphQuery_Space<T, C extends _IChain> implements _IChain<C> {
   ]);
 }
 
+abstract class GraphQuery_Space_AllType<C extends _IChain> implements _IChain<C> {
+  final C _parent;
+  final dynamic _space;
+
+  GraphQuery_Space_AllType(
+    this._parent, [
+    this._space = NoneSpace,
+  ]);
+}
+
 //====================================================================================================
 
 abstract class IGraphQueryGETSpace<C extends _IChain> {
-  GraphQuery_Space<dynamic, C> space([space = NoneSpace]);
-
-  GraphQuery_Space<T, C> spaceBy<T>([space = NoneSpace]);
+  GraphQuery_Space<T, C> space<T>([space = NoneSpace]);
 }
 
-mixin GraphQueryGETSpaceMixin<Space extends GraphQuery_Space<dynamic, C>, C extends _IChain> implements IGraphQueryGETSpace<C> {
-  Space space([space = NoneSpace]) => this.spaceBy<dynamic>(space);
+abstract class IGraphQueryGETSpaceAllType<C extends _IChain> {
+  GraphQuery_Space_AllType<C> spaceAllType([space = NoneSpace]);
 }

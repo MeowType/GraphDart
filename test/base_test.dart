@@ -9,8 +9,12 @@ void main() {
     final add = g.add.node(1).end;
     print(add);
     // final has = g.has.node(1).end;
-    final has_space = g.has.space().where((node) => node == 1).end;
-    print(has_space);
+    // final has_space = g.has.space().where((node) => node == 1).end;
+    // print(has_space);
+    // final has_space_all = g.has.spaceAllType().where((node) => node == 1).end;
+    // print(has_space_all);
+    final has_where = g.has.where((node) => node == 1).end;
+    print(has_where);
   });
 }
 

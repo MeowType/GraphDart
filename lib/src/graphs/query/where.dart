@@ -12,3 +12,11 @@ abstract class GraphQuery_Where<F extends Function, C extends _IChain> implement
 abstract class IGraphQueryGETWhere<F extends Function, C extends _IChain> {
   GraphQuery_Where<F, C> where(F fn);
 }
+
+abstract class IGraphQueryGETWhereT<F extends Function, C extends _IChain> {
+  GraphQuery_Where<F, C> where<T>(F fn);
+}
+
+abstract class IGraphQueryGETWhereAllType<F extends Function, C extends _IChain> {
+  GraphQuery_Where<F, C> whereAllType(F fn);
+}
