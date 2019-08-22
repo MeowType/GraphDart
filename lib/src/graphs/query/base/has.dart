@@ -26,5 +26,5 @@ typedef _GraphQuery_Base_Has_Space_Where_FN = bool Function(dynamic node);
 class GraphQuery_Base_Has_Space_Where<T> extends GraphQuery_Where<_GraphQuery_Base_Has_Space_Where_FN, GraphQuery_Base_Has_Space> implements GraphQuery_End<bool> {
   GraphQuery_Base_Has_Space_Where(GraphQuery_Base_Has_Space parent, _GraphQuery_Base_Has_Space_Where_FN fn) : super(parent, fn);
 
-  bool get end => _parent._parent._graph._find_allBy<T>(_parent._space).contains((box) => _fn(box.node));
+  bool get end => _parent._parent._graph._find_allBy<T>(Some(_parent._space)).any((box) => _fn(box.node));
 }
