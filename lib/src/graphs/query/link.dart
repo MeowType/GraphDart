@@ -15,3 +15,10 @@ abstract class GraphQuery_LinkTo<T> extends IGraphQuery_Link {
 
   GraphQuery_LinkTo([this._space = NoneSpace, this._value]);
 }
+
+//====================================================================================================
+
+abstract class IGraphQueryGETLink {
+  GraphQuery_Link<L> link<L>({space = NoneSpace, Maybe<L> value});
+  GraphQuery_LinkTo<L> linkTo<L>({space = NoneSpace, Maybe<L> value});
+}

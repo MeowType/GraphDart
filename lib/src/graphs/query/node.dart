@@ -11,3 +11,15 @@ abstract class GraphQuery_Node<T, C extends _IChain> implements _IChain<C> {
     this._space = NoneSpace,
   ]);
 }
+
+//====================================================================================================
+
+abstract class IGraphQueryGETNode<C extends _IChain> {
+  GraphQuery_Node<dynamic, C> node(node, [space = NoneSpace]);
+
+  GraphQuery_Node<T, C> nodeBy<T>(T node, [space = NoneSpace]);
+}
+
+mixin GraphQueryGETNodeMixin<Node extends GraphQuery_Node<dynamic, C>, C extends _IChain> implements IGraphQueryGETNode<C> {
+  Node node(node, [space = NoneSpace]) => this.nodeBy<dynamic>(node, space);
+}

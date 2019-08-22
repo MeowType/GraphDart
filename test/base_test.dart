@@ -6,7 +6,9 @@ void main() {
   test('base', () {
     final g = Graph();
 
-    final r = g.add.node(1).end;
+    final add = g.add.node(1).end;
+    // final has = g.has.node(1).end;
+    final has_space = g.has.space().where((node) => node == 1).end;
   });
 }
 

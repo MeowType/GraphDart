@@ -1,7 +1,5 @@
 part of meowtype.graph;
 
-const NoneSpace = #meowtype.graph.nonespace;
-
 Map<Type, Map<dynamic, _Node>> _create_InnerMap() => Map<Type, Map<dynamic, _Node>>();
 Map<dynamic, _Node> _create_InnerMap2() => Map<dynamic, _Node>();
 Map<Type, Map<_Node, dynamic>> _create_InnerMap_V() => Map<Type, Map<_Node, dynamic>>();
@@ -13,6 +11,7 @@ abstract class GraphBase implements IGraph {
   final Map<dynamic, Map<Type, Map<dynamic, _Node>>> _map = {};
 
   GraphQuery_Base_Add get add => GraphQuery_Base_Add(this);
+  GraphQuery_Base_Has get has => GraphQuery_Base_Has(this);
 
   bool _to_add<T>(T node, space) {
     final map = _add_or_get(_add_or_get(_map, space, _create_InnerMap), T, _create_InnerMap2);
@@ -23,6 +22,52 @@ abstract class GraphBase implements IGraph {
       vmap[n] = node;
     }
     return success.val;
+  }
+
+  bool _has<T>(T node, space) {}
+
+  Iterable<FindBoxBy<T>> _find_allBy<T>([Maybe space]) sync* {
+    if (space is Some) {
+      final smap = _try_get(_map, space.val);
+      if (smap is None) return;
+      final tmap = _try_get(smap.val, T);
+      if (tmap is None) return;
+      for (var item in tmap.val.keys) {
+        yield FindBoxBy<T>(item, space.val);
+      }
+    } else {
+      for (var space in _map.keys) {
+        final smap = _map[space];
+        final tmap = _try_get(smap, T);
+        if (tmap is None) return;
+        for (var item in tmap.val.keys) {
+          yield FindBoxBy<T>(item, space.val);
+        }
+      }
+    }
+  }
+
+  Iterable<FindBox> _find_all([Maybe space]) sync* {
+    if (space is Some) {
+      final smap = _try_get(_map, space.val);
+      if (smap is None) return;
+      for (var type in smap.val.keys) {
+        final tmap = smap.val[type];
+        for (var item in tmap.keys) {
+          yield FindBox(item, space.val, type);
+        }
+      }
+    } else {
+      for (var space in _map.keys) {
+        final smap = _map[space];
+        for (var type in smap.keys) {
+          final tmap = smap[type];
+          for (var item in tmap.keys) {
+            yield FindBox(item, space.val, type);
+          }
+        }
+      }
+    }
   }
 }
 
