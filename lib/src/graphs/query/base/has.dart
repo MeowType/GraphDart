@@ -20,7 +20,7 @@ class GraphQuery_Base_Has extends GraphQuery
 }
 
 class GraphQuery_Base_Has_Node<T> extends GraphQuery_Node<T> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has _parent;
+  final GraphQuery_Base_Has _parent;
 
   GraphQuery_Base_Has_Node(this._parent, T node, [space = NoneSpace]) : super(node, space);
 
@@ -28,7 +28,7 @@ class GraphQuery_Base_Has_Node<T> extends GraphQuery_Node<T> implements GraphQue
 }
 
 class GraphQuery_Base_Has_Space<T> extends GraphQuery_Space<T> implements IGraphQueryGETWhere<Func1<bool, dynamic>> {
-  GraphQuery_Base_Has _parent;
+  final GraphQuery_Base_Has _parent;
 
   GraphQuery_Base_Has_Space(this._parent, [space = NoneSpace]) : super(space);
 
@@ -36,7 +36,7 @@ class GraphQuery_Base_Has_Space<T> extends GraphQuery_Space<T> implements IGraph
 }
 
 class GraphQuery_Base_Has_Space_AllType extends GraphQuery_Space_AllType implements IGraphQueryGETWhere<Func2<bool, dynamic, Type>> {
-  GraphQuery_Base_Has _parent;
+  final GraphQuery_Base_Has _parent;
 
   GraphQuery_Base_Has_Space_AllType(this._parent, [space = NoneSpace]) : super(space);
 
@@ -44,7 +44,7 @@ class GraphQuery_Base_Has_Space_AllType extends GraphQuery_Space_AllType impleme
 }
 
 class GraphQuery_Base_Has_Space_Where<T> extends GraphQuery_Where<Func1<bool, dynamic>> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has_Space _parent;
+  final GraphQuery_Base_Has_Space _parent;
 
   GraphQuery_Base_Has_Space_Where(this._parent, Func1<bool, dynamic> fn) : super(fn);
 
@@ -52,7 +52,7 @@ class GraphQuery_Base_Has_Space_Where<T> extends GraphQuery_Where<Func1<bool, dy
 }
 
 class GraphQuery_Base_Has_Space_Where_AllType extends GraphQuery_Where<Func2<bool, dynamic, Type>> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has_Space_AllType _parent;
+  final GraphQuery_Base_Has_Space_AllType _parent;
 
   GraphQuery_Base_Has_Space_Where_AllType(this._parent, Func2<bool, dynamic, Type> fn) : super(fn);
 
@@ -60,7 +60,7 @@ class GraphQuery_Base_Has_Space_Where_AllType extends GraphQuery_Where<Func2<boo
 }
 
 class GraphQuery_Base_Has_Where<T> extends GraphQuery_Where<Func2<bool, dynamic, dynamic>> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has _parent;
+  final GraphQuery_Base_Has _parent;
 
   GraphQuery_Base_Has_Where(this._parent, Func2<bool, dynamic, dynamic> fn) : super(fn);
 
@@ -68,7 +68,7 @@ class GraphQuery_Base_Has_Where<T> extends GraphQuery_Where<Func2<bool, dynamic,
 }
 
 class GraphQuery_Base_Has_Where_AllType extends GraphQuery_Where<Func3<bool, dynamic, dynamic, Type>> implements GraphQuery_End<bool> {
-  GraphQuery_Base_Has _parent;
+  final GraphQuery_Base_Has _parent;
 
   GraphQuery_Base_Has_Where_AllType(this._parent, Func3<bool, dynamic, dynamic, Type> fn) : super(fn);
 
