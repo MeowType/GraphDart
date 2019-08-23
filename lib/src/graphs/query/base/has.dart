@@ -48,7 +48,7 @@ class GraphQuery_Base_Has_Space_Where<T> extends GraphQuery_Where<Func1<bool, dy
 
   GraphQuery_Base_Has_Space_Where(this._parent, Func1<bool, dynamic> fn) : super(fn);
 
-  bool get end => _parent._parent._parent._find_allBy<T>(Some(_parent._space)).any((box) => _fn(box.node));
+  bool get end => _parent._parent._parent._find_allBy<T>(Some(_parent._space), (n, s) => _fn(n)).any(_any_to_true);
 }
 
 class GraphQuery_Base_Has_Space_Where_AllType extends GraphQuery_Where<Func2<bool, dynamic, Type>> implements GraphQuery_End<bool> {
@@ -56,7 +56,7 @@ class GraphQuery_Base_Has_Space_Where_AllType extends GraphQuery_Where<Func2<boo
 
   GraphQuery_Base_Has_Space_Where_AllType(this._parent, Func2<bool, dynamic, Type> fn) : super(fn);
 
-  bool get end => _parent._parent._parent._find_all(Some(_parent._space)).any((box) => _fn(box.node, box.type));
+  bool get end => _parent._parent._parent._find_all(Some(_parent._space), (n, s, t) => _fn(n, t)).any(_any_to_true);
 }
 
 class GraphQuery_Base_Has_Where<T> extends GraphQuery_Where<Func2<bool, dynamic, dynamic>> implements GraphQuery_End<bool> {
@@ -64,7 +64,7 @@ class GraphQuery_Base_Has_Where<T> extends GraphQuery_Where<Func2<bool, dynamic,
 
   GraphQuery_Base_Has_Where(this._parent, Func2<bool, dynamic, dynamic> fn) : super(fn);
 
-  bool get end => _parent._parent._find_allBy<T>(None()).any((box) => _fn(box.node, box.space));
+  bool get end => _parent._parent._find_allBy<T>(null, _fn).any(_any_to_true);
 }
 
 class GraphQuery_Base_Has_Where_AllType extends GraphQuery_Where<Func3<bool, dynamic, dynamic, Type>> implements GraphQuery_End<bool> {
@@ -72,5 +72,5 @@ class GraphQuery_Base_Has_Where_AllType extends GraphQuery_Where<Func3<bool, dyn
 
   GraphQuery_Base_Has_Where_AllType(this._parent, Func3<bool, dynamic, dynamic, Type> fn) : super(fn);
 
-  bool get end => _parent._parent._find_all(None()).any((box) => _fn(box.node, box.space, box.type));
+  bool get end => _parent._parent._find_all(null, _fn).any(_any_to_true);
 }

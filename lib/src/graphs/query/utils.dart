@@ -27,3 +27,5 @@ typedef Func2O1<R, A, B> = R Function(A, [B]);
 typedef Func3O<R, A, B, C> = R Function([A, B, C]);
 typedef Func3O2<R, A, B, C> = R Function(A, [B, C]);
 typedef Func3O1<R, A, B, C> = R Function(A, B, [C]);
+
+bool _any_to_true(_) => true;

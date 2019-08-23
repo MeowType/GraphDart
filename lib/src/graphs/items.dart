@@ -26,44 +26,72 @@ abstract class GraphBase implements IGraph {
 
   bool _has<T>(T node, space) {}
 
-  Iterable<FindBoxBy<T>> _find_allBy<T>([Maybe space]) sync* {
+  Iterable<FindBoxBy<T>> _find_allBy<T>([Maybe space, Func2<bool, dynamic, dynamic> where, Func1<bool, dynamic> where_space]) sync* {
     if (space is Some) {
       final smap = _try_get(_map, space.val);
       if (smap is None) return;
       final tmap = _try_get(smap.val, T);
       if (tmap is None) return;
-      for (var item in tmap.val.keys) {
-        yield FindBoxBy<T>(item, space.val);
+      if (where == null) {
+        for (var item in tmap.val.keys) {
+          yield FindBoxBy<T>(item, space.val);
+        }
+      } else {
+        for (var item in tmap.val.keys) {
+          if (!where(item, space.val)) continue;
+          yield FindBoxBy<T>(item, space.val);
+        }
       }
     } else {
-      for (var s in _map.keys) {
+      for (var s in where_space == null ? _map.keys : _map.keys.where(where_space)) {
         final smap = _map[s];
         final tmap = _try_get(smap, T);
         if (tmap is None) return;
-        for (var item in tmap.val.keys) {
-          yield FindBoxBy<T>(item, space.val);
+        if (where == null) {
+          for (var item in tmap.val.keys) {
+            yield FindBoxBy<T>(item, s);
+          }
+        } else {
+          for (var item in tmap.val.keys) {
+            if (!where(item, s)) continue;
+            yield FindBoxBy<T>(item, s);
+          }
         }
       }
     }
   }
 
-  Iterable<FindBox> _find_all([Maybe space]) sync* {
+  Iterable<FindBox> _find_all([Maybe space, Func3<bool, dynamic, dynamic, Type> where, Func1<bool, dynamic> where_space, Func1<bool, Type> where_type]) sync* {
     if (space is Some) {
       final smap = _try_get(_map, space.val);
       if (smap is None) return;
       for (var type in smap.val.keys) {
         final tmap = smap.val[type];
-        for (var item in tmap.keys) {
-          yield FindBox(item, space.val, type);
+        if (where == null) {
+          for (var item in tmap.keys) {
+            yield FindBox(item, space.val, type);
+          }
+        } else {
+          for (var item in tmap.keys) {
+            if (!where(item, space.val, type)) continue;
+            yield FindBox(item, space.val, type);
+          }
         }
       }
     } else {
-      for (var space in _map.keys) {
+      for (var space in where_space == null ? _map.keys : _map.keys.where(where_space)) {
         final smap = _map[space];
-        for (var type in smap.keys) {
+        for (var type in where_type == null ? smap.keys : smap.keys.where(where_type)) {
           final tmap = smap[type];
-          for (var item in tmap.keys) {
-            yield FindBox(item, space.val, type);
+          if (where == null) {
+            for (var item in tmap.keys) {
+              yield FindBox(item, space, type);
+            }
+          } else {
+            for (var item in tmap.keys) {
+              if (!where(item, space, type)) continue;
+              yield FindBox(item, space, type);
+            }
           }
         }
       }
