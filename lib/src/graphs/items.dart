@@ -24,7 +24,13 @@ abstract class GraphBase implements IGraph {
     return success.val;
   }
 
-  bool _has<T>(T node, space) {}
+  bool _has<T>(T node, space) {
+    final smap = _try_get(_map, space);
+    if (smap is None) return false;
+    final tmap = _try_get(smap.val, T);
+    if (tmap is None) return false;
+    return tmap.val.containsKey(node);
+  }
 
   Iterable<FindBoxBy<T>> _find_allBy<T>([Maybe space, Func2<bool, dynamic, dynamic> where, Func1<bool, dynamic> where_space]) sync* {
     if (space is Some) {
