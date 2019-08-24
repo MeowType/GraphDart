@@ -10,10 +10,10 @@ abstract class GraphBase implements IGraph {
   final Map<dynamic, Map<Type, Map<_Node, dynamic>>> _node_to_val = {};
   final Map<dynamic, Map<Type, Map<dynamic, _Node>>> _map = {};
 
-  GraphQuery_Base_Add get add => GraphQuery_Base_Add(this);
-  GraphQuery_Base_Has get has => GraphQuery_Base_Has(this);
+  base_add.Add get add => base_add.Add(this);
+  base_has.Has get has => base_has.Has(this);
 
-  bool _to_add<T>(T node, space) {
+  bool to_add<T>(T node, space) {
     final map = _add_or_get(_add_or_get(_map, space, _create_InnerMap), T, _create_InnerMap2);
     final success = _Ref<bool>();
     final n = _add_or_get(map, node, _newNode, success);
@@ -24,7 +24,7 @@ abstract class GraphBase implements IGraph {
     return success.val;
   }
 
-  bool _has<T>(T node, space) {
+  bool check_has<T>(T node, space) {
     final smap = _try_get(_map, space);
     if (smap is None) return false;
     final tmap = _try_get(smap.val, T);
@@ -32,7 +32,7 @@ abstract class GraphBase implements IGraph {
     return tmap.val.containsKey(node);
   }
 
-  Iterable<FindBoxBy<T>> _find_allBy<T>([Maybe space, Func2<bool, dynamic, dynamic> where, Func1<bool, dynamic> where_space]) sync* {
+  Iterable<FindBoxBy<T>> find_allBy<T>([Maybe space, Func2<bool, dynamic, dynamic> where, Func1<bool, dynamic> where_space]) sync* {
     if (space is Some) {
       final smap = _try_get(_map, space.val);
       if (smap is None) return;
@@ -67,7 +67,7 @@ abstract class GraphBase implements IGraph {
     }
   }
 
-  Iterable<FindBox> _find_all([Maybe space, Func3<bool, dynamic, dynamic, Type> where, Func1<bool, dynamic> where_space, Func1<bool, Type> where_type]) sync* {
+  Iterable<FindBox> find_all([Maybe space, Func3<bool, dynamic, dynamic, Type> where, Func1<bool, dynamic> where_space, Func1<bool, Type> where_type]) sync* {
     if (space is Some) {
       final smap = _try_get(_map, space.val);
       if (smap is None) return;

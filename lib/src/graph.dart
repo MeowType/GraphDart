@@ -5,17 +5,13 @@ import 'dart:async';
 import 'package:some/index.dart';
 import 'dart:collection';
 
+import './other/utils.dart';
+import './query/query.dart';
+import './query/base/add.dart' as base_add;
+import './query/base/has.dart' as base_has;
+
 part 'node.dart';
 part 'utils.dart';
-part './graphs/query/base.dart';
-part './graphs/query/node.dart';
-part './graphs/query/link.dart';
-part './graphs/query/find.dart';
-part './graphs/query/space.dart';
-part './graphs/query/where.dart';
-part './graphs/query/utils.dart';
-part './graphs/query/base/add.dart';
-part './graphs/query/base/has.dart';
 part './graphs/items.dart';
 part './graphs/directed.dart';
 part './graphs/directed.value.dart';

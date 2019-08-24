@@ -1,4 +1,4 @@
-part of meowtype.graph;
+part of meowtype.graph.query;
 
 class FindBoxBy<T> extends FindBox {
   final T node;

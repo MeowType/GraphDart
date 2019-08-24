@@ -1,5 +1,3 @@
-part of meowtype.graph;
-
 typedef Action = void Function();
 typedef Action1<A> = void Function(A);
 typedef Action2<A, B> = void Function(A, B);
@@ -24,4 +22,4 @@ typedef Func3O<R, A, B, C> = R Function([A, B, C]);
 typedef Func3O2<R, A, B, C> = R Function(A, [B, C]);
 typedef Func3O1<R, A, B, C> = R Function(A, B, [C]);
 
-bool _any_to_true(_) => true;
+bool any_to_true(_) => true;
