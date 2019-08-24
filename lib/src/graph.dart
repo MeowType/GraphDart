@@ -13,7 +13,6 @@ part './graphs/query/link.dart';
 part './graphs/query/find.dart';
 part './graphs/query/space.dart';
 part './graphs/query/where.dart';
-part './graphs/query/end.dart';
 part './graphs/query/utils.dart';
 part './graphs/query/base/add.dart';
 part './graphs/query/base/has.dart';

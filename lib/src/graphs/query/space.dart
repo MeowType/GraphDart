@@ -6,7 +6,7 @@ class _TheSpace {
 
 const NoneSpace = const _TheSpace();
 
-abstract class GraphQuery_Space<T> implements _IChain {
+abstract class GraphQuery_Space<T> {
   final dynamic _space;
 
   GraphQuery_Space([
@@ -14,20 +14,10 @@ abstract class GraphQuery_Space<T> implements _IChain {
   ]);
 }
 
-abstract class GraphQuery_Space_AllType implements _IChain {
+abstract class GraphQuery_Space_AllType {
   final dynamic _space;
 
   GraphQuery_Space_AllType([
     this._space = NoneSpace,
   ]);
-}
-
-//====================================================================================================
-
-abstract class IGraphQueryGETSpace {
-  GraphQuery_Space<T> space<T>([space = NoneSpace]);
-}
-
-abstract class IGraphQueryGETSpaceAllType {
-  GraphQuery_Space_AllType spaceAllType([space = NoneSpace]);
 }

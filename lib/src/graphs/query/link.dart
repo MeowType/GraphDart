@@ -1,6 +1,6 @@
 part of meowtype.graph;
 
-abstract class IGraphQuery_Link implements IGraphQueryGETNode {}
+abstract class IGraphQuery_Link {}
 
 abstract class GraphQuery_Link<T> extends IGraphQuery_Link {
   final Maybe<T> _value;
@@ -14,11 +14,4 @@ abstract class GraphQuery_LinkTo<T> extends IGraphQuery_Link {
   final dynamic _space;
 
   GraphQuery_LinkTo([this._space = NoneSpace, this._value]);
-}
-
-//====================================================================================================
-
-abstract class IGraphQueryGETLink {
-  GraphQuery_Link<L> link<L>({space = NoneSpace, Maybe<L> value});
-  GraphQuery_LinkTo<L> linkTo<L>({space = NoneSpace, Maybe<L> value});
 }

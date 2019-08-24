@@ -1,5 +1,5 @@
 part of meowtype.graph;
 
-abstract class GraphQuery implements IGraphQueryGETNode, _IChain {
+abstract class GraphQuery {
   IGraph get _parent;
 }

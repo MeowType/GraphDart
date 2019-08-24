@@ -1,9 +1,5 @@
 part of meowtype.graph;
 
-abstract class _IChain {
-  get _parent;
-}
-
 typedef Action = void Function();
 typedef Action1<A> = void Function(A);
 typedef Action2<A, B> = void Function(A, B);
