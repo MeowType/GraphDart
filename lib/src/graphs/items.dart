@@ -2,12 +2,9 @@ part of meowtype.graph;
 
 Map<Type, Map<dynamic, _Node>> _create_InnerMap() => Map<Type, Map<dynamic, _Node>>();
 Map<dynamic, _Node> _create_InnerMap2() => Map<dynamic, _Node>();
-Map<Type, Map<_Node, dynamic>> _create_InnerMap_V() => Map<Type, Map<_Node, dynamic>>();
-Map<_Node, dynamic> _create_InnerMap2_V() => Map<_Node, dynamic>();
 
 /// Basic graph node collection
 abstract class GraphBase implements IGraph {
-  final Map<dynamic, Map<Type, Map<_Node, dynamic>>> _node_to_val = {};
   final Map<dynamic, Map<Type, Map<dynamic, _Node>>> _map = {};
 
   base_add.Add get add => base_add.Add(this);
@@ -18,11 +15,7 @@ abstract class GraphBase implements IGraph {
   bool to_add_AnyType(Type type, node, [space = NoneSpace]) {
     final map = _add_or_get(_add_or_get(_map, space, _create_InnerMap), type, _create_InnerMap2);
     final success = Out<bool>();
-    final n = _add_or_get(map, node, _newNode, success);
-    if (success.val) {
-      final vmap = _add_or_get(_add_or_get(_node_to_val, space, _create_InnerMap_V), type, _create_InnerMap2_V);
-      vmap[n] = node;
-    }
+    _add_or_get(map, node, _newNode(node), success);
     return success.val;
   }
 
@@ -35,14 +28,17 @@ abstract class GraphBase implements IGraph {
     return tmap.val.containsKey(node);
   }
 
-  bool try_remove<T>(T node, [space = NoneSpace]) => try_remove_AnyType(T, node, space);
-  bool try_remove_AnyType(Type type, node, [space = NoneSpace]) {
+  bool try_remove<T>(T node, [space = NoneSpace, Out<Maybe<T>> removed_value]) => try_remove_AnyType(T, node, space, removed_value);
+  bool try_remove_AnyType(Type type, node, [space = NoneSpace, Out<Maybe> removed_value]) {
     final smap = _try_get(_map, space);
     if (smap is None) return false;
     final tmap = _try_get(smap.val, type);
     if (tmap is None) return false;
     final r = tmap.val.containsKey(node);
-    if (r) tmap.val.remove(node);
+    if (r) {
+      final rv = tmap.val.remove(node);
+      trySetValFn(removed_value, () => Some(rv.val));
+    }else trySetValFn(removed_value, () => None());
     return r;
   }
 

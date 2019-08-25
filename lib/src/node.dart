@@ -6,13 +6,16 @@ class _Edge {
   final Map<dynamic, Set> valtags = Map<dynamic, Set>();
 }
 
-_Node _newNode() => _Node();
+Func<_Node> _newNode(val) => () => _Node(val);
 Set _newSet() => Set();
 
 class _Node {
-  final Set<_Node> from = Set();
+  final dynamic val;
 
+  final Set<_Node> from = Set();
   final Map<_Node, _Edge> to = {};
+
+  _Node(this.val);
 
   static _Edge newInnerEdge() => _Edge();
 
