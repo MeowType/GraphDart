@@ -23,3 +23,17 @@ typedef Func3O2<R, A, B, C> = R Function(A, [B, C]);
 typedef Func3O1<R, A, B, C> = R Function(A, B, [C]);
 
 bool any_to_true(_) => true;
+
+bool when_any_eq<T>(Iterable<T> iter, T val) {
+  for (var item in iter) {
+    if (item == val) return true;
+  }
+  return false;
+}
+
+bool when_all_eq<T>(Iterable<T> iter, T val) {
+  for (var item in iter) {
+    if (item != val) return false;
+  }
+  return true;
+}

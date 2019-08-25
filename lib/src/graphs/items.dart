@@ -12,24 +12,38 @@ abstract class GraphBase implements IGraph {
 
   base_add.Add get add => base_add.Add(this);
   base_has.Has get has => base_has.Has(this);
+  base_remove.Remove get remove => base_remove.Remove(this);
 
-  bool to_add<T>(T node, space) {
-    final map = _add_or_get(_add_or_get(_map, space, _create_InnerMap), T, _create_InnerMap2);
+  bool to_add<T>(T node, [space = NoneSpace]) => to_add_AnyType(T, node, space);
+  bool to_add_AnyType(Type type, node, [space = NoneSpace]) {
+    final map = _add_or_get(_add_or_get(_map, space, _create_InnerMap), type, _create_InnerMap2);
     final success = _Ref<bool>();
     final n = _add_or_get(map, node, _newNode, success);
     if (success.val) {
-      final vmap = _add_or_get(_add_or_get(_node_to_val, space, _create_InnerMap_V), T, _create_InnerMap2_V);
+      final vmap = _add_or_get(_add_or_get(_node_to_val, space, _create_InnerMap_V), type, _create_InnerMap2_V);
       vmap[n] = node;
     }
     return success.val;
   }
 
-  bool check_has<T>(T node, space) {
+  bool check_has<T>(T node, [space = NoneSpace]) => check_has_AnyType(T, node, space);
+  bool check_has_AnyType(Type type, node, [space = NoneSpace]) {
     final smap = _try_get(_map, space);
     if (smap is None) return false;
-    final tmap = _try_get(smap.val, T);
+    final tmap = _try_get(smap.val, type);
     if (tmap is None) return false;
     return tmap.val.containsKey(node);
+  }
+
+  bool try_remove<T>(T node, [space = NoneSpace]) => try_remove_AnyType(T, node, space);
+  bool try_remove_AnyType(Type type, node, [space = NoneSpace]) {
+    final smap = _try_get(_map, space);
+    if (smap is None) return false;
+    final tmap = _try_get(smap.val, type);
+    if (tmap is None) return false;
+    final r = tmap.val.containsKey(node);
+    if (r) tmap.val.remove(node);
+    return r;
   }
 
   Iterable<FindBoxBy<T>> find_allBy<T>([Maybe space, Func2<bool, dynamic, dynamic> where, Func1<bool, dynamic> where_space]) sync* {

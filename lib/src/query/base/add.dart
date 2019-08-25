@@ -17,5 +17,5 @@ class Node<T> {
   final dynamic _space;
   Node(this._parent, this._node, [this._space = NoneSpace]);
 
-  bool get end => _parent._parent.to_add(_node, _space);
+  bool get end => _parent._parent.to_add<T>(_node, _space);
 }

@@ -9,6 +9,7 @@ import './other/utils.dart';
 import './query/query.dart';
 import './query/base/add.dart' as base_add;
 import './query/base/has.dart' as base_has;
+import './query/base/remove.dart' as base_remove;
 
 part 'node.dart';
 part 'utils.dart';
