@@ -17,7 +17,7 @@ abstract class GraphBase implements IGraph {
   bool to_add<T>(T node, [space = NoneSpace]) => to_add_AnyType(T, node, space);
   bool to_add_AnyType(Type type, node, [space = NoneSpace]) {
     final map = _add_or_get(_add_or_get(_map, space, _create_InnerMap), type, _create_InnerMap2);
-    final success = _Ref<bool>();
+    final success = Out<bool>();
     final n = _add_or_get(map, node, _newNode, success);
     if (success.val) {
       final vmap = _add_or_get(_add_or_get(_node_to_val, space, _create_InnerMap_V), type, _create_InnerMap2_V);
