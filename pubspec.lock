@@ -245,7 +245,7 @@ packages:
       name: some
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.2"
+    version: "1.2.4"
   source_map_stack_trace:
     dependency: transitive
     description:

@@ -11,10 +11,14 @@ void main() {
     // final has = g.has.node(1).end;
     // final has_space = g.has.space().where((node) => node == 1).end;
     // print(has_space);
-    final has_space_all = g.has.spaceAllType().where((node, _) => node == 1).end;
-    print(has_space_all);
-    final has_where = g.has.where((node, _) => node == 1).end;
-    print(has_where);
+    // final has_space_all = g.has.spaceAllType().where((node, _) => node == 1).end;
+    // print(has_space_all);
+    // final has_where = g.has.where((node, _) => node == 1).end;
+    // print(has_where);
+    // final remove = g.remove.node(1).end;
+    // print(remove);
+    final remove_all = g.remove.where((i, _) => i == 1).end;
+    print(remove_all);
   });
 }
 

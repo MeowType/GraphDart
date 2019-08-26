@@ -50,10 +50,7 @@ class SpaceWhere<T> {
   final Func1<bool, dynamic> _fn;
   SpaceWhere(this._parent, this._fn);
 
-  Iterable<bool> get _iter => _parent._parent._parent.find_allBy<T>(Some(_parent._space), (n, s) => _fn(n)).map(_try_remove(_parent._parent._parent));
-
-  bool get any => when_any_eq(_iter, true);
-  bool get all => when_all_eq(_iter, true);
+  bool get end => _parent._parent._parent.try_remove_whereBy<T>(Some(_parent._space), (n, s) => _fn(n));
 }
 
 class SpaceWhereAllType {
@@ -61,10 +58,7 @@ class SpaceWhereAllType {
   final Func2<bool, dynamic, Type> _fn;
   SpaceWhereAllType(this._parent, this._fn);
 
-  Iterable<bool> get _iter => _parent._parent._parent.find_all(Some(_parent._space), (n, s, t) => _fn(n, t)).map(_try_remove(_parent._parent._parent));
-
-  bool get any => when_any_eq(_iter, true);
-  bool get all => when_all_eq(_iter, true);
+  bool get end => _parent._parent._parent.try_remove_where(Some(_parent._space), (n, s, t) => _fn(n, t));
 }
 
 class Where<T> {
@@ -72,10 +66,7 @@ class Where<T> {
   final Func2<bool, dynamic, dynamic> _fn;
   Where(this._parent, this._fn);
 
-  Iterable<bool> get _iter => _parent._parent.find_allBy<T>(null, _fn).map(_try_remove(_parent._parent));
-
-  bool get any => when_any_eq(_iter, true);
-  bool get all => when_all_eq(_iter, true);
+  bool get end => _parent._parent.try_remove_whereBy<T>(null, _fn);
 }
 
 class WhereAllType {
@@ -83,10 +74,5 @@ class WhereAllType {
   final Func3<bool, dynamic, dynamic, Type> _fn;
   WhereAllType(this._parent, this._fn);
 
-  Iterable<bool> get _iter => _parent._parent.find_all(null, _fn).map(_try_remove(_parent._parent));
-
-  bool get any => when_any_eq(_iter, true);
-  bool get all => when_all_eq(_iter, true);
+  bool get end => _parent._parent.try_remove_where(null, _fn);
 }
-
-Func1<bool, FindBox> _try_remove(GraphBase parent) => (FindBox node) => parent.try_remove_AnyType(node.type, node.node, node.space);
