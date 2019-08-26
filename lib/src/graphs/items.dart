@@ -54,18 +54,18 @@ abstract class GraphBase implements IGraph {
       final tmap = _try_get(smap.val, T);
       if (tmap is None) return false;
       if (where == null) {
-        for (var item in tmap.val.keys) {
-          tmap.val.remove(item);
-          isremoved = true;
-          // todo unset link
-        }
+        isremoved = true;
+        // for (var item in tmap.val.keys) {
+        //   // todo unset link
+        // }
+        tmap.val.clear();
       } else {
-        for (var item in tmap.val.keys) {
-          if (!where(item, space.val)) continue;
-          tmap.val.remove(item);
+        tmap.val.removeWhere((item, _n) {
+          if (!where(item, space.val)) return false;
           isremoved = true;
           // todo unset link
-        }
+          return true;
+        });
       }
     } else {
       for (var s in where_space == null ? _map.keys : _map.keys.where(where_space)) {
@@ -73,18 +73,18 @@ abstract class GraphBase implements IGraph {
         final tmap = _try_get(smap, T);
         if (tmap is None) return false;
         if (where == null) {
-          for (var item in tmap.val.keys) {
-            tmap.val.remove(item);
-            isremoved = true;
-            // todo unset link
-          }
+          isremoved = true;
+          // for (var item in tmap.val.keys) {
+          //   // todo unset link
+          // }
+          tmap.val.clear();
         } else {
-          for (var item in tmap.val.keys) {
-            if (!where(item, s)) continue;
-            tmap.val.remove(item);
+          tmap.val.removeWhere((item, _n) {
+            if (!where(item, s)) return false;
             isremoved = true;
             // todo unset link
-          }
+            return true;
+          });
         }
       }
     }
@@ -99,18 +99,18 @@ abstract class GraphBase implements IGraph {
       for (var type in smap.val.keys) {
         final tmap = smap.val[type];
         if (where == null) {
-          for (var item in tmap.keys) {
-            tmap.remove(item);
-            isremoved = true;
-            // todo unset link
-          }
+          isremoved = true;
+          // for (var item in tmap.keys) {
+          //   // todo unset link
+          // }
+          tmap.clear();
         } else {
-          for (var item in tmap.keys) {
-            if (!where(item, space.val, type)) continue;
-            tmap.remove(item);
+          tmap.removeWhere((item, _n) {
+            if (!where(item, space.val, type)) return false;
             isremoved = true;
             // todo unset link
-          }
+            return true;
+          });
         }
       }
     } else {
@@ -119,18 +119,18 @@ abstract class GraphBase implements IGraph {
         for (var type in where_type == null ? smap.keys : smap.keys.where(where_type)) {
           final tmap = smap[type];
           if (where == null) {
-            for (var item in tmap.keys) {
-              tmap.remove(item);
-              isremoved = true;
-              // todo unset link
-            }
+            isremoved = true;
+            // for (var item in tmap.keys) {
+            //   // todo unset link
+            // }
+            tmap.clear();
           } else {
-            for (var item in tmap.keys) {
-              if (!where(item, space, type)) continue;
-              tmap.remove(item);
+            tmap.removeWhere((item, _n) {
+              if (!where(item, space, type)) return false;
               isremoved = true;
               // todo unset link
-            }
+              return true;
+            });
           }
         }
       }
