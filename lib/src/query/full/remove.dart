@@ -1,4 +1,4 @@
-library meowtype.graph.query.base.has;
+library meowtype.graph.query.full.remove;
 
 import 'package:some/index.dart';
 
@@ -6,9 +6,9 @@ import '../../graph.dart';
 import '../../other/utils.dart';
 import '../query.dart';
 
-class Has {
+class Remove {
   final GraphBase _parent;
-  Has(this._parent);
+  Remove(this._parent);
 
   Node node(node, [space = NoneSpace]) => Node(this, node, space);
   Node<T> nodeBy<T>(T node, [space = NoneSpace]) => Node<T>(this, node, space);
@@ -21,16 +21,16 @@ class Has {
 }
 
 class Node<T> {
-  final Has _parent;
+  final Remove _parent;
   final T _node;
   final dynamic _space;
   Node(this._parent, this._node, [this._space = NoneSpace]);
 
-  bool get end => _parent._parent.check_has<T>(_node, _space);
+  bool get end => _parent._parent.try_remove<T>(_node, _space);
 }
 
 class Space<T> {
-  final Has _parent;
+  final Remove _parent;
   final dynamic _space;
   Space(this._parent, [this._space = NoneSpace]);
 
@@ -38,7 +38,7 @@ class Space<T> {
 }
 
 class SpaceAllType {
-  final Has _parent;
+  final Remove _parent;
   final dynamic _space;
   SpaceAllType(this._parent, [this._space = NoneSpace]);
 
@@ -50,7 +50,7 @@ class SpaceWhere<T> {
   final Func1<bool, dynamic> _fn;
   SpaceWhere(this._parent, this._fn);
 
-  bool get end => _parent._parent._parent.find_allBy<T>(Some(_parent._space), (n, s) => _fn(n)).any(any_to_true);
+  bool get end => _parent._parent._parent.try_remove_whereBy<T>(Some(_parent._space), (n, s) => _fn(n));
 }
 
 class SpaceWhereAllType {
@@ -58,21 +58,21 @@ class SpaceWhereAllType {
   final Func2<bool, dynamic, Type> _fn;
   SpaceWhereAllType(this._parent, this._fn);
 
-  bool get end => _parent._parent._parent.find_all(Some(_parent._space), (n, s, t) => _fn(n, t)).any(any_to_true);
+  bool get end => _parent._parent._parent.try_remove_where(Some(_parent._space), (n, s, t) => _fn(n, t));
 }
 
 class Where<T> {
-  final Has _parent;
+  final Remove _parent;
   final Func2<bool, dynamic, dynamic> _fn;
   Where(this._parent, this._fn);
 
-  bool get end => _parent._parent.find_allBy<T>(null, _fn).any(any_to_true);
+  bool get end => _parent._parent.try_remove_whereBy<T>(null, _fn);
 }
 
 class WhereAllType {
-  final Has _parent;
+  final Remove _parent;
   final Func3<bool, dynamic, dynamic, Type> _fn;
   WhereAllType(this._parent, this._fn);
 
-  bool get end => _parent._parent.find_all(null, _fn).any(any_to_true);
+  bool get end => _parent._parent.try_remove_where(null, _fn);
 }

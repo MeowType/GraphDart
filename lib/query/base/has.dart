@@ -1,1 +1,1 @@
-export '../../src/query/base/has.dart';
+export '../../src/query/full/has.dart';

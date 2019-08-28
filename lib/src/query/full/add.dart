@@ -1,4 +1,4 @@
-library meowtype.graph.query.base.add;
+library meowtype.graph.query.full.add;
 
 import '../../graph.dart';
 import '../query.dart';
