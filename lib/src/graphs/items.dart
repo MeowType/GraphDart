@@ -18,6 +18,13 @@ abstract class GraphBase implements IGraph {
     return success.val;
   }
 
+  bool set_link<A, B>(A nodeA, B nodeB, {spaceA = NoneSpace, spaceB = NoneSpace, spaceLink = NoneSpace}) {
+    
+  }
+  bool set_linkTo<F, T>(F from, T to, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {}
+  bool set_link_with_val<A, B, V>(A nodeA, B nodeB, V val, {spaceA = NoneSpace, spaceB = NoneSpace, spaceLink = NoneSpace}) {}
+  bool set_linkTo_with_val<F, T, V>(F from, T to, V val, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {}
+
   bool check_has<T>(T node, [space = NoneSpace]) => check_has_AnyType(T, node, space);
   @unTypeSafe
   bool check_has_AnyType(Type type, node, [space = NoneSpace]) {
@@ -39,7 +46,7 @@ abstract class GraphBase implements IGraph {
     if (r) {
       final rv = tmap.val.remove(node);
       // todo unset link
-      trySetValFn(removed_value, () => Some(rv.val));
+      trySetValFn(removed_value, () => Some(rv._val));
     } else
       trySetValFn(removed_value, () => None());
     return r;

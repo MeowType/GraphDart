@@ -1,154 +1,95 @@
 part of meowtype.graph;
 
-class _Edge {
-  final Set tags = Set();
-  final Map<dynamic, Maybe<dynamic>> map = Map<dynamic, Maybe<dynamic>>();
-  final Map<dynamic, Set> valtags = Map<dynamic, Set>();
-}
-
 Func<_Node> _newNode(val) => () => _Node(val);
 Set _newSet() => Set();
 
 class _Node {
-  final dynamic val;
+  final dynamic _val;
 
-  final Set<_Node> from = Set();
-  final Map<_Node, _Edge> to = {};
+  /// {node}
+  final Set<_Node> _from = Set();
 
-  _Node(this.val);
+  /// space -> {node}
+  final Map<dynamic, Set<_Node>> _to = {};
 
-  static _Edge newInnerEdge() => _Edge();
+  /// space -> (node -> (type -> val))
+  final Map<dynamic, Map<_Node, Map<Type, dynamic>>> _toVal = {};
+
+  _Node(this._val);
+
+  //static _Edge newInnerEdge() => _Edge();
 
   bool setFrom(_Node node) {
-    return from.add(node);
+    return _from.add(node);
   }
 
-  void setTo(_Node node) {
-    _add_or_get(to, node, newInnerEdge);
+  bool setTo(_Node node, [space = NoneSpace]) {
+    final nset = _add_or_get(_to, space, () => Set<_Node>());
+    return nset.add(node);
   }
 
-  void setToV(_Node node, key, val) {
-    final edge = _add_or_get(to, node, newInnerEdge);
-    edge.map[key] = Some(val);
+  @unTypeSafe
+  bool setToV(_Node node, val, {space = NoneSpace, type = dynamic}) {
+    final nmap = _add_or_get(_toVal, space, () => Map<_Node, Map<Type, dynamic>>());
+    final tmap = _add_or_get(nmap, node, () => Map<Type, dynamic>());
+    if (tmap.containsKey(type)) return false;
+    tmap[type] = val;
+    return true;
   }
 
-  void setTag(_Node node, List tags) {
-    final edge = _add_or_get(to, node, newInnerEdge);
-    edge.tags.addAll(tags);
-  }
-
-  void setValTag(_Node node, key, List tags) {
-    final edge = _add_or_get(to, node, newInnerEdge);
-    final tagset = _add_or_get(edge.valtags, key, _newSet);
-    tagset.addAll(tags);
-  }
-
-  Maybe get(_Node node, key) {
-    if (to.containsKey(node)) {
-      final edge = to[node];
-      if (edge.map.containsKey(key)) {
-        return edge.map[key];
-      }
-    }
-    return None();
+  @unTypeSafe
+  Maybe get(_Node node, {space = NoneSpace, type = dynamic}) {
+    final nmap = _try_get(_toVal, space);
+    if (nmap is None) return None();
+    final tmap = _try_get(nmap.val, node);
+    if (tmap is None) return None();
+    return _try_get(tmap.val, type);
   }
 
   bool hasFrom(_Node node) {
-    return from.contains(node);
+    return _from.contains(node);
   }
 
-  bool hasTo(_Node node) {
-    return to.containsKey(node);
-  }
-
-  bool hasToV(_Node node, key) {
-    if (to.containsKey(node)) {
-      final edge = to[node];
-      return edge.map.containsKey(key);
+  bool hasTo(_Node node, [space = NoneSpace]) {
+    if (_to.containsKey(space)) {
+      return _to[space].contains(node);
     }
     return false;
   }
 
-  bool hasTag(_Node node, List tags) {
-    if (tags.isEmpty) return false;
-    final edge = _add_or_get(to, node, newInnerEdge);
-    return edge.tags.containsAll(tags);
-  }
-
-  bool hasValTag(_Node node, key, List tags) {
-    if (tags.isEmpty) return false;
-    final edge = _add_or_get(to, node, newInnerEdge);
-    if (edge.valtags.containsKey(key)) {
-      return edge.valtags[key].containsAll(tags);
-    }
-    return false;
-  }
-
-  bool hasTagAny(_Node node, List tags) {
-    if (tags.isEmpty) return false;
-    final edge = _add_or_get(to, node, newInnerEdge);
-    return tags.any((tag) => edge.tags.contains(tag));
-  }
-
-  bool hasValTagAny(_Node node, key, List tags) {
-    if (tags.isEmpty) return false;
-    final edge = _add_or_get(to, node, newInnerEdge);
-    if (edge.valtags.containsKey(key)) {
-      return tags.any((tag) => edge.valtags[key].contains(tag));
-    }
-    return false;
-  }
-
-  bool unsetFrom(_Node node) {
-    return from.remove(node);
-  }
-
-  bool unsetTo(_Node node) {
-    return to.remove(node) != null;
-  }
-
-  bool unsetToV(_Node node, key) {
-    if (to.containsKey(node)) {
-      final edge = to[node];
-      edge.valtags.remove(key);
-      return edge.map.remove(key) != null;
-    }
-    return false;
-  }
-
-  bool unsetTag(_Node node, List tags) {
-    final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.tags.removeAll(tags);
-      return true;
-    }
-    return false;
-  }
-
-  bool unsetValTag(_Node node, key, List tags) {
-    final edge = _try_get(to, node);
-    if (edge is Some) {
-      if (edge.val.valtags.containsKey(key)) {
-        edge.val.valtags[key].removeAll(tags);
+  bool hasToV(_Node node, {Maybe val = const None(), space = NoneSpace, type = dynamic}) {
+    final nmap = _try_get(_toVal, space);
+    if (nmap is None) return false;
+    final tmap = _try_get(nmap.val, node);
+    if (tmap is None) return false;
+    if (tmap.val.containsKey(type)) {
+      if (val is Some) {
+        return tmap.val[type] == val;
+      } else {
         return true;
       }
     }
     return false;
   }
 
-  bool clearTags(_Node node) {
-    final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.tags.clear();
-      return true;
+  bool unsetFrom(_Node node) {
+    return _from.remove(node);
+  }
+
+  bool unsetTo(_Node node, [space = NoneSpace]) {
+    if (_to.containsKey(space)) {
+      return _to[space].remove(node);
     }
     return false;
   }
 
-  bool clearValTags(_Node node) {
-    final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.valtags.clear();
+  bool unsetToV(_Node node, key, {space = NoneSpace, type = dynamic}) {
+    final nmap = _try_get(_toVal, space);
+    if (nmap is None) return false;
+    final tmap = _try_get(nmap.val, node);
+    if (tmap is None) return false;
+    if (tmap.val.containsKey(type)) {
+      tmap.val.remove(type);
       return true;
     }
     return false;
