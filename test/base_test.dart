@@ -17,7 +17,7 @@ void main() {
     // print(has_where);
     // final remove = g.remove.node(1).end;
     // print(remove);
-    final remove_all = g.remove.where((i, _) => i == 1).end;
+    final remove_all = g.remove.where((i) => i == 1).end;
     print(remove_all);
   });
 }

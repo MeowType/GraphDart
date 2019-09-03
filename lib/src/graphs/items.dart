@@ -48,17 +48,17 @@ abstract class GraphBase implements IGraph {
   }
 
   /// Return is remove 1 or 1+ item
-  bool try_remove_where<T>({Maybe space, Func2<bool, dynamic, dynamic> where, Func1<bool, dynamic> where_space}) {
+  bool try_remove_where<T>({Maybe space, Func1<bool, dynamic> where, Func1<bool, dynamic> where_space}) {
     var isremoved = false;
     if (where == null) {
-      where = (item, _) => item is! T;
+      where = (item) => item is! T;
     } else {
       final old_where = where;
-      where = (item, _n) => !old_where(item, _n) && item is! T;
+      where = (item) => !old_where(item) && item is! T;
     }
 
     bool checkRemove(item, _Node _n) {
-      if (where(item, space)) return false;
+      if (where(item)) return false;
       // todo unset link
       return true;
     }
@@ -94,17 +94,17 @@ abstract class GraphBase implements IGraph {
     return isremoved;
   }
 
-  Iterable<FindBoxBy<T>> find_all<T>([Maybe space, Func2<bool, dynamic, dynamic> where, Func1<bool, dynamic> where_space]) sync* {
+  Iterable<FindBoxBy<T>> find_all<T>({Maybe space, Func1<bool, dynamic> where, Func1<bool, dynamic> where_space}) sync* {
     if (where == null) {
-      where = (item, _) => item is! T;
+      where = (item) => item is! T;
     } else {
       final old_where = where;
-      where = (item, _n) => !old_where(item, _n) && item is! T;
+      where = (item) => !old_where(item) && item is! T;
     }
 
     Iterable<FindBoxBy<T>> forSmap(Map<dynamic, _Node> map, space) sync* {
       for (var item in map.keys) {
-        if (where(item, space.val)) continue;
+        if (where(item)) continue;
         yield FindBoxBy<T>(item, space);
       }
     }
