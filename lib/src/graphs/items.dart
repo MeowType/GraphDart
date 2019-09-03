@@ -57,23 +57,38 @@ abstract class GraphBase implements IGraph {
       where = (item, _n) => !old_where(item, _n) && item is! T;
     }
 
-    void forSmap(Map<dynamic, _Node> map, space) {
-      map.removeWhere((item, _n) {
-        if (where(item, space)) return false;
-        isremoved = true;
-        // todo unset link
-        return true;
-      });
+    bool checkRemove(item, _Node _n) {
+      if (where(item, space)) return false;
+      // todo unset link
+      return true;
     }
+
+    void Function(Map<dynamic, _Node> map) forSmap;
+    forSmap = (Map<dynamic, _Node> map) {
+      bool Function(dynamic item, _Node _n) mapfn;
+      void firstRemoved() {
+        isremoved = true;
+        mapfn = checkRemove;
+        forSmap = (map) => map.removeWhere(checkRemove);
+      }
+
+      mapfn = (item, _n) {
+        final r = checkRemove(item, _n);
+        if (r) firstRemoved();
+        return r;
+      };
+
+      map.removeWhere((item, _n) => mapfn(item, _n));
+    };
 
     if (space is Some) {
       final smap = _try_get(_map, space.val);
       if (smap is None) return false;
-      forSmap(smap.val, space.val);
+      forSmap(smap.val);
     } else {
       for (var s in where_space == null ? _map.keys : _map.keys.where(where_space)) {
         final smap = _map[s];
-        forSmap(smap, s);
+        forSmap(smap);
       }
     }
     return isremoved;
