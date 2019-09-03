@@ -9,11 +9,8 @@ class _Node {
   /// {node}
   final Set<_Node> _from = Set();
 
-  /// space -> {node}
-  final Map<dynamic, Set<_Node>> _to = {};
-
-  /// space -> (node -> (type -> val))
-  final Map<dynamic, Map<_Node, Map<Type, dynamic>>> _toVal = {};
+  /// node -> space -> value?
+  final Map<_Node, Map<dynamic, Maybe>> _to = {};
 
   _Node(this._val);
 
@@ -24,26 +21,28 @@ class _Node {
   }
 
   bool setTo(_Node node, [space = NoneSpace]) {
-    final nset = _add_or_get(_to, space, () => Set<_Node>());
-    return nset.add(node);
-  }
-
-  @unTypeSafe
-  bool setToV(_Node node, val, {space = NoneSpace, type = dynamic}) {
-    final nmap = _add_or_get(_toVal, space, () => Map<_Node, Map<Type, dynamic>>());
-    final tmap = _add_or_get(nmap, node, () => Map<Type, dynamic>());
-    if (tmap.containsKey(type)) return false;
-    tmap[type] = val;
+    if (_to.containsKey(node)) {
+      if (_to[node].containsKey(space)) return false;
+      _to[node][space] = const None();
+    } else {
+      _to[node] = {space: const None()};
+    }
     return true;
   }
 
-  @unTypeSafe
-  Maybe get(_Node node, {space = NoneSpace, type = dynamic}) {
-    final nmap = _try_get(_toVal, space);
-    if (nmap is None) return None();
-    final tmap = _try_get(nmap.val, node);
-    if (tmap is None) return None();
-    return _try_get(tmap.val, type);
+  bool setToV<T>(_Node node, T val, [space = NoneSpace]) {
+    if (_to.containsKey(node)) {
+      if (_to[node].containsKey(space) && _to[node][space] is Some && _to[node][space].val == val) return false;
+      _to[node][space] = Some(val);
+    } else {
+      _to[node] = {space: Some(val)};
+    }
+    return true;
+  }
+
+  Maybe<T> get<T>(_Node node, [space = NoneSpace]) {
+    if (!_to.containsKey(node) || !_to[node].containsKey(space) || _to[node][space] is! Some || _to[node][space].val is! T) return None();
+    return Some(_to[node][space].val);
   }
 
   bool hasFrom(_Node node) {
@@ -51,45 +50,39 @@ class _Node {
   }
 
   bool hasTo(_Node node, [space = NoneSpace]) {
-    if (_to.containsKey(space)) {
-      return _to[space].contains(node);
+    if (_to.containsKey(node)) {
+      return _to[node].containsKey(space);
     }
     return false;
   }
 
-  bool hasToV(_Node node, {Maybe val = const None(), space = NoneSpace, type = dynamic}) {
-    final nmap = _try_get(_toVal, space);
-    if (nmap is None) return false;
-    final tmap = _try_get(nmap.val, node);
-    if (tmap is None) return false;
-    if (tmap.val.containsKey(type)) {
-      if (val is Some) {
-        return tmap.val[type] == val;
-      } else {
-        return true;
-      }
-    }
-    return false;
+  bool hasToV<T>(_Node node, T val, [space = NoneSpace]) {
+    return _to.containsKey(node) && _to[node].containsKey(space) && _to[node][space] is Some && _to[node][space].val == val;
   }
 
   bool unsetFrom(_Node node) {
     return _from.remove(node);
   }
 
-  bool unsetTo(_Node node, [space = NoneSpace]) {
-    if (_to.containsKey(space)) {
-      return _to[space].remove(node);
+  bool unsetTo(_Node node) {
+    if (_to.containsKey(node)) {
+      _to.remove(node);
+      return true;
     }
     return false;
   }
 
-  bool unsetToV(_Node node, key, {space = NoneSpace, type = dynamic}) {
-    final nmap = _try_get(_toVal, space);
-    if (nmap is None) return false;
-    final tmap = _try_get(nmap.val, node);
-    if (tmap is None) return false;
-    if (tmap.val.containsKey(type)) {
-      tmap.val.remove(type);
+  bool unsetToS(_Node node, [space = NoneSpace]) {
+    if (_to.containsKey(node) && _to[node].containsKey(space)) {
+      _to[node].remove(space);
+      return true;
+    }
+    return false;
+  }
+
+  bool unsetToV<T>(_Node node, [space = NoneSpace]) {
+    if (_to.containsKey(node) && _to[node].containsKey(space) && _to[node][space] is Some && _to[node][space].val is T) {
+      _to[node][space] = const None();
       return true;
     }
     return false;
