@@ -17,19 +17,38 @@ class FullGraph implements Graph {
   }
 
   bool set_link<A, B>(A nodeA, B nodeB, {spaceA = NoneSpace, spaceB = NoneSpace, spaceLink = NoneSpace}) {
-    final amap = _add_or_get(_map, spaceA, _create_InnerMap);
-    final a = _add_or_get(amap, nodeA, () => _Node(nodeA));
-    final bmap = _add_or_get(_map, spaceB, _create_InnerMap);
-    final b = _add_or_get(bmap, nodeB, () => _Node(nodeB));
-    a.setTo(b, spaceLink);
-    b.setTo(a, spaceLink);
-    a.setFrom(b);
-    b.setFrom(a);
+    return _Tuple2(_Tuple2(nodeA, spaceA), _Tuple2(nodeB, spaceB))
+        .map((t) {
+          final map = _add_or_get(_map, t.b, _create_InnerMap);
+          return _add_or_get(map, t.a, () => _Node(t.a));
+        })
+        .mutual((f, t) => f.setTo(t, spaceLink) || t.setFrom(f))
+        .toDo((a, b) => a || b);
   }
 
-  bool set_linkTo<F, T>(F from, T to, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {}
-  bool set_link_with_val<A, B, V>(A nodeA, B nodeB, V val, {spaceA = NoneSpace, spaceB = NoneSpace, spaceLink = NoneSpace}) {}
-  bool set_linkTo_with_val<F, T, V>(F from, T to, V val, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {}
+  bool set_linkTo<F, T>(F from, T to, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {
+    return _Tuple2(_Tuple2(from, spaceFrom), _Tuple2(to, spaceTo)).map((t) {
+      final map = _add_or_get(_map, t.b, _create_InnerMap);
+      return _add_or_get(map, t.a, () => _Node(t.a));
+    }).toDo((f, t) => f.setTo(t, spaceLink) || t.setFrom(f));
+  }
+
+  bool set_link_with_val<A, B, V>(A nodeA, B nodeB, V val, {spaceA = NoneSpace, spaceB = NoneSpace, spaceLink = NoneSpace}) {
+    return _Tuple2(_Tuple2(nodeA, spaceA), _Tuple2(nodeB, spaceB))
+        .map((t) {
+          final map = _add_or_get(_map, t.b, _create_InnerMap);
+          return _add_or_get(map, t.a, () => _Node(t.a));
+        })
+        .mutual((f, t) => f.setToV(t, val, spaceLink) || t.setFrom(f))
+        .toDo((a, b) => a || b);
+  }
+
+  bool set_linkTo_with_val<F, T, V>(F from, T to, V val, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {
+    return _Tuple2(_Tuple2(from, spaceFrom), _Tuple2(to, spaceTo)).map((t) {
+      final map = _add_or_get(_map, t.b, _create_InnerMap);
+      return _add_or_get(map, t.a, () => _Node(t.a));
+    }).toDo((f, t) => f.setToV(t, val, spaceLink) || t.setFrom(f));
+  }
 
   bool check_has<T>(T node, [space = NoneSpace]) {
     final smap = _try_get(_map, space);
