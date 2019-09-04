@@ -15,7 +15,6 @@ import './query/full/remove.dart' as base_remove;
 
 part 'node.dart';
 part 'utils.dart';
-part './graphs/items.dart';
 part './graphs/directed.dart';
 part './graphs/directed.value.dart';
 part './graphs/undirected.dart';

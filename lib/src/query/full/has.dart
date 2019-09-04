@@ -7,7 +7,7 @@ import '../../other/utils.dart';
 import '../query.dart';
 
 class Has {
-  final GraphBase _parent;
+  final FullGraph _parent;
   Has(this._parent);
 
   Node node(node, [space = NoneSpace]) => Node(this, node, space);

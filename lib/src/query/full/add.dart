@@ -9,7 +9,7 @@ part './add/ValLink.dart';
 part './add/ValLinkBy.dart';
 
 class Add {
-  final GraphBase _parent;
+  final FullGraph _parent;
   Add(this._parent);
 
   Node node(node, [space = NoneSpace]) => Node(this, node, space);

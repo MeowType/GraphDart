@@ -1,38 +1,37 @@
 part of meowtype.graph;
 
-// class _Tuple2<T> {
-//   final T a;
-//   final T b;
-//   _Tuple2(this.a, this.b);
+class _Tuple2<T> {
+  final T a;
+  final T b;
+  _Tuple2(this.a, this.b);
 
-//   /// return `fn(a, b)`
-//   R toDo<R>(R fn(T a, T b)) => fn(a, b);
+  /// return `fn(a, b)`
+  R toDo<R>(R fn(T a, T b)) => fn(a, b);
 
-//   /// `x = toDo(a)` and `y = toDo(b)` then return `Tuple2(x, y)`
-//   _Tuple2<R> map<R>(R toDo(T v)) => _Tuple2(toDo(a), toDo(b));
+  /// `x = toDo(a)` and `y = toDo(b)` then return `Tuple2(x, y)`
+  _Tuple2<R> map<R>(R toDo(T v)) => _Tuple2(toDo(a), toDo(b));
 
-//   /// `x = toDo(a, b)` and `y = toDo(b, a)` then return `Tuple2(x, y)`
-//   _Tuple2<R> mutual<R>(R toDo(T f, T t)) => _Tuple2(toDo(a, b), toDo(b, a));
+  /// `x = toDo(a, b)` and `y = toDo(b, a)` then return `Tuple2(x, y)`
+  _Tuple2<R> mutual<R>(R toDo(T f, T t)) => _Tuple2(toDo(a, b), toDo(b, a));
 
-//   /// return `Tuple2(Tuple2(a, b), Tuple2(a, b))`
-//   _Tuple2<_Tuple2<T>> fork() => _Tuple2(this, this);
+  /// return `Tuple2(Tuple2(a, b), Tuple2(a, b))`
+  _Tuple2<_Tuple2<T>> fork() => _Tuple2(this, this);
 
-//   /// return `Tuple2(Tuple2(a, a), Tuple2(b, b))`
-//   _Tuple2<_Tuple2<T>> pack() => _Tuple2(_Tuple2(a, a), _Tuple2(b, b));
+  /// return `Tuple2(Tuple2(a, a), Tuple2(b, b))`
+  _Tuple2<_Tuple2<T>> pack() => _Tuple2(_Tuple2(a, a), _Tuple2(b, b));
 
-//   /// `x = doa(a)` and `y = dob(b)` then return `Tuple2(x, y)`
-//   _Tuple2<R> allDo<R>(R doa(T a), R dob(T b)) => _Tuple2(doa(a), dob(b));
+  /// `x = doa(a)` and `y = dob(b)` then return `Tuple2(x, y)`
+  _Tuple2<R> allDo<R>(R doa(T a), R dob(T b)) => _Tuple2(doa(a), dob(b));
 
-//   /// `x = toDo(a)` and `y = toDo(b)` then return `Tuple2(x, y)`
-//   _FnTuple2<F, R> mapFn<F extends Function, R>(R Function(F) toDo(T v)) => _FnTuple2(toDo(a), toDo(b));
+  // /// `x = toDo(a)` and `y = toDo(b)` then return `Tuple2(x, y)`
+  // _FnTuple2<F, R> mapFn<F extends Function, R>(R Function(F) toDo(T v)) => _FnTuple2(toDo(a), toDo(b));
 
-//   /// when fn -> true return Some(this) else None
-//   Maybe<_Tuple2<T>> where(bool fn(_Tuple2<T> t)) => fn(this) ? Some(this) : None();
+  /// when fn -> true return Some(this) else None
+  Maybe<_Tuple2<T>> where(bool fn(_Tuple2<T> t)) => fn(this) ? Some(this) : None();
 
-//   /// make effect
-//   _EffectTuple2<T> get effect => _EffectTuple2(this);
-// }
-
+  // /// make effect
+  // _EffectTuple2<T> get effect => _EffectTuple2(this);
+}
 
 // class _FnTuple2<F extends Function, R> {
 //   final R Function(F) a;
@@ -111,6 +110,12 @@ V _add_or_get<K, V>(Map<K, V> m, K key, V Function() def, [Out<bool> add_success
 Maybe<V> _try_get<K, V>(Map<K, V> m, K key) {
   if (m.containsKey(key)) return Some(m[key]);
   return None();
+}
+
+bool _try_add<K, V>(Map<K, V> m, K key, V Function() def) {
+  if (m.containsKey(key)) return false;
+  m[key] = def();
+  return true;
 }
 
 // Iterable<V> _concat<V>(Iterable<V> a, Iterable<V> b) sync* {

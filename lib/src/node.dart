@@ -1,8 +1,5 @@
 part of meowtype.graph;
 
-Func<_Node> _newNode(val) => () => _Node(val);
-Set _newSet() => Set();
-
 class _Node {
   final dynamic _val;
 

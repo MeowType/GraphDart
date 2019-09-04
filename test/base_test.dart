@@ -4,7 +4,7 @@ import 'package:graph_collection/graph.dart';
 
 void main() {
   test('base', () {
-    final g = Graph();
+    final g = FullGraph();
 
     final add = g.add.node(1).end;
     print(add);
