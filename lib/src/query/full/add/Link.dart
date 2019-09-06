@@ -5,6 +5,8 @@ class Link<F> implements _ILink {
   final dynamic _space;
   Link(this._parent, [this._space = NoneSpace]);
 
+  Link<F> call([space = NoneSpace]) => Link(_parent, space);
+
   ValLink<F, V> val<V>(val) => ValLink<F, V>(this, val);
 
   LinkNode<F, dynamic> node(node, [space = NoneSpace]) => nodeBy(node, space);

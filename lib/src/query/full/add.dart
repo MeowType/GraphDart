@@ -20,7 +20,7 @@ class Node<T> {
   final dynamic _space;
   Node(this._parent, this._node, [this._space = NoneSpace]);
 
-  Link<T> link([space = NoneSpace]) => Link<T>(this, space);
+  Link<T> get link => Link<T>(this);
 
   bool get end => _parent._parent.to_add<T>(_node, _space);
 }

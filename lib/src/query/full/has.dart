@@ -6,6 +6,8 @@ import '../../graph.dart';
 import '../../other/utils.dart';
 import '../query.dart';
 
+part './has/Link.dart';
+
 class Has {
   final FullGraph _parent;
   Has(this._parent);
