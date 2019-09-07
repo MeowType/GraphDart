@@ -2,6 +2,7 @@ part of meowtype.graph;
 
 class _Node {
   final dynamic _val;
+  final dynamic _space;
 
   /// {node}
   final Set<_Node> _from = Set();
@@ -9,7 +10,7 @@ class _Node {
   /// node -> space -> value?
   final Map<_Node, Map<dynamic, Maybe>> _to = {};
 
-  _Node(this._val);
+  _Node(this._val, this._space);
 
   //static _Edge newInnerEdge() => _Edge();
 

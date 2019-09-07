@@ -13,14 +13,14 @@ class FullGraph implements Graph {
 
   bool to_add<T>(T node, [space = NoneSpace]) {
     final map = _add_or_get(_map, space, _create_InnerMap);
-    return _try_add(map, node, () => _Node(node));
+    return _try_add(map, node, () => _Node(node, space));
   }
 
   bool set_link<A, B>(A nodeA, B nodeB, {spaceA = NoneSpace, spaceB = NoneSpace, spaceLink = NoneSpace}) {
     return _Tuple2(_Tuple2(nodeA, spaceA), _Tuple2(nodeB, spaceB))
         .map((t) {
           final map = _add_or_get(_map, t.b, _create_InnerMap);
-          return _add_or_get(map, t.a, () => _Node(t.a));
+          return _add_or_get(map, t.a, () => _Node(t.a, t.b));
         })
         .mutual((f, t) => f.setTo(t, spaceLink) || t.setFrom(f))
         .toDo((a, b) => a || b);
@@ -29,7 +29,7 @@ class FullGraph implements Graph {
   bool set_linkTo<F, T>(F from, T to, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {
     return _Tuple2(_Tuple2(from, spaceFrom), _Tuple2(to, spaceTo)).map((t) {
       final map = _add_or_get(_map, t.b, _create_InnerMap);
-      return _add_or_get(map, t.a, () => _Node(t.a));
+      return _add_or_get(map, t.a, () => _Node(t.a, t.b));
     }).toDo((f, t) => f.setTo(t, spaceLink) || t.setFrom(f));
   }
 
@@ -37,7 +37,7 @@ class FullGraph implements Graph {
     return _Tuple2(_Tuple2(nodeA, spaceA), _Tuple2(nodeB, spaceB))
         .map((t) {
           final map = _add_or_get(_map, t.b, _create_InnerMap);
-          return _add_or_get(map, t.a, () => _Node(t.a));
+          return _add_or_get(map, t.a, () => _Node(t.a, t.b));
         })
         .mutual((f, t) => f.setToV(t, val, spaceLink) || t.setFrom(f))
         .toDo((a, b) => a || b);
@@ -46,7 +46,7 @@ class FullGraph implements Graph {
   bool set_linkTo_with_val<F, T, V>(F from, T to, V val, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace}) {
     return _Tuple2(_Tuple2(from, spaceFrom), _Tuple2(to, spaceTo)).map((t) {
       final map = _add_or_get(_map, t.b, _create_InnerMap);
-      return _add_or_get(map, t.a, () => _Node(t.a));
+      return _add_or_get(map, t.a, () => _Node(t.a, t.b));
     }).toDo((f, t) => f.setToV(t, val, spaceLink) || t.setFrom(f));
   }
 
