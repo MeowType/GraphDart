@@ -5,3 +5,6 @@ class _TheSpace {
 }
 
 const NoneSpace = const _TheSpace();
+
+
+abstract class Space_Or_SpaceWhere = Or<dynamic, Func1<bool, dynamic>> with ToAlias;
