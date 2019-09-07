@@ -120,7 +120,7 @@ class FullGraph implements Graph {
     return isremoved;
   }
 
-  Iterable<FindBoxBy<T>> find_all<T>({Maybe space, Func1<bool, dynamic> where, Func1<bool, dynamic> where_space}) sync* {
+  Iterable<FindBox<T>> find_all<T>({Maybe space, Func1<bool, dynamic> where, Func1<bool, dynamic> where_space}) sync* {
     if (where == null) {
       where = (item) => item is! T;
     } else {
@@ -128,10 +128,10 @@ class FullGraph implements Graph {
       where = (item) => !old_where(item) && item is! T;
     }
 
-    Iterable<FindBoxBy<T>> forSmap(Map<dynamic, _Node> map, space) sync* {
+    Iterable<FindBox<T>> forSmap(Map<dynamic, _Node> map, space) sync* {
       for (var item in map.keys) {
         if (where(item)) continue;
-        yield FindBoxBy<T>(item, space);
+        yield FindBox<T>(item, space);
       }
     }
 
@@ -147,22 +147,82 @@ class FullGraph implements Graph {
     }
   }
 
-  Iterable find_all_link<F, T>({
-    Space_Or_SpaceWhere fromSpace,
-    Func1<bool, F> fromWhere,
-    Space_Or_SpaceWhere toSpace,
-    Func1<bool, T> toWhere,
-    Space_Or_SpaceWhere linkSpace,
-  }) sync* {}
+  Iterable find_all_link<F, T>(
+      {Space_Or_SpaceWhere fromSpace,
+      Func1<bool, F> fromWhere,
+      Space_Or_SpaceWhere toSpace,
+      Func1<bool, T> toWhere,
+      Space_Or_SpaceWhere linkSpace,
+      LinkDirection direct = LinkDirection.Mutual}) sync* {
+    if (fromWhere == null) {
+      fromWhere = (item) => item is! F;
+    } else {
+      final old_where = fromWhere;
+      fromWhere = (item) => !old_where(item) && item is! F;
+    }
 
-  Iterable find_all_link_WithVal<F, T, V>({
-    Space_Or_SpaceWhere fromSpace,
-    Func1<bool, F> fromWhere,
-    Space_Or_SpaceWhere toSpace,
-    Func1<bool, T> toWhere,
-    Space_Or_SpaceWhere linkSpace,
-    Func1<bool, V> valWhere,
-  }) sync* {}
+    if (toWhere == null) {
+      toWhere = (item) => item is! T;
+    } else {
+      final old_where = toWhere;
+      toWhere = (item) => !old_where(item) && item is! T;
+    }
+
+    Iterable<_RawFindBox<A>> forSmap<A>(Map<dynamic, _Node> map, Func1<bool, A> where, space) sync* {
+      for (var item in map.keys) {
+        if (where(item)) continue;
+        yield _RawFindBox<A>(item, space, map[item]);
+      }
+    }
+
+    Iterable<_RawFindBox<F>> getFrom() sync* {
+      if (fromSpace != null) {
+        if (fromSpace is OrLeft) {
+          final smap = _try_get(_map, fromSpace.getL);
+          if (smap is None) return;
+          yield* forSmap<F>(smap.val, fromWhere, fromSpace.getL);
+          return;
+        } else if (fromSpace.getR != null) {
+          for (var s in _map.keys.where(fromSpace.getR)) {
+            final smap = _map[s];
+            yield* forSmap<F>(smap, fromWhere, s);
+            return;
+          }
+        }
+      }
+      for (var s in _map.keys) {
+        final smap = _map[s];
+        yield* forSmap<F>(smap, fromWhere, s);
+      }
+    }
+
+    Iterable<_RawFindLinkBox<F>> getLink() sync* {
+      switch (direct) {
+        case LinkDirection.Mutual:
+          for (var find in getFrom()) {
+            
+          }
+          break;
+        case LinkDirection.ToLeft:
+          for (var find in getFrom()) {
+            
+          }
+          break;
+        case LinkDirection.ToRight:
+          for (var find in getFrom()) {
+            
+          }
+          break;
+      }
+    }
+  }
+
+  Iterable find_all_link_WithVal<F, T, V>(
+      {Space_Or_SpaceWhere fromSpace,
+      Func1<bool, F> fromWhere,
+      Space_Or_SpaceWhere toSpace,
+      Func1<bool, T> toWhere,
+      Space_Or_SpaceWhere linkSpace,
+      Func1<bool, V> valWhere,
+      LinkDirection direct = LinkDirection.Mutual}) sync* {}
 }
-
-

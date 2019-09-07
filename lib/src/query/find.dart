@@ -1,13 +1,9 @@
 part of meowtype.graph.query;
 
-class FindBoxBy<T> extends FindBox {
+class FindBox<T> {
   final T node;
-  FindBoxBy(this.node, space) : super(node, space, T);
+  final dynamic space;
+  FindBox(this.node, this.space);
 }
 
-class FindBox {
-  final dynamic node;
-  final dynamic space;
-  final Type type;
-  FindBox(this.node, this.space, this.type);
-}
+enum LinkDirection { Mutual, ToRight, ToLeft }

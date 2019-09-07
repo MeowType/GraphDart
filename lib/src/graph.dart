@@ -21,6 +21,7 @@ part './graphs/directed.value.dart';
 part './graphs/undirected.dart';
 part './graphs/undirected.value.dart';
 part './graphs/full.dart';
+part './query/find.raw.dart';
 
 abstract class IGraph {}
 
