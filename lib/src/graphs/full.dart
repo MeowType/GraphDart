@@ -146,4 +146,8 @@ class FullGraph implements Graph {
       }
     }
   }
+
+  Iterable find_all_link<T>({fromSpace, Func1<bool, T> fromWhere}) sync* {
+    
+  }
 }

@@ -20,13 +20,15 @@ class Has {
   Where<T> where<T>(Func1<bool, dynamic> fn, [Func1<bool, dynamic> fnSpace]) => Where<T>(this, fn, fnSpace);
 }
 
-class Node<T> {
+class Node<T> implements _INode<T> {
   final Has _parent;
   final T _node;
   final dynamic _space;
   Node(this._parent, this._node, [this._space = NoneSpace]);
 
   bool get end => _parent._parent.check_has<T>(_node, _space);
+
+  Link<T> get link => Link<T>(this);
 }
 
 class Space {
@@ -52,4 +54,13 @@ class Where<T> {
   Where(this._parent, this._fn, [this._fnSpace]);
 
   bool get end => _parent._parent.find_all<T>(where: _fn, where_space: _fnSpace).any(any_to_true);
+}
+
+abstract class _INode<T> {}
+
+abstract class _ILink {
+  _INode node(node, [space = NoneSpace]);
+  _INode<T> nodeBy<T>(T node, [space = NoneSpace]);
+  _INode to(node, [space = NoneSpace]);
+  _INode<T> toBy<T>(T node, [space = NoneSpace]);
 }
