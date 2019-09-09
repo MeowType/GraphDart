@@ -19,7 +19,7 @@ class FindLinkBox<F, T> {
 }
 
 class FindLinkValBox<F, T, V> extends FindLinkBox<F, T> {
-  final T val;
+  final V val;
 
   FindLinkValBox(F from, fromSpace, T to, toSpace, linkSpace, this.val) : super(from, fromSpace, to, toSpace, linkSpace);
 }
