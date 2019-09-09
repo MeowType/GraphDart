@@ -150,22 +150,22 @@ class FullGraph implements Graph {
   Iterable<_RawFindLinkBox<F, T>> _find_all_link_base<F, T>(
       {Space_Or_SpaceWhere fromSpace, Func1<bool, F> fromWhere, Space_Or_SpaceWhere toSpace, Func1<bool, T> toWhere, LinkDirection direct = LinkDirection.Mutual}) {
     if (fromWhere == null) {
-      fromWhere = (item) => item is! F;
+      fromWhere = (item) => item is F;
     } else {
       final old_where = fromWhere;
-      fromWhere = (item) => !old_where(item) && item is! F;
+      fromWhere = (item) => old_where(item) && item is F;
     }
 
     if (toWhere == null) {
-      toWhere = (item) => item is! T;
+      toWhere = (item) => item is T;
     } else {
       final old_where = toWhere;
-      toWhere = (item) => !old_where(item) && item is! T;
+      toWhere = (item) => old_where(item) && item is T;
     }
 
     Iterable<_RawFindBox<A>> forSmap<A>(Map<dynamic, _Node> map, Func1<bool, A> where, space) sync* {
       for (var item in map.keys) {
-        if (where(item)) continue;
+        if (!where(item)) continue;
         yield _RawFindBox<A>(item, space, map[item]);
       }
     }
@@ -268,21 +268,25 @@ class FullGraph implements Graph {
       Space_Or_SpaceWhere linkSpace,
       Func1<bool, V> valWhere,
       LinkDirection direct = LinkDirection.Mutual}) sync* {
+    if (valWhere == null) {
+      valWhere = (item) => true;
+    }
+
     Iterable<_RawFindLinkBox<F, T>> getLink() => _find_all_link_base(fromSpace: fromSpace, fromWhere: fromWhere, toSpace: toSpace, toWhere: toWhere, direct: direct);
 
     if (linkSpace != null) {
       if (linkSpace is OrLeft) {
         yield* getLink()
-            .where((l) => l.map.containsKey(linkSpace.getL) && l.map[linkSpace.getL] is V)
+            .where((l) => l.map.containsKey(linkSpace.getL) && l.map[linkSpace.getL] is V && valWhere(l.map[linkSpace.getL] as V))
             .map((l) => FindLinkValBox(l.from.val, l.from.space, l.to.val, l.to.space, linkSpace.getL, l.map[linkSpace.getL] as V));
       } else if (linkSpace.getR != null) {
         for (var l in getLink()) {
-          yield* l.map.keys.where(linkSpace.getR).where((s) => l.map[s] is V).map((s) => FindLinkValBox(l.from.val, l.from.space, l.to.val, l.to.space, s, l.map[s] as V));
+          yield* l.map.keys.where(linkSpace.getR).where((s) => l.map[s] is V && valWhere(l.map[s] as V)).map((s) => FindLinkValBox(l.from.val, l.from.space, l.to.val, l.to.space, s, l.map[s] as V));
         }
       }
     }
     for (var l in getLink()) {
-      yield* l.map.keys.where((s) => l.map[s] is V).map((s) => FindLinkValBox(l.from.val, l.from.space, l.to.val, l.to.space, s, l.map[s] as V));
+      yield* l.map.keys.where((s) => l.map[s] is V && valWhere(l.map[s] as V)).map((s) => FindLinkValBox(l.from.val, l.from.space, l.to.val, l.to.space, s, l.map[s] as V));
     }
   }
 }
