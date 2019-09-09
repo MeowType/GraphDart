@@ -147,13 +147,8 @@ class FullGraph implements Graph {
     }
   }
 
-  Iterable find_all_link<F, T>(
-      {Space_Or_SpaceWhere fromSpace,
-      Func1<bool, F> fromWhere,
-      Space_Or_SpaceWhere toSpace,
-      Func1<bool, T> toWhere,
-      Space_Or_SpaceWhere linkSpace,
-      LinkDirection direct = LinkDirection.Mutual}) sync* {
+  Iterable<_RawFindLinkBox<F, T>> _find_all_link_base<F, T>(
+      {Space_Or_SpaceWhere fromSpace, Func1<bool, F> fromWhere, Space_Or_SpaceWhere toSpace, Func1<bool, T> toWhere, LinkDirection direct = LinkDirection.Mutual}) {
     if (fromWhere == null) {
       fromWhere = (item) => item is! F;
     } else {
@@ -196,24 +191,72 @@ class FullGraph implements Graph {
       }
     }
 
-    Iterable<_RawFindLinkBox<F>> getLink() sync* {
+    Func1<bool, dynamic> getToSoaceFn() {
+      if (toSpace != null) {
+        if (toSpace is OrLeft) {
+          final space = toSpace.getL;
+          return (s) => s == space;
+        } else if (toSpace.getR != null) {
+          return toSpace.getR;
+        }
+      }
+      return (_) => true;
+    }
+
+    Iterable<_RawFindLinkBox<F, T>> getLink() sync* {
+      final toSoaceFn = getToSoaceFn();
+
+      Iterable<_RawFindLinkBox<F, T>> genTo(_RawFindBox<F> find) sync* {
+        yield* find.node._to.entries.where((e) => toWhere(e.key._val) && toSoaceFn(e.key._space)).map((e) => _RawFindLinkBox(find, _RawFindBox.FromNode(e.key), e.value));
+      }
+
+      Iterable<_RawFindLinkBox<F, T>> genFrom(_RawFindBox<F> find) sync* {
+        yield* find.node._from.where((_n) => toWhere(_n._val) && toSoaceFn(_n._space) && _n._to.containsKey(find.node)).map((_n) => _RawFindLinkBox(find, _RawFindBox.FromNode(_n), _n._to[find.node]));
+      }
+
       switch (direct) {
         case LinkDirection.Mutual:
           for (var find in getFrom()) {
-            
+            yield* genTo(find);
+            yield* genFrom(find);
           }
           break;
         case LinkDirection.ToLeft:
           for (var find in getFrom()) {
-            
+            yield* genFrom(find);
           }
           break;
         case LinkDirection.ToRight:
           for (var find in getFrom()) {
-            
+            yield* genTo(find);
           }
           break;
       }
+    }
+
+    return getLink();
+  }
+
+  Iterable<FindLinkBox<F, T>> find_all_link<F, T>(
+      {Space_Or_SpaceWhere fromSpace,
+      Func1<bool, F> fromWhere,
+      Space_Or_SpaceWhere toSpace,
+      Func1<bool, T> toWhere,
+      Space_Or_SpaceWhere linkSpace,
+      LinkDirection direct = LinkDirection.Mutual}) sync* {
+    Iterable<_RawFindLinkBox<F, T>> getLink() => _find_all_link_base(fromSpace: fromSpace, fromWhere: fromWhere, toSpace: toSpace, toWhere: toWhere, direct: direct);
+
+    if (linkSpace != null) {
+      if (linkSpace is OrLeft) {
+        yield* getLink().where((l) => l.map.containsKey(linkSpace.getL)).map((l) => FindLinkBox(l.from.val, l.from.space, l.to.val, l.to.space, linkSpace.getL));
+      } else if (linkSpace.getR != null) {
+        for (var l in getLink()) {
+          yield* l.map.keys.where(linkSpace.getR).map((s) => FindLinkBox(l.from.val, l.from.space, l.to.val, l.to.space, s));
+        }
+      }
+    }
+    for (var l in getLink()) {
+      yield* l.map.keys.map((s) => FindLinkBox(l.from.val, l.from.space, l.to.val, l.to.space, s));
     }
   }
 
