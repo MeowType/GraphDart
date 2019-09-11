@@ -59,6 +59,36 @@ class FullGraph implements Graph {
     return false;
   }
 
+  bool check_has_link<F, T>(F from, Maybe<T> to, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace, LinkDirection direct = LinkDirection.Mutual}) {
+    if (direct == null || direct == LinkDirection.Mutual) {
+      return check_has_link(from, to, spaceFrom: spaceFrom, spaceTo: spaceTo, spaceLink: spaceLink, direct: LinkDirection.ToRight) ||
+          check_has_link(from, to, spaceFrom: spaceFrom, spaceTo: spaceTo, spaceLink: spaceLink, direct: LinkDirection.FromLeft);
+    }
+
+    final smap = _try_get(_map, spaceFrom);
+    if (smap is Some && smap.val.containsKey(from) && smap.val[from] is F) {
+      final _n = smap.val[from];
+      if (to is Some) {
+        final smap = _try_get(_map, spaceFrom);
+        if (smap is Some && smap.val.containsKey(to.val) && smap.val[to.val] is T) {
+          if (direct == LinkDirection.ToRight) {
+            return _n.hasTo(smap.val[to.val], spaceLink);
+          } else {
+            return smap.val[to.val].hasTo(_n, spaceLink);
+          }
+        }
+        return false;
+      } else {
+        if (direct == LinkDirection.ToRight) {
+          return _n._to.values.any((_m) => _m.containsKey(spaceLink));
+        } else {
+          return _n._from.any((_f) => _f.hasTo(_n, spaceLink));
+        }
+      }
+    }
+    return false;
+  }
+
   bool try_remove<T>(T node, [space = NoneSpace, Out<Maybe<T>> removed_value]) {
     final smap = _try_get(_map, space);
     if (smap is None) return false;
@@ -221,7 +251,7 @@ class FullGraph implements Graph {
             yield* genFrom(find);
           }
           break;
-        case LinkDirection.ToLeft:
+        case LinkDirection.FromLeft:
           for (var find in getFrom()) {
             yield* genFrom(find);
           }
