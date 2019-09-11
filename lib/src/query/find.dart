@@ -6,7 +6,7 @@ class FindBox<T> {
   FindBox(this.node, this.space);
 }
 
-enum LinkDirection { Mutual, ToRight, FromLeft }
+enum LinkDirection { Mutual, To, From }
 
 class FindLinkBox<F, T> {
   final F from;

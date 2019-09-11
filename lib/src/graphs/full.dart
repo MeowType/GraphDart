@@ -61,8 +61,8 @@ class FullGraph implements Graph {
 
   bool check_has_link<F, T>(F from, Maybe<T> to, {spaceFrom = NoneSpace, spaceTo = NoneSpace, spaceLink = NoneSpace, LinkDirection direct = LinkDirection.Mutual}) {
     if (direct == null || direct == LinkDirection.Mutual) {
-      return check_has_link(from, to, spaceFrom: spaceFrom, spaceTo: spaceTo, spaceLink: spaceLink, direct: LinkDirection.ToRight) ||
-          check_has_link(from, to, spaceFrom: spaceFrom, spaceTo: spaceTo, spaceLink: spaceLink, direct: LinkDirection.FromLeft);
+      return check_has_link(from, to, spaceFrom: spaceFrom, spaceTo: spaceTo, spaceLink: spaceLink, direct: LinkDirection.To) ||
+          check_has_link(from, to, spaceFrom: spaceFrom, spaceTo: spaceTo, spaceLink: spaceLink, direct: LinkDirection.From);
     }
 
     final smap = _try_get(_map, spaceFrom);
@@ -71,7 +71,7 @@ class FullGraph implements Graph {
       if (to is Some) {
         final smap = _try_get(_map, spaceFrom);
         if (smap is Some && smap.val.containsKey(to.val) && smap.val[to.val] is T) {
-          if (direct == LinkDirection.ToRight) {
+          if (direct == LinkDirection.To) {
             return _n.hasTo(smap.val[to.val], spaceLink);
           } else {
             return smap.val[to.val].hasTo(_n, spaceLink);
@@ -79,7 +79,7 @@ class FullGraph implements Graph {
         }
         return false;
       } else {
-        if (direct == LinkDirection.ToRight) {
+        if (direct == LinkDirection.To) {
           return _n._to.values.any((_m) => _m.containsKey(spaceLink));
         } else {
           return _n._from.any((_f) => _f.hasTo(_n, spaceLink));
@@ -251,12 +251,12 @@ class FullGraph implements Graph {
             yield* genFrom(find);
           }
           break;
-        case LinkDirection.FromLeft:
+        case LinkDirection.From:
           for (var find in getFrom()) {
             yield* genFrom(find);
           }
           break;
-        case LinkDirection.ToRight:
+        case LinkDirection.To:
           for (var find in getFrom()) {
             yield* genTo(find);
           }
