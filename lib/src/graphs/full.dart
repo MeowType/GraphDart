@@ -131,7 +131,7 @@ class FullGraph implements Graph {
     }
   }
 
-  Iterable<_RawFindLinkBox<F, T>> _find_all_link_base<F, T>(
+  Iterable<_RawFindLinkBox> _find_all_link_base<F, T>(
       {Or<dynamic, Func1<bool, dynamic>> fromSpace, Func1<bool, F> fromWhere, Or<dynamic, Func1<bool, dynamic>> toSpace, Func1<bool, T> toWhere, LinkDirection direct = LinkDirection.Mutual}) {
     if (fromWhere == null) {
       fromWhere = (item) => item is F;
@@ -187,15 +187,15 @@ class FullGraph implements Graph {
       return (_) => true;
     }
 
-    Iterable<_RawFindLinkBox<F, T>> getLink() sync* {
+    Iterable<_RawFindLinkBox> getLink() sync* {
       final toSoaceFn = getToSoaceFn();
 
       Iterable<_RawFindLinkBox<F, T>> genTo(_RawFindBox<F> find) sync* {
         yield* find.node._to.entries.where((e) => toWhere(e.key._val) && toSoaceFn(e.key._space)).map((e) => _RawFindLinkBox(find, _RawFindBox.FromNode(e.key), e.value));
       }
 
-      Iterable<_RawFindLinkBox<F, T>> genFrom(_RawFindBox<F> find) sync* {
-        yield* find.node._from.where((_n) => toWhere(_n._val) && toSoaceFn(_n._space) && _n._to.containsKey(find.node)).map((_n) => _RawFindLinkBox(find, _RawFindBox.FromNode(_n), _n._to[find.node]));
+      Iterable<_RawFindLinkBox<T, F>> genFrom(_RawFindBox<F> find) sync* {
+        yield* find.node._from.where((_n) => toWhere(_n._val) && toSoaceFn(_n._space) && _n._to.containsKey(find.node)).map((_n) => _RawFindLinkBox(_RawFindBox.FromNode(_n), find, _n._to[find.node]));
       }
 
       switch (direct) {
@@ -221,14 +221,14 @@ class FullGraph implements Graph {
     return getLink();
   }
 
-  Iterable<FindLinkBox<F, T>> find_all_link<F, T>(
+  Iterable<FindLinkBox> find_all_link<F, T>(
       {Or<dynamic, Func1<bool, dynamic>> fromSpace,
       Func1<bool, F> fromWhere,
       Or<dynamic, Func1<bool, dynamic>> toSpace,
       Func1<bool, T> toWhere,
       Or<dynamic, Func1<bool, dynamic>> linkSpace,
       LinkDirection direct = LinkDirection.Mutual}) sync* {
-    Iterable<_RawFindLinkBox<F, T>> getLink() => _find_all_link_base(fromSpace: fromSpace, fromWhere: fromWhere, toSpace: toSpace, toWhere: toWhere, direct: direct);
+    Iterable<_RawFindLinkBox> getLink() => _find_all_link_base<F, T>(fromSpace: fromSpace, fromWhere: fromWhere, toSpace: toSpace, toWhere: toWhere, direct: direct);
 
     if (linkSpace != null) {
       if (linkSpace is OrLeft) {
@@ -244,7 +244,7 @@ class FullGraph implements Graph {
     }
   }
 
-  Iterable<FindLinkValBox<F, T, V>> find_all_link_WithVal<F, T, V>(
+  Iterable<FindLinkValBox<dynamic, dynamic, V>> find_all_link_WithVal<F, T, V>(
       {Or<dynamic, Func1<bool, dynamic>> fromSpace,
       Func1<bool, F> fromWhere,
       Or<dynamic, Func1<bool, dynamic>> toSpace,
@@ -256,7 +256,7 @@ class FullGraph implements Graph {
       valWhere = (item) => true;
     }
 
-    Iterable<_RawFindLinkBox<F, T>> getLink() => _find_all_link_base(fromSpace: fromSpace, fromWhere: fromWhere, toSpace: toSpace, toWhere: toWhere, direct: direct);
+    Iterable<_RawFindLinkBox> getLink() => _find_all_link_base<F, T>(fromSpace: fromSpace, fromWhere: fromWhere, toSpace: toSpace, toWhere: toWhere, direct: direct);
 
     if (linkSpace != null) {
       if (linkSpace is OrLeft) {
