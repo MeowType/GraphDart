@@ -10,9 +10,10 @@ import 'package:ref_out_box/api.dart';
 import './other/utils.dart';
 import './other/Or.dart';
 import './query/query.dart';
-import './query/full/add.dart' as base_add;
-import './query/full/has.dart' as base_has;
-import './query/full/remove.dart' as base_remove;
+import './query/full/add.dart' as full;
+import './query/full/has.dart' as full;
+import './query/full/remove.dart' as full;
+import './query/full/find.dart' as full;
 
 part 'node.dart';
 part 'utils.dart';

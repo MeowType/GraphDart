@@ -7,9 +7,10 @@ class FullGraph implements Graph {
   /// space -> node -> _Node
   final Map<dynamic, Map<dynamic, _Node>> _map = {};
 
-  base_add.Add get add => base_add.Add(this);
-  base_has.Has get has => base_has.Has(this);
-  base_remove.Remove get remove => base_remove.Remove(this);
+  full.Add get add => full.Add(this);
+  full.Has get has => full.Has(this);
+  full.Remove get remove => full.Remove(this);
+  full.Find get find => full.Find(this);
 
   bool to_add<T>(T node, [space = NoneSpace]) {
     final map = _add_or_get(_map, space, _create_InnerMap);
@@ -103,53 +104,6 @@ class FullGraph implements Graph {
     }
   }
 
-  /// Return is remove 1 or 1+ item
-  bool try_remove_where<T>({Maybe space, Func1<bool, dynamic> where, Func1<bool, dynamic> where_space}) {
-    var isremoved = false;
-    if (where == null) {
-      where = (item) => item is! T;
-    } else {
-      final old_where = where;
-      where = (item) => !old_where(item) && item is! T;
-    }
-
-    bool checkRemove(item, _Node _n) {
-      if (where(item)) return false;
-      // todo unset link
-      return true;
-    }
-
-    void Function(Map<dynamic, _Node> map) forSmap;
-    forSmap = (Map<dynamic, _Node> map) {
-      bool Function(dynamic item, _Node _n) mapfn;
-      void firstRemoved() {
-        isremoved = true;
-        mapfn = checkRemove;
-        forSmap = (map) => map.removeWhere(checkRemove);
-      }
-
-      mapfn = (item, _n) {
-        final r = checkRemove(item, _n);
-        if (r) firstRemoved();
-        return r;
-      };
-
-      map.removeWhere((item, _n) => mapfn(item, _n));
-    };
-
-    if (space is Some) {
-      final smap = _try_get(_map, space.val);
-      if (smap is None) return false;
-      forSmap(smap.val);
-    } else {
-      for (var s in where_space == null ? _map.keys : _map.keys.where(where_space)) {
-        final smap = _map[s];
-        forSmap(smap);
-      }
-    }
-    return isremoved;
-  }
-
   Iterable<FindBox<T>> find_all<T>({Maybe space, Func1<bool, dynamic> where, Func1<bool, dynamic> where_space}) sync* {
     if (where == null) {
       where = (item) => item is! T;
@@ -178,7 +132,7 @@ class FullGraph implements Graph {
   }
 
   Iterable<_RawFindLinkBox<F, T>> _find_all_link_base<F, T>(
-      {Space_Or_SpaceWhere fromSpace, Func1<bool, F> fromWhere, Space_Or_SpaceWhere toSpace, Func1<bool, T> toWhere, LinkDirection direct = LinkDirection.Mutual}) {
+      {Or<dynamic, Func1<bool, dynamic>> fromSpace, Func1<bool, F> fromWhere, Or<dynamic, Func1<bool, dynamic>> toSpace, Func1<bool, T> toWhere, LinkDirection direct = LinkDirection.Mutual}) {
     if (fromWhere == null) {
       fromWhere = (item) => item is F;
     } else {
@@ -268,11 +222,11 @@ class FullGraph implements Graph {
   }
 
   Iterable<FindLinkBox<F, T>> find_all_link<F, T>(
-      {Space_Or_SpaceWhere fromSpace,
+      {Or<dynamic, Func1<bool, dynamic>> fromSpace,
       Func1<bool, F> fromWhere,
-      Space_Or_SpaceWhere toSpace,
+      Or<dynamic, Func1<bool, dynamic>> toSpace,
       Func1<bool, T> toWhere,
-      Space_Or_SpaceWhere linkSpace,
+      Or<dynamic, Func1<bool, dynamic>> linkSpace,
       LinkDirection direct = LinkDirection.Mutual}) sync* {
     Iterable<_RawFindLinkBox<F, T>> getLink() => _find_all_link_base(fromSpace: fromSpace, fromWhere: fromWhere, toSpace: toSpace, toWhere: toWhere, direct: direct);
 
@@ -291,11 +245,11 @@ class FullGraph implements Graph {
   }
 
   Iterable<FindLinkValBox<F, T, V>> find_all_link_WithVal<F, T, V>(
-      {Space_Or_SpaceWhere fromSpace,
+      {Or<dynamic, Func1<bool, dynamic>> fromSpace,
       Func1<bool, F> fromWhere,
-      Space_Or_SpaceWhere toSpace,
+      Or<dynamic, Func1<bool, dynamic>> toSpace,
       Func1<bool, T> toWhere,
-      Space_Or_SpaceWhere linkSpace,
+      Or<dynamic, Func1<bool, dynamic>> linkSpace,
       Func1<bool, V> valWhere,
       LinkDirection direct = LinkDirection.Mutual}) sync* {
     if (valWhere == null) {
