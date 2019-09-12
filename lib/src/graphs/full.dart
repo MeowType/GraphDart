@@ -104,7 +104,7 @@ class FullGraph implements Graph {
     }
   }
 
-  Iterable<FindBox<T>> find_all<T>({Maybe space, Func1<bool, dynamic> where, Func1<bool, dynamic> where_space}) sync* {
+  Iterable<FindBox<T>> find_all<T>({Func1<bool, dynamic> where, Or<dynamic, Func1<bool, dynamic>> space}) sync* {
     if (where == null) {
       where = (item) => item is! T;
     } else {
@@ -119,12 +119,12 @@ class FullGraph implements Graph {
       }
     }
 
-    if (space is Some) {
-      final smap = _try_get(_map, space.val);
+    if (space is OrLeft) {
+      final smap = _try_get(_map, space.getL);
       if (smap is None) return;
-      yield* forSmap(smap.val, space.val);
+      yield* forSmap(smap.val, space.getL);
     } else {
-      for (var s in where_space == null ? _map.keys : _map.keys.where(where_space)) {
+      for (var s in space is OrRight ? _map.keys : _map.keys.where(space.getR)) {
         final smap = _map[s];
         yield* forSmap(smap, s);
       }
