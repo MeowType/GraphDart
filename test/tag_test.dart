@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 
 import 'package:graph_collection/graph.dart';
-import 'package:some/index.dart';
 
 void main() {
   group('tags', () {
@@ -64,19 +63,19 @@ void main() {
       expect(
           g.hasLinkTo(from, to, anyTags: [t2, t3], allTags: [t1, t3]), isFalse);
 
-      expect(g.get(from, to, key, anyTags: [t1]) is Some, isTrue);
-      expect(g.get(from, to, key, anyTags: [t3]) is None, isTrue);
-      expect(g.get(from, to, key, anyTags: [t2, t3]) is Some, isTrue);
+      expect(g.get(from, to, key, anyTags: [t1]) != null, isTrue);
+      expect(g.get(from, to, key, anyTags: [t3]) == null, isTrue);
+      expect(g.get(from, to, key, anyTags: [t2, t3]) == null, isTrue);
 
-      expect(g.get(from, to, key, allTags: [t1]) is Some, isTrue);
-      expect(g.get(from, to, key, allTags: [t1, t2]) is Some, isTrue);
-      expect(g.get(from, to, key, allTags: [t1, t3]) is None, isTrue);
+      expect(g.get(from, to, key, allTags: [t1]) == null, isTrue);
+      expect(g.get(from, to, key, allTags: [t1, t2]) == null, isTrue);
+      expect(g.get(from, to, key, allTags: [t1, t3]) == null, isTrue);
 
       expect(
-          g.get(from, to, key, anyTags: [t1], allTags: [t1]) is Some, isTrue);
-      expect(g.get(from, to, key, anyTags: [t3], allTags: [t1, t2]) is None,
+          g.get(from, to, key, anyTags: [t1], allTags: [t1]) != null, isTrue);
+      expect(g.get(from, to, key, anyTags: [t3], allTags: [t1, t2]) == null,
           isTrue);
-      expect(g.get(from, to, key, anyTags: [t2, t3], allTags: [t1, t3]) is None,
+      expect(g.get(from, to, key, anyTags: [t2, t3], allTags: [t1, t3]) == null,
           isTrue);
     });
   });

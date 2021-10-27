@@ -2,7 +2,7 @@ part of meowtype.graph;
 
 class _Edge {
   final Set tags = Set();
-  final Map<dynamic, Maybe<dynamic>> map = Map<dynamic, Maybe<dynamic>>();
+  final Map<dynamic, dynamic> map = Map<dynamic, dynamic>();
   final Map<dynamic, Set> valtags = Map<dynamic, Set>();
 }
 
@@ -26,7 +26,7 @@ class _Node {
 
   void setToV(_Node node, key, val) {
     final edge = _add_or_get(to, node, newInnerEdge);
-    edge.map[key] = Some(val);
+    edge.map[key] = val;
   }
 
   void setTag(_Node node, List tags) {
@@ -40,14 +40,14 @@ class _Node {
     tagset.addAll(tags);
   }
 
-  Maybe get(_Node node, key) {
+  dynamic get(_Node node, key) {
     if (to.containsKey(node)) {
       final edge = to[node];
-      if (edge.map.containsKey(key)) {
-        return edge.map[key];
+      if (edge!.map.containsKey(key)) {
+        return edge.map[key]!;
       }
     }
-    return None();
+    return null;
   }
 
   bool hasFrom(_Node node) {
@@ -60,7 +60,7 @@ class _Node {
 
   bool hasToV(_Node node, key) {
     if (to.containsKey(node)) {
-      final edge = to[node];
+      final edge = to[node]!;
       return edge.map.containsKey(key);
     }
     return false;
@@ -76,7 +76,7 @@ class _Node {
     if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     if (edge.valtags.containsKey(key)) {
-      return edge.valtags[key].containsAll(tags);
+      return edge.valtags[key]!.containsAll(tags);
     }
     return false;
   }
@@ -91,7 +91,7 @@ class _Node {
     if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     if (edge.valtags.containsKey(key)) {
-      return tags.any((tag) => edge.valtags[key].contains(tag));
+      return tags.any((tag) => edge.valtags[key]!.contains(tag));
     }
     return false;
   }
@@ -107,7 +107,7 @@ class _Node {
   bool unsetToV(_Node node, key) {
     if (to.containsKey(node)) {
       final edge = to[node];
-      edge.valtags.remove(key);
+      edge!.valtags.remove(key);
       return edge.map.remove(key) != null;
     }
     return false;
@@ -115,8 +115,8 @@ class _Node {
 
   bool unsetTag(_Node node, List tags) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.tags.removeAll(tags);
+    if (edge != null) {
+      edge.tags.removeAll(tags);
       return true;
     }
     return false;
@@ -124,9 +124,9 @@ class _Node {
 
   bool unsetValTag(_Node node, key, List tags) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      if (edge.val.valtags.containsKey(key)) {
-        edge.val.valtags[key].removeAll(tags);
+    if (edge != null) {
+      if (edge.valtags.containsKey(key)) {
+        edge.valtags[key]!.removeAll(tags);
         return true;
       }
     }
@@ -135,8 +135,8 @@ class _Node {
 
   bool clearTags(_Node node) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.tags.clear();
+    if (edge != null) {
+      edge.tags.clear();
       return true;
     }
     return false;
@@ -144,8 +144,8 @@ class _Node {
 
   bool clearValTags(_Node node) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.valtags.clear();
+    if (edge != null) {
+      edge.valtags.clear();
       return true;
     }
     return false;

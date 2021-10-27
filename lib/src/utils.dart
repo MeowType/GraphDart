@@ -28,8 +28,7 @@ class _Tuple2<T> {
       _FnTuple2(toDo(a), toDo(b));
 
   /// when fn -> true return Some(this) else None
-  Maybe<_Tuple2<T>> where(bool fn(_Tuple2<T> t)) =>
-      fn(this) ? Some(this) : None();
+  _Tuple2<T>? where(bool fn(_Tuple2<T> t)) => fn(this) ? this : null;
 
   /// make effect
   _EffectTuple2<T> get effect => _EffectTuple2(this);
@@ -99,15 +98,15 @@ bool _or(bool a, bool b) => a || b;
 // bool _and(bool a, bool b) => a && b;
 
 V _add_or_get<K, V>(Map<K, V> m, K key, V Function() def) {
-  if (m.containsKey(key)) return m[key];
+  if (m.containsKey(key)) return m[key]!;
   final val = def();
   m[key] = val;
   return val;
 }
 
-Maybe<V> _try_get<K, V>(Map<K, V> m, K key) {
-  if (m.containsKey(key)) return Some(m[key]);
-  return None();
+V? _try_get<K, V>(Map<K, V> m, K key) {
+  if (m.containsKey(key)) return m[key];
+  return null;
 }
 
 Iterable<V> _concat<V>(Iterable<V> a, Iterable<V> b) sync* {

@@ -5,27 +5,27 @@ abstract class DirectedGraph extends GraphItems {
   factory DirectedGraph() = FullGraph;
 
   /// Link a directed link, if [from] and [to] don't exist, they will be added
-  /// 
+  ///
   /// Optional [tags] for setting tags
   void linkTo(from, to, {List tags});
 
   /// Determine if there is such a directed link
-  /// 
+  ///
   /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool hasLinkTo(from, to, {List anyTags, List allTags});
 
   /// Remove a directed link, but will not remove [from] and [to]
-  /// 
+  ///
   /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   bool unLinkTo(from, to, {List anyTags, List allTags});
 
   /// Get all links link from [val]
-  /// 
+  ///
   /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable linkTos(val, {List anyTags, List allTags});
 
   /// Get all links link to [val]
-  /// 
+  ///
   /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Iterable linkFroms(val, {List anyTags, List allTags});
 }

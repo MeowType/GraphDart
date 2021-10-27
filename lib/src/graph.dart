@@ -1,6 +1,5 @@
 library meowtype.graph;
 
-import 'package:some/index.dart';
 import 'dart:collection';
 
 part 'node.dart';
