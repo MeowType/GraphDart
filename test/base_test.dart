@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-
+import 'package:some/index.dart';
 import 'package:graph_collection/graph.dart';
 
 void main() {
@@ -111,11 +111,11 @@ void main() {
     expect(g.values(1, 3), hasLength(1));
     expect(g.valuesBy<int>(1), hasLength(1));
 
-    expect(g.get(1, 2, 3).has, isTrue);
-    expect(g.getBy<int>(1, 2).has, isTrue);
+    expect(g.tryGet(1, 2, 3).has, isTrue);
+    expect(g.tryGetBy<int>(1, 2).has, isTrue);
 
-    expect(g.get(1, 2, 3).val, equals(4));
-    expect(g.getBy<int>(1, 2).val, equals(3));
+    expect(g.tryGet(1, 2, 3).val, equals(4));
+    expect(g.tryGetBy<int>(1, 2).val, equals(3));
 
     expect(g.unSet(1, 2, 3), isTrue);
     expect(g.unSet(1, 2, 3), isFalse);
@@ -168,11 +168,11 @@ void main() {
     expect(g.valueTos(1, 3), hasLength(1));
     expect(g.valueTosBy<int>(1), hasLength(1));
 
-    expect(g.get(1, 2, 3).has, isTrue);
-    expect(g.getBy<int>(1, 2).has, isTrue);
+    expect(g.tryGet(1, 2, 3).has, isTrue);
+    expect(g.tryGetBy<int>(1, 2).has, isTrue);
 
-    expect(g.get(1, 2, 3).val, equals(4));
-    expect(g.getBy<int>(1, 2).val, equals(3));
+    expect(g.tryGet(1, 2, 3).val, equals(4));
+    expect(g.tryGetBy<int>(1, 2).val, equals(3));
 
     expect(g.unSetTo(1, 2, 3), isTrue);
     expect(g.unSetTo(1, 2, 3), isFalse);
@@ -235,11 +235,11 @@ void main() {
     expect(g.valueTos(1, 2), hasLength(1));
     expect(g.valueTosBy<int>(1), hasLength(1));
 
-    expect(g.get(1, 1, 2).has, isTrue);
-    expect(g.getBy<int>(1, 1).has, isTrue);
+    expect(g.tryGet(1, 1, 2).has, isTrue);
+    expect(g.tryGetBy<int>(1, 1).has, isTrue);
 
-    expect(g.get(1, 1, 2).val, equals(3));
-    expect(g.getBy<int>(1, 1).val, equals(2));
+    expect(g.tryGet(1, 1, 2).val, equals(3));
+    expect(g.tryGetBy<int>(1, 1).val, equals(2));
 
     expect(g.unSetTo(1, 1, 2), isTrue);
     expect(g.unSetTo(1, 1, 2), isFalse);

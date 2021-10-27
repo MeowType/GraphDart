@@ -40,11 +40,11 @@ class _Node {
     tagset.addAll(tags);
   }
 
-  Maybe get(_Node node, key) {
+  Maybe tryGet(_Node node, key) {
     if (to.containsKey(node)) {
-      final edge = to[node];
+      final edge = to[node]!;
       if (edge.map.containsKey(key)) {
-        return edge.map[key];
+        return edge.map[key]!;
       }
     }
     return None();
@@ -60,7 +60,7 @@ class _Node {
 
   bool hasToV(_Node node, key) {
     if (to.containsKey(node)) {
-      final edge = to[node];
+      final edge = to[node]!;
       return edge.map.containsKey(key);
     }
     return false;
@@ -76,7 +76,7 @@ class _Node {
     if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     if (edge.valtags.containsKey(key)) {
-      return edge.valtags[key].containsAll(tags);
+      return edge.valtags[key]!.containsAll(tags);
     }
     return false;
   }
@@ -91,7 +91,7 @@ class _Node {
     if (tags.isEmpty) return false;
     final edge = _add_or_get(to, node, newInnerEdge);
     if (edge.valtags.containsKey(key)) {
-      return tags.any((tag) => edge.valtags[key].contains(tag));
+      return tags.any((tag) => edge.valtags[key]!.contains(tag));
     }
     return false;
   }
@@ -106,7 +106,7 @@ class _Node {
 
   bool unsetToV(_Node node, key) {
     if (to.containsKey(node)) {
-      final edge = to[node];
+      final edge = to[node]!;
       edge.valtags.remove(key);
       return edge.map.remove(key) != null;
     }
@@ -115,8 +115,8 @@ class _Node {
 
   bool unsetTag(_Node node, List tags) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.tags.removeAll(tags);
+    if (edge.has) {
+      edge.val!.tags.removeAll(tags);
       return true;
     }
     return false;
@@ -124,9 +124,9 @@ class _Node {
 
   bool unsetValTag(_Node node, key, List tags) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      if (edge.val.valtags.containsKey(key)) {
-        edge.val.valtags[key].removeAll(tags);
+    if (edge.has) {
+      if (edge.val!.valtags.containsKey(key)) {
+        edge.val!.valtags[key]!.removeAll(tags);
         return true;
       }
     }
@@ -135,8 +135,8 @@ class _Node {
 
   bool clearTags(_Node node) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.tags.clear();
+    if (edge.has) {
+      edge.val!.tags.clear();
       return true;
     }
     return false;
@@ -144,8 +144,8 @@ class _Node {
 
   bool clearValTags(_Node node) {
     final edge = _try_get(to, node);
-    if (edge is Some) {
-      edge.val.valtags.clear();
+    if (edge.has) {
+      edge.val!.valtags.clear();
       return true;
     }
     return false;

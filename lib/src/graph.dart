@@ -19,7 +19,6 @@ abstract class LinkGraph implements UndirectedGraph, DirectedGraph {
 }
 
 /// Contains all types of Graph, The difference with [LinkGraph] is that you can set the value of the edge.
-abstract class Graph extends LinkGraph
-    implements UndirectedValueGraph, DirectedValueGraph {
+abstract class Graph extends LinkGraph implements UndirectedValueGraph, DirectedValueGraph {
   factory Graph() = FullGraph;
 }

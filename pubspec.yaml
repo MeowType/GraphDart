@@ -1,15 +1,12 @@
 name: graph_collection
-version: '1.1.2'
-description: 'Provides numerous graph theory based Graph Collections: Graph[LinkGraph[UndirectedGraph, DirectedGraph], UndirectedValueGraph, DirectedValueGraph]'
-authors:
-- 'MeowType <aditrc@outlook.com>'
-- '2A5F <U2A5F@outlook.com>'
-homepage: 'https://github.com/MeowType/GraphDart'
-repository: 'https://github.com/MeowType/GraphDart'
-issue_tracker: 'https://github.com/MeowType/GraphDart/issues'
+version: "2.0.0"
+description: "Provides numerous graph theory based Graph Collections: Graph[LinkGraph[UndirectedGraph, DirectedGraph], UndirectedValueGraph, DirectedValueGraph]"
+homepage: "https://github.com/MeowType/GraphDart"
+repository: "https://github.com/MeowType/GraphDart"
+issue_tracker: "https://github.com/MeowType/GraphDart/issues"
 environment:
-  sdk: '>=2.0.0 <3.0.0'
+  sdk: ">=2.14.0 <3.0.0"
 dependencies:
-  some: ^1.2.2
+  some: ^2.0.0
 dev_dependencies:
-  test: ^1.6.5
+  test: ^1.19.0

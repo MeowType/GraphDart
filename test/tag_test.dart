@@ -21,19 +21,12 @@ void main() {
 
       expect(g.hasLinkTo(from, to, anyTags: [t1], allTags: [t1]), isTrue);
       expect(g.hasLinkTo(from, to, anyTags: [t3], allTags: [t1, t2]), isFalse);
-      expect(
-          g.hasLinkTo(from, to, anyTags: [t2, t3], allTags: [t1, t3]), isFalse);
+      expect(g.hasLinkTo(from, to, anyTags: [t2, t3], allTags: [t1, t3]), isFalse);
     });
 
     test('setTo get', () {
       final g = Graph();
-      final from = 'from',
-          to = 'to',
-          key = 'key',
-          val = 'val',
-          t1 = 'tag1',
-          t2 = 'tag2',
-          t3 = 'tag3';
+      final from = 'from', to = 'to', key = 'key', val = 'val', t1 = 'tag1', t2 = 'tag2', t3 = 'tag3';
 
       g.setTo(from, to, key, val, tags: [t1, t2]);
 
@@ -54,30 +47,24 @@ void main() {
       expect(g.hasLinkTo(from, to, allTags: [t1, t3]), isFalse);
 
       expect(g.hasEdgeTo(from, to, key, anyTags: [t1], allTags: [t1]), isTrue);
-      expect(g.hasEdgeTo(from, to, key, anyTags: [t3], allTags: [t1, t2]),
-          isFalse);
-      expect(g.hasEdgeTo(from, to, key, anyTags: [t2, t3], allTags: [t1, t3]),
-          isFalse);
+      expect(g.hasEdgeTo(from, to, key, anyTags: [t3], allTags: [t1, t2]), isFalse);
+      expect(g.hasEdgeTo(from, to, key, anyTags: [t2, t3], allTags: [t1, t3]), isFalse);
 
       expect(g.hasLinkTo(from, to, anyTags: [t1], allTags: [t1]), isFalse);
       expect(g.hasLinkTo(from, to, anyTags: [t3], allTags: [t1, t2]), isFalse);
-      expect(
-          g.hasLinkTo(from, to, anyTags: [t2, t3], allTags: [t1, t3]), isFalse);
+      expect(g.hasLinkTo(from, to, anyTags: [t2, t3], allTags: [t1, t3]), isFalse);
 
-      expect(g.get(from, to, key, anyTags: [t1]) is Some, isTrue);
-      expect(g.get(from, to, key, anyTags: [t3]) is None, isTrue);
-      expect(g.get(from, to, key, anyTags: [t2, t3]) is Some, isTrue);
+      expect(g.tryGet(from, to, key, anyTags: [t1]).has, isTrue);
+      expect(g.tryGet(from, to, key, anyTags: [t3]).has, isFalse);
+      expect(g.tryGet(from, to, key, anyTags: [t2, t3]) is Some, isTrue);
 
-      expect(g.get(from, to, key, allTags: [t1]) is Some, isTrue);
-      expect(g.get(from, to, key, allTags: [t1, t2]) is Some, isTrue);
-      expect(g.get(from, to, key, allTags: [t1, t3]) is None, isTrue);
+      expect(g.tryGet(from, to, key, allTags: [t1]).has, isTrue);
+      expect(g.tryGet(from, to, key, allTags: [t1, t2]).has, isTrue);
+      expect(g.tryGet(from, to, key, allTags: [t1, t3]).has, isFalse);
 
-      expect(
-          g.get(from, to, key, anyTags: [t1], allTags: [t1]) is Some, isTrue);
-      expect(g.get(from, to, key, anyTags: [t3], allTags: [t1, t2]) is None,
-          isTrue);
-      expect(g.get(from, to, key, anyTags: [t2, t3], allTags: [t1, t3]) is None,
-          isTrue);
+      expect(g.tryGet(from, to, key, anyTags: [t1], allTags: [t1]).has, isTrue);
+      expect(g.tryGet(from, to, key, anyTags: [t3], allTags: [t1, t2]).has, isFalse);
+      expect(g.tryGet(from, to, key, anyTags: [t2, t3], allTags: [t1, t3]).has, isFalse);
     });
   });
 }

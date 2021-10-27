@@ -3,21 +3,27 @@ part of meowtype.graph;
 /// Basic graph node collection
 abstract class GraphItems implements Iterable {
   /// Add a Node to Graph
-  /// 
+  ///
   /// Return false when there is such a node
   bool add(val);
+
   /// Determine if there is such a node in graph
   bool has(val);
+
   /// If there is such a node, remove it
-  /// 
+  ///
   /// Return false when there is no such node
   bool remove(val);
+
   /// Get all nodes
   Iterable get items;
+
   /// Get the number of nodes
   int get length;
+
   /// Get all nodes
   Iterator get iterator;
+
   /// The [flatMap()] method first maps each element using a mapping function, then flattens the result into a new array
   Iterable<R> flatMap<R>(Iterable<R> f(item));
 }
@@ -28,7 +34,7 @@ mixin GraphItemsMixin implements GraphItems, Iterable {
   final Map<_Node, dynamic> _node_to_val = {};
 
   _Node _map_add_or_get(key, _Node def()) {
-    if (_map.containsKey(key)) return _map[key];
+    if (_map.containsKey(key)) return _map[key]!;
     final val = def();
     _map[key] = val;
     _node_to_val[val] = key;
@@ -51,7 +57,7 @@ mixin GraphItemsMixin implements GraphItems, Iterable {
 
   bool remove(val) {
     if (_map.containsKey(val)) {
-      final node = _map[val];
+      final node = _map[val]!;
       for (var from in node.from) {
         from.to.remove(node);
       }
