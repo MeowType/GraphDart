@@ -83,22 +83,26 @@ void main() {
   g.set(1, 2, 3, 4);
   g.hasEdge(1, 2, 3);
   g.get(1, 2, 3);
+  g.tryGet(1, 2, 3);
   g.unSet(1, 2, 3);
 
   g.setBy<int>(1, 2, 3);
   g.hasEdgeBy<int>(1, 2);
   g.getBy<int>(1, 2);
+  g.tryGetBy<int>(1, 2);
   g.unSetBy<int>(1, 2);
 
   // Directed value Graph
   g.setTo(1, 2, 3, 4);
   g.hasEdgeTo(1, 2, 3);
   g.get(1, 2, 3);
+  g.tryGet(1, 2, 3);
   g.unSetTo(1, 2, 3);
 
   g.setToBy<int>(1, 2, 3);
   g.hasEdgeToBy<int>(1, 2);
   g.getBy<int>(1, 2);
+  g.tryGetBy<int>(1, 2);
   g.unSetToBy<int>(1, 2);
 }
 ```
