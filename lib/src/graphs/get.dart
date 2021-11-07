@@ -19,6 +19,13 @@ abstract class GraphGet implements GraphItems {
   /// Equivalent to [get]([from], [to], **[T]**)
   ///
   /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
+  dynamic getBy<T>(from, to, {List anyTags, List allTags});
+
+  /// Get the value on the specified edge but by Generic
+  ///
+  /// Equivalent to [get]([from], [to], **[T]**)
+  ///
+  /// (Optional) Only if it matches any of [anyTags] and matches all items in [allTags]
   Maybe tryGetBy<T>(from, to, {List anyTags, List allTags});
 }
 

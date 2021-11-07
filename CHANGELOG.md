@@ -1,6 +1,8 @@
-# 2.0.1
+# 2.1.0
 
 format code
+
+- fix `getBy` not find
 
 # 2.0.0
 
