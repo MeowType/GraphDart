@@ -1,7 +1,8 @@
 part of meowtype.graph;
 
 /// Undirected graph, Can create an edge and value between 2 nodes
-abstract class UndirectedValueGraph extends UndirectedGraph implements GraphGet {
+abstract class UndirectedValueGraph extends UndirectedGraph
+    implements GraphGet {
   factory UndirectedValueGraph() = FullGraph;
 
   /// create an link between 2 nodes with value
@@ -54,7 +55,8 @@ abstract class UndirectedValueGraph extends UndirectedGraph implements GraphGet 
 }
 
 /// Mixing of implementations of [UndirectedValueGraph]
-mixin UndirectedValueGraphMixin on UndirectedGraphMixin implements UndirectedValueGraph, GraphGet {
+mixin UndirectedValueGraphMixin on UndirectedGraphMixin
+    implements UndirectedValueGraph, GraphGet {
   void set(a, b, key, val, {List tags = const []}) {
     _Tuple2(a, b)
         .map((v) => _map_add_or_get(v, _newNode))
@@ -64,12 +66,14 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin implements UndirectedVal
         .mutual((f, t) => f.setValTag(t, key, tags));
   }
 
-  void setBy<T>(a, b, val, {List tags = const []}) => set(a, b, T, val, tags: tags);
+  void setBy<T>(a, b, val, {List tags = const []}) =>
+      set(a, b, T, val, tags: tags);
 
   bool hasEdge(a, b, key, {List anyTags = const [], List allTags = const []}) {
     return _Tuple2(a, b)
         .map((v) => _map_add_or_get(v, _newNode))
-        .mutual((f, t) => _check_hasToVal_and_all_any_val_tags(f, t, key, anyTags: anyTags, allTags: allTags))
+        .mutual((f, t) => _check_hasToVal_and_all_any_val_tags(f, t, key,
+            anyTags: anyTags, allTags: allTags))
         .toDo(_or);
   }
 
@@ -80,7 +84,8 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin implements UndirectedVal
     return _Tuple2(a, b)
         .map((v) => _map_add_or_get(v, _newNode))
         .where((t) => t
-            .mutual((f, t) => _check_hasToVal_and_all_any_val_tags(f, t, key, anyTags: anyTags, allTags: allTags))
+            .mutual((f, t) => _check_hasToVal_and_all_any_val_tags(f, t, key,
+                anyTags: anyTags, allTags: allTags))
             .toDo(_or))
         // unsetToV will delete the tab
         .some((t) => t.mutual((f, t) => f.unsetToV(t, key)).toDo(_or))
@@ -91,18 +96,23 @@ mixin UndirectedValueGraphMixin on UndirectedGraphMixin implements UndirectedVal
   bool unSetBy<T>(a, b, {List anyTags = const [], List allTags = const []}) =>
       unSet(a, b, T, anyTags: anyTags, allTags: allTags);
 
-  Iterable values(val, key, {List anyTags = const [], List allTags = const []}) {
+  Iterable values(val, key,
+      {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
 
     final bool Function(Maybe) where = anyTags.isEmpty && allTags.isEmpty
         ? (m) => m is Some
-        : (m) => m is Some ? _check_all_any_val_tags(_v, m.val, key, anyTags: anyTags, allTags: allTags) : false;
+        : (m) => m is Some
+            ? _check_all_any_val_tags(_v, m.val, key,
+                anyTags: anyTags, allTags: allTags)
+            : false;
 
     final a = _v.to.keys.map((n) => _v.tryGet(n, key));
     final b = _v.from.map((n) => n.tryGet(_v, key));
     return _concat(a, b).where(where).map((s) => s.val).toSet();
   }
 
-  Iterable valuesBy<T>(val, {List anyTags = const [], List allTags = const []}) =>
+  Iterable valuesBy<T>(val,
+          {List anyTags = const [], List allTags = const []}) =>
       values(val, T, anyTags: anyTags, allTags: allTags);
 }

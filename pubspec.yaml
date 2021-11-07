@@ -1,5 +1,5 @@
 name: graph_collection
-version: "2.0.0"
+version: "2.0.1"
 description: "Provides numerous graph theory based Graph Collections: Graph[LinkGraph[UndirectedGraph, DirectedGraph], UndirectedValueGraph, DirectedValueGraph]"
 homepage: "https://github.com/MeowType/GraphDart"
 repository: "https://github.com/MeowType/GraphDart"

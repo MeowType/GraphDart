@@ -66,7 +66,8 @@ abstract class DirectedValueGraph extends DirectedGraph implements GraphGet {
 }
 
 /// Mixing of implementations of [DirectedValueGraph]
-mixin DirectedValueGraphMixin on DirectedGraphMixin implements DirectedValueGraph, GraphGet {
+mixin DirectedValueGraphMixin on DirectedGraphMixin
+    implements DirectedValueGraph, GraphGet {
   void setTo(from, to, key, val, {List tags = const []}) {
     final _f = _map_add_or_get(from, _newNode);
     final _t = _map_add_or_get(to, _newNode);
@@ -75,53 +76,73 @@ mixin DirectedValueGraphMixin on DirectedGraphMixin implements DirectedValueGrap
     _f.setValTag(_t, key, tags);
   }
 
-  void setToBy<T>(from, to, val, {List tags = const []}) => setTo(from, to, T, val, tags: tags);
+  void setToBy<T>(from, to, val, {List tags = const []}) =>
+      setTo(from, to, T, val, tags: tags);
 
-  bool hasEdgeTo(from, to, key, {List anyTags = const [], List allTags = const []}) {
+  bool hasEdgeTo(from, to, key,
+      {List anyTags = const [], List allTags = const []}) {
     final _f = _map_add_or_get(from, _newNode);
     final _t = _map_add_or_get(to, _newNode);
-    return _check_hasToVal_and_all_any_val_tags(_f, _t, key, anyTags: anyTags, allTags: allTags);
+    return _check_hasToVal_and_all_any_val_tags(_f, _t, key,
+        anyTags: anyTags, allTags: allTags);
   }
 
-  bool hasEdgeToBy<T>(from, to, {List anyTags = const [], List allTags = const []}) =>
+  bool hasEdgeToBy<T>(from, to,
+          {List anyTags = const [], List allTags = const []}) =>
       hasEdgeTo(from, to, T, anyTags: anyTags, allTags: allTags);
 
-  bool unSetTo(from, to, key, {List anyTags = const [], List allTags = const []}) {
+  bool unSetTo(from, to, key,
+      {List anyTags = const [], List allTags = const []}) {
     final _f = _map_add_or_get(from, _newNode);
     final _t = _map_add_or_get(to, _newNode);
-    if (_check_hasToVal_and_all_any_val_tags(_f, _t, key, anyTags: anyTags, allTags: allTags)) {
+    if (_check_hasToVal_and_all_any_val_tags(_f, _t, key,
+        anyTags: anyTags, allTags: allTags)) {
       // unsetToV will delete the tab
       return _f.unsetToV(_t, key);
     }
     return false;
   }
 
-  bool unSetToBy<T>(from, to, {List anyTags = const [], List allTags = const []}) =>
+  bool unSetToBy<T>(from, to,
+          {List anyTags = const [], List allTags = const []}) =>
       unSetTo(from, to, T, anyTags: anyTags, allTags: allTags);
 
-  Iterable valueTos(val, key, {List anyTags = const [], List allTags = const []}) {
+  Iterable valueTos(val, key,
+      {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
 
     final bool Function(Maybe) where = anyTags.isEmpty && allTags.isEmpty
         ? (m) => m is Some
-        : (m) => m is Some ? _check_all_any_val_tags(_v, m.val, key, anyTags: anyTags, allTags: allTags) : false;
+        : (m) => m is Some
+            ? _check_all_any_val_tags(_v, m.val, key,
+                anyTags: anyTags, allTags: allTags)
+            : false;
 
-    return _v.to.keys.map((n) => _v.tryGet(n, key)).where(where).map((s) => s.val);
+    return _v.to.keys
+        .map((n) => _v.tryGet(n, key))
+        .where(where)
+        .map((s) => s.val);
   }
 
-  Iterable valueFroms(val, key, {List anyTags = const [], List allTags = const []}) {
+  Iterable valueFroms(val, key,
+      {List anyTags = const [], List allTags = const []}) {
     final _v = _map_add_or_get(val, _newNode);
 
     final bool Function(Maybe) where = anyTags.isEmpty && allTags.isEmpty
         ? (m) => m is Some
-        : (m) => m is Some ? _check_all_any_val_tags(_v, m.val, key, anyTags: anyTags, allTags: allTags) : false;
+        : (m) => m is Some
+            ? _check_all_any_val_tags(_v, m.val, key,
+                anyTags: anyTags, allTags: allTags)
+            : false;
 
     return _v.from.map((n) => n.tryGet(_v, key)).where(where).map((s) => s.val);
   }
 
-  Iterable valueTosBy<T>(val, {List anyTags = const [], List allTags = const []}) =>
+  Iterable valueTosBy<T>(val,
+          {List anyTags = const [], List allTags = const []}) =>
       valueTos(val, T, anyTags: anyTags, allTags: allTags);
 
-  Iterable valueFromsBy<T>(val, {List anyTags = const [], List allTags = const []}) =>
+  Iterable valueFromsBy<T>(val,
+          {List anyTags = const [], List allTags = const []}) =>
       valueFroms(val, T, anyTags: anyTags, allTags: allTags);
 }

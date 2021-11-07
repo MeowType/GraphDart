@@ -39,18 +39,22 @@ mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
   bool hasLink(a, b, {List anyTags = const [], List allTags = const []}) {
     return _Tuple2(a, b)
         .map((v) => _map_add_or_get(v, _newNode))
-        .mutual((f, t) => _check_hasTo_and_all_any_tags(f, t, anyTags: anyTags, allTags: allTags))
+        .mutual((f, t) => _check_hasTo_and_all_any_tags(f, t,
+            anyTags: anyTags, allTags: allTags))
         .toDo(_or);
   }
 
   bool unLink(a, b, {List anyTags = const [], List allTags = const []}) {
     return _Tuple2(a, b)
         .map((v) => _map_add_or_get(v, _newNode))
-        .where((t) =>
-            t.mutual((f, t) => _check_hasTo_and_all_any_tags(f, t, anyTags: anyTags, allTags: allTags)).toDo(_or))
+        .where((t) => t
+            .mutual((f, t) => _check_hasTo_and_all_any_tags(f, t,
+                anyTags: anyTags, allTags: allTags))
+            .toDo(_or))
         .some((t) => t
             .fork()
-            .mapFn<bool Function(_Node, _Node), _Tuple2<bool>>((t) => (fn) => t.mutual(fn))
+            .mapFn<bool Function(_Node, _Node), _Tuple2<bool>>(
+                (t) => (fn) => t.mutual(fn))
             // unsetTo will delete the edge and tab
             .allDo((f, t) => f.unsetTo(t), (f, t) => f.unsetFrom(t))
             .map((t) => t.toDo(_or))
@@ -67,10 +71,12 @@ mixin UndirectedGraphMixin on GraphItemsMixin implements UndirectedGraph {
       return _concat(from, to).toSet();
     } else {
       final from = _v.from
-          .where((n) => _check_all_any_tags(n, _v, anyTags: anyTags, allTags: allTags))
+          .where((n) =>
+              _check_all_any_tags(n, _v, anyTags: anyTags, allTags: allTags))
           .map((n) => _node_to_val[n]);
       final to = _v.to.keys
-          .where((n) => _check_all_any_tags(_v, n, anyTags: anyTags, allTags: allTags))
+          .where((n) =>
+              _check_all_any_tags(_v, n, anyTags: anyTags, allTags: allTags))
           .map((n) => _node_to_val[n]);
       return _concat(from, to).toSet();
     }
